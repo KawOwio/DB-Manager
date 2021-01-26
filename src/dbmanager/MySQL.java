@@ -15,7 +15,8 @@ import java.util.Scanner;
 public class MySQL {
 	protected Connection conn;
 	private ArrayList<String> columnTypes;
-
+	private ArrayList<String> columnNames;
+	
 	public MySQL() {
 		// Scanner sc = new Scanner(System.in);
 		try {
@@ -39,10 +40,12 @@ public class MySQL {
 			int numOfColumns = rsmd.getColumnCount();
 			System.out.println("Num of columns: " + numOfColumns); // for testing purposes
 			columnTypes = new ArrayList<>();
+			columnNames = new ArrayList<>();
 			for (int i = 1; i <= numOfColumns; i++) {
 				String columnName = rsmd.getColumnName(i); // for testing purposes
 				String dataTypeOfColumn = rsmd.getColumnTypeName(i);
 				columnTypes.add(dataTypeOfColumn);
+				columnNames.add(columnName);
 				System.out.println(columnName + " has data type " + dataTypeOfColumn); // for testing purposes
 
 			}
@@ -54,6 +57,10 @@ public class MySQL {
 
 	public ArrayList<String> getColumnTypes() {
 		return columnTypes;
+	}
+	
+	public ArrayList<String> getColumnNames() {
+		return columnNames;
 	}
 
 	public Person findPerson(int id) {
@@ -75,29 +82,27 @@ public class MySQL {
 		return person;
 	}
 
-	public List<Person> findPerson(String firstName, String lastName) {
-
-		List<Person> persons = new LinkedList<>();
-
-		String sql = "SELECT * FROM dbmanager.Info WHERE name LIKE ? and surname like ?";
+	public ArrayList<String> getValues(String columnName){
+		ArrayList<String> rtnList = new ArrayList<>();
+		String sql = "SELECT " + columnName + " FROM dbmanager.Info"; 
+		System.out.println(sql);
 		PreparedStatement preparedStatement;
 		try {
 			preparedStatement = conn.prepareStatement(sql);
-			preparedStatement.setString(1, "%" + firstName + "%");
-			preparedStatement.setString(2, "%" + lastName + "%");
 			ResultSet results = preparedStatement.executeQuery();
+			
 			while (results.next()) {
-				Person person = new Person(results.getInt(1), results.getString(2), results.getString(3));
-				persons.add(person);
+				rtnList.add(results.getString(1));
 			}
 			conn.commit();
+			
 		} catch (SQLException e) {
-			return persons;
+			return rtnList;
 		}
-
-		return persons;
+		return rtnList;
 	}
-
+	
+	// TODO: change this later
 	public boolean deletePerson(int id) {
 		// #7 Write an sql statement that deletes teacher from database.
 		boolean status = false;
@@ -120,6 +125,8 @@ public class MySQL {
 	public static void main(String[] args) {
 		MySQL ne = new MySQL();
 		// ne.deletePerson(33333333);
-
+		ArrayList<String> num = new ArrayList<>();
+		num = ne.getValues("number");
+		System.out.println(num);
 	}
 }

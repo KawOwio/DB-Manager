@@ -5,8 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,12 +35,8 @@ public class WriteToWord {
 		frame.setSize(400, 400);
 		frame.setLocation(750, 350);
 		frame.setVisible(true);
-		
-		// TODO: get data from mysql
-		
-		String path = "";
-
-		path = openFile(frame);
+						
+		String path = openFile(frame);
 		replaceValue(path);
 
 		// JButton btnOpenFile = new JButton("Open file");
@@ -77,51 +72,69 @@ public class WriteToWord {
 
 	public static void replaceValue(String path) {
 		// TODO: find a file name w/o extension
-		// TODO: make a loop so it goes through every item in the database
-		// TODO: replace values with data from mysql/excel
-		// text.replace("{" + mysql.getColumn(i).getName() + "}",
-		// mysql.getColumn(i).getRow(y).getValue());
-		try {
-			String copyPath = path.replace(".docx", "-new.docx");
+		
+		// Get data from MySQL
+		MySQL db = new MySQL();
+		ArrayList<String> columnTypes = db.getColumnTypes();
+		ArrayList<String> columnNames = db.getColumnNames();
+		
+		// Set data to 2D ArrayList of Strings
+		ArrayList<ArrayList<String>> values = new ArrayList<ArrayList<String>>();
+		for (int i = 0; i < columnNames.size(); i++) {
+			values.add(db.getValues(columnNames.get(i)));
+		}
+						
+		int columns = values.size();
+		int rows = values.get(0).size();
+		
+		// Go through every entry in the database
+		for (int i = 0; i < rows; i++) {
+			try {
+				String fileName = "";
+				String copyPath = path.replace(".docx", "-" + (i + 1) + ".docx");
 
-			// Copy template file
-			File source = new File(path);
-			File destination = new File(copyPath);
+				// Copy template file
+				File source = new File(path);
+				File destination = new File(copyPath);
 
-			FileUtils.copyFile(source, destination);
+				FileUtils.copyFile(source, destination);
 
-			// Make changes in the new file
-			FileInputStream fis = new FileInputStream(copyPath);
-			XWPFDocument output = new XWPFDocument(fis);
+				// Make changes in the new file
+				FileInputStream fis = new FileInputStream(copyPath);
+				XWPFDocument output = new XWPFDocument(fis);
 
-			// Go through every paragraph
-			List<XWPFParagraph> par = output.getParagraphs();
-			for (XWPFParagraph p : par) {
+				// Go through every paragraph
+				List<XWPFParagraph> par = output.getParagraphs();
+				for (XWPFParagraph p : par) {
 
-				// Go through every run and replace text
-				List<XWPFRun> runs = p.getRuns();
-				if (runs != null) {
-					for (XWPFRun r : runs) {
-						String text = r.getText(0);
-						if (text != null) {
-							text = text.replace("{name}", "COMPANY NAME");
-							text = text.replace("{number}", "69696969");
-							r.setText(text, 0);
+					// Go through every run and replace text
+					List<XWPFRun> runs = p.getRuns();
+					if (runs != null) {
+						for (XWPFRun r : runs) {
+							String text = r.getText(0);
+							if (text != null) {
+								for (int x = 0; x < columns; x++) {
+									text = text.replace("{" + columnNames.get(x) + "}", values.get(x).get(i));
+								}
+								
+								r.setText(text, 0);
+							}
 						}
 					}
-				}
 
-				// Go through tables (if any) and replace text in them
-				for (XWPFTable tbl : output.getTables()) {
-					for (XWPFTableRow row : tbl.getRows()) {
-						for (XWPFTableCell cell : row.getTableCells()) {
-							for (XWPFParagraph tblPar : cell.getParagraphs()) {
-								for (XWPFRun r : tblPar.getRuns()) {
-									String text = r.getText(0);
-									if (text != null) {
-										text = text.replace("{name}", "COMPANY NAME");
-										text = text.replace("{number}", "69696969");
-										r.setText(text, 0);
+					// Go through tables (if any) and replace text in them
+					for (XWPFTable tbl : output.getTables()) {
+						for (XWPFTableRow row : tbl.getRows()) {
+							for (XWPFTableCell cell : row.getTableCells()) {
+								for (XWPFParagraph tblPar : cell.getParagraphs()) {
+									for (XWPFRun r : tblPar.getRuns()) {
+										String text = r.getText(0);
+										if (text != null) {
+											for (int x = 0; x < columns; x++) {
+												text = text.replace("{" + columnNames.get(x) + "}", "" + values.get(x).get(i));
+											}
+											r.setText(text, 0);
+										}
 									}
 								}
 							}
@@ -129,20 +142,20 @@ public class WriteToWord {
 					}
 				}
 
+				output.write(new FileOutputStream(copyPath));
+				output.close();
+				System.out.println("done");
+
+			} catch (FileNotFoundException ex) {
+				System.out.print(ex.getMessage());
+			} catch (IOException ex1) {
+				System.out.print(ex1.getMessage());
 			}
-
-			output.write(new FileOutputStream(copyPath));
-			output.close();
-			System.out.println("done");
-
-		} catch (FileNotFoundException ex) {
-			System.out.print(ex.getMessage());
-		} catch (IOException ex1) {
-			System.out.print(ex1.getMessage());
 		}
-
 	}
 
+	
+	
 	// XWPFDocument doc = new XWPFDocument();
 	// XWPFParagraph tmpPar = doc.createParagraph();
 	// XWPFRun tmpRun = tmpPar.createRun();
