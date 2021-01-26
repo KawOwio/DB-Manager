@@ -36,8 +36,9 @@ public class WriteToWord {
 		frame.setSize(400, 400);
 		frame.setLocation(750, 350);
 		frame.setVisible(true);
-
-		String name = "COMPANY NAME";
+		
+		// TODO: get data from mysql
+		
 		String path = "";
 
 		path = openFile(frame);
@@ -75,6 +76,7 @@ public class WriteToWord {
 	}
 
 	public static void replaceValue(String path) {
+		// TODO: find a file name w/o extension
 		// TODO: make a loop so it goes through every item in the database
 		// TODO: replace values with data from mysql/excel
 		// text.replace("{" + mysql.getColumn(i).getName() + "}",
