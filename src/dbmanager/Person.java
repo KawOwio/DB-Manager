@@ -1,0 +1,38 @@
+package dbmanager;
+
+public class Person {
+	
+	private int phoneNr;
+	private String name;
+	private String surname;
+	
+	public Person(int phoneNr, String name, String surname) {
+		this.phoneNr = phoneNr;
+		this.name = name;
+		this.surname = surname;
+	}
+
+	public int getPhoneNr() {
+		return phoneNr;
+	}
+
+	public void setPhoneNr(int phoneNr) {
+		this.phoneNr = phoneNr;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+}
