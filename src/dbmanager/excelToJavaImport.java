@@ -5,17 +5,22 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class excelToJavaImport {
@@ -31,58 +36,76 @@ public class excelToJavaImport {
 		excelToJava(excelFilePath);
 		
 	}
-		//String excelFilePath = "/home/student/workspace/DB-Manager/test.xlsx"; 
 		
-	public static Map<Integer, List<String>> excelToJava(String excelFilePath) throws IOException {
+	public static List<Object> excelToJava(String excelFilePath) throws IOException {
 	            FileInputStream inputStream = new FileInputStream(excelFilePath);
+	        
 	 
 	            Workbook workbook = new XSSFWorkbook(inputStream);
-	            Map<Integer, List<String>> data = new HashMap<>();
+	            List<Object> sheets = new ArrayList <>();
+	          
+	           
 	            for (int j = 0; j < workbook.getNumberOfSheets(); j++) {
-	            Sheet sheet = workbook.getSheetAt(j);
-	            int i = 0;
-	            for (Row row : sheet) {
-	                data.put(i, new ArrayList<String>());
-	                for (Cell cell : row) {
+	           Sheet sheet = workbook.getSheetAt(j);
+	           List<ArrayList<Object>> excelData  = new ArrayList <>();
+	            //sheets.add(new ArrayList<Object>());
+	            //excelData.clear();
+	            for(Row row :sheet) {
+	            	excelData.add(new ArrayList<Object>());  
+	            	for(Cell cell: row){ 
+	            		excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
 	                    switch (cell.getCellType()) {
+	                    
+	                    	case BLANK:
+	                    	System.out.print("Adding BLANK"  + "[" + cell.getRowIndex() 
+                        	+ "]" + cell.getColumnIndex() + "]");
+                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
+                        	break;
 	                        case STRING: 
-	                        	data.get(Integer.valueOf(i)).add(cell.getRichStringCellValue().getString());
-	                        	System.out.print(cell.getRichStringCellValue().getString() + "\t\t");
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getRichStringCellValue().getString());
+	                        	System.out.print("Adding string" + cell.getRichStringCellValue().getString() + "[" + cell.getRowIndex() 
+	                        	+ "]" + cell.getColumnIndex() + "]");
 	                        	break;
 	                        case NUMERIC: 
 	                        	if (DateUtil.isCellDateFormatted(cell)) {
-	                        	    data.get(i).add(cell.getDateCellValue() + "");
-	                        	 System.out.print("\t" +cell.getDateCellValue() + "\t\t");
-	                        	    
+	                        		 excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getDateCellValue() + "");
+	                        		 System.out.print("Adding date" + cell.getDateCellValue() + "[" + cell.getRowIndex() 
+	 	                        	+ "]" + cell.getColumnIndex() + "]");
 	                        	} else {
-	                        	    data.get(i).add(cell.getNumericCellValue() + "");
-	                        	  System.out.print("\t" + cell.getNumericCellValue() +  "\t\t");
+	                        		System.out.print("Adding numeric" + cell.getNumericCellValue() + "[" + cell.getRowIndex() 
+		                        	+ "]" + cell.getColumnIndex() + "]");
+	                        	    excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getNumericCellValue() + "");
 	                        	}
 	                        	break;
 	                        case BOOLEAN: 
-	                        	data.get(i).add(cell.getBooleanCellValue() + "");
-	                        	System.out.print(cell.getBooleanCellValue() +  "\t\t");
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getBooleanCellValue() + "");
+	                        	System.out.print("Adding boolean" +  cell.getBooleanCellValue() + "[" + cell.getRowIndex() 
+	                        	+ "]" + cell.getColumnIndex() + "]");
 	                        	break;
 	                        case FORMULA: 
-	                        	data.get(i).add(cell.getCellFormula() + "");
-	                        	System.out.print(cell.getCellFormula() + "\t\t");
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getCellFormula() + "");
+	                        	System.out.print("Adding formula" +  cell.getCellFormula() + "[" + cell.getRowIndex() 
+	                        	+ "]" + cell.getColumnIndex() + "]");
 	                        	break;
-	                        default: data.get(Integer.valueOf(i)).add(" ");
+	                        default: 
+	                        	System.out.print("Adding empty"  + "[" + cell.getRowIndex() 
+	                        	+ "]" + cell.getColumnIndex() + "]");
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
+	                        	break;
 	                    }
-	                }
-	                System.out.println();
-	                i++;
+	                    System.out.println();
 	            }
-	            System.out.println();
+	            //	 sheets.add(excelData);
 	            }
-	          
+	            System.out.println(excelData);
+	            System.out.println(excelData.size());
+	            sheets.add(excelData);
+	            }
 	            workbook.close();
-	            System.out.println(data.toString());
-				return data;
+	            System.out.print(sheets.toString());
+	          
+				return sheets;
 	            
-	       
-		// TODO Auto-generated constructor stub
-
 }
 	  
     public static String openFile(JFrame frame) {
