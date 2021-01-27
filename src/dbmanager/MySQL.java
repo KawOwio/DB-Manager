@@ -8,9 +8,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
 
 public class MySQL {
 	protected Connection conn;
@@ -55,7 +52,6 @@ public class MySQL {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	public ArrayList<String> getColumnTypes() {
@@ -105,12 +101,6 @@ public class MySQL {
 		}
 		return rtnList;
 	}
-	
-	public void exportFromExceltoMySQL() {
-		excelToJavaImport a = new excelToJavaImport();
-		
-	}
-	
 	
 	public static void main(String[] args) {
 		MySQL t = new MySQL();
