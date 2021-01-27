@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class excelToJavaImport {
 
-	public static void main(String args[]) throws IOException  {
+	public static void main(String args[]) throws IOException   {
 
 		final JFrame frame = new JFrame("Document Reader");
 		frame.setSize(400, 400);
@@ -28,16 +28,18 @@ public class excelToJavaImport {
 		frame.setVisible(true);
 		
 		String excelFilePath = openFile(frame);
+		excelToJava(excelFilePath);
 		
+	}
 		//String excelFilePath = "/home/student/workspace/DB-Manager/test.xlsx"; 
 		
+	public static Map<Integer, List<String>> excelToJava(String excelFilePath) throws IOException {
 	            FileInputStream inputStream = new FileInputStream(excelFilePath);
 	 
 	            Workbook workbook = new XSSFWorkbook(inputStream);
-	            
+	            Map<Integer, List<String>> data = new HashMap<>();
 	            for (int j = 0; j < workbook.getNumberOfSheets(); j++) {
 	            Sheet sheet = workbook.getSheetAt(j);
-	            Map<Integer, List<String>> data = new HashMap<>();
 	            int i = 0;
 	            for (Row row : sheet) {
 	                data.put(i, new ArrayList<String>());
@@ -73,6 +75,10 @@ public class excelToJavaImport {
 	            }
 	            System.out.println();
 	            }
+	          
+	            workbook.close();
+	            System.out.println(data.toString());
+				return data;
 	            
 	       
 		// TODO Auto-generated constructor stub
