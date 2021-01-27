@@ -46,7 +46,7 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.5</version>
 				<configuration>
-					<mainClass>HelloFX</mainClass>
+					<mainClass>dbmanager.HelloFX</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
