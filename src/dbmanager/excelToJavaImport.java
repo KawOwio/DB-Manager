@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,18 +20,26 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class excelToJavaImport {
 
-	public static void main(String args[]) throws IOException  {
+	public static void main(String args[]) throws IOException   {
+
+		final JFrame frame = new JFrame("Document Reader");
+		frame.setSize(400, 400);
+		frame.setLocation(750, 350);
+		frame.setVisible(true);
 		
-		 String excelFilePath = "/home/student/workspace/DB-Manager/test.xlsx";
-		 
-	    
+		String excelFilePath = openFile(frame);
+		excelToJava(excelFilePath);
+		
+	}
+		//String excelFilePath = "/home/student/workspace/DB-Manager/test.xlsx"; 
+		
+	public static Map<Integer, List<String>> excelToJava(String excelFilePath) throws IOException {
 	            FileInputStream inputStream = new FileInputStream(excelFilePath);
 	 
 	            Workbook workbook = new XSSFWorkbook(inputStream);
-	            
-	            Sheet sheet = workbook.getSheetAt(0);
-	            
 	            Map<Integer, List<String>> data = new HashMap<>();
+	            for (int j = 0; j < workbook.getNumberOfSheets(); j++) {
+	            Sheet sheet = workbook.getSheetAt(j);
 	            int i = 0;
 	            for (Row row : sheet) {
 	                data.put(i, new ArrayList<String>());
@@ -36,36 +47,63 @@ public class excelToJavaImport {
 	                    switch (cell.getCellType()) {
 	                        case STRING: 
 	                        	data.get(Integer.valueOf(i)).add(cell.getRichStringCellValue().getString());
-	                        	// System.out.print(cell.getRichStringCellValue().getString() + "\t\t");
+	                        	System.out.print(cell.getRichStringCellValue().getString() + "\t\t");
 	                        	break;
 	                        case NUMERIC: 
 	                        	if (DateUtil.isCellDateFormatted(cell)) {
 	                        	    data.get(i).add(cell.getDateCellValue() + "");
-	                        	   // System.out.print("\t" +cell.getDateCellValue() + "\t\t");
+	                        	 System.out.print("\t" +cell.getDateCellValue() + "\t\t");
 	                        	    
 	                        	} else {
 	                        	    data.get(i).add(cell.getNumericCellValue() + "");
-	                        	   // System.out.print("\t" + cell.getNumericCellValue() +  "\t\t");
+	                        	  System.out.print("\t" + cell.getNumericCellValue() +  "\t\t");
 	                        	}
 	                        	break;
 	                        case BOOLEAN: 
 	                        	data.get(i).add(cell.getBooleanCellValue() + "");
-	                        //	System.out.print(cell.getBooleanCellValue() +  "\t\t");
+	                        	System.out.print(cell.getBooleanCellValue() +  "\t\t");
 	                        	break;
 	                        case FORMULA: 
 	                        	data.get(i).add(cell.getCellFormula() + "");
-	                        	//System.out.print(cell.getCellFormula() + "\t\t");
+	                        	System.out.print(cell.getCellFormula() + "\t\t");
 	                        	break;
 	                        default: data.get(Integer.valueOf(i)).add(" ");
-	    
 	                    }
-	            
 	                }
 	                System.out.println();
 	                i++;
 	            }
+	            System.out.println();
+	            }
+	          
+	            workbook.close();
 	            System.out.println(data.toString());
+				return data;
+	            
+	       
 		// TODO Auto-generated constructor stub
 
 }
+	  
+    public static String openFile(JFrame frame) {
+		JFileChooser fileChooser = new JFileChooser();
+		int selected = fileChooser.showOpenDialog(frame);
+
+		if (selected == JFileChooser.APPROVE_OPTION) {
+			String path = fileChooser.getSelectedFile().getAbsolutePath();
+			String[] splittedData = path.split("\\.");
+
+			if (splittedData.length > 0) {
+				if (splittedData[1].equalsIgnoreCase("xlsx")) {
+					frame.dispose(); // close window
+					frame.setVisible(false); // hide window
+					// replaceValue(path);
+					return path;
+				}
+			}
+		}
+		
+		return "";
+	}
+
 }

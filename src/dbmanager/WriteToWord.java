@@ -29,15 +29,18 @@ import java.awt.BorderLayout;
 
 public class WriteToWord {
 
+	private static String fileName;
+	private static String filePath;
+
 	public static void main(String[] args) throws InvalidFormatException, IOException {
 
 		final JFrame frame = new JFrame("Document Reader");
 		frame.setSize(400, 400);
 		frame.setLocation(750, 350);
 		frame.setVisible(true);
-						
-		String path = openFile(frame);
-		replaceValue(path);
+
+		openFile(frame);
+		replaceValue();
 
 		// JButton btnOpenFile = new JButton("Open file");
 		// frame.getContentPane().add(btnOpenFile, BorderLayout.SOUTH);
@@ -52,7 +55,7 @@ public class WriteToWord {
 		// });
 	}
 
-	public static String openFile(JFrame frame) {
+	public static void openFile(JFrame frame) {
 		JFileChooser fileChooser = new JFileChooser();
 		int selected = fileChooser.showOpenDialog(frame);
 
@@ -63,40 +66,40 @@ public class WriteToWord {
 			if (splittedData.length > 0) {
 				if (splittedData[1].equalsIgnoreCase("docx")) {
 					// replaceValue(path);
-					return path;
+					filePath = path;
+					fileName = fileChooser.getSelectedFile().getName();
 				}
 			}
 		}
-		return "";
 	}
 
-	public static void replaceValue(String path) {
+	public static void replaceValue() {
 		// TODO: find a file name w/o extension
-		
+		System.out.println(filePath);
 		// Get data from MySQL
 		MySQL db = new MySQL();
 		ArrayList<String> columnTypes = db.getColumnTypes();
 		ArrayList<String> columnNames = db.getColumnNames();
-		
+		filePath.lastIndexOf("/");
 		// Set data to 2D ArrayList of Strings
 		ArrayList<ArrayList<String>> values = new ArrayList<ArrayList<String>>();
 		for (int i = 0; i < columnNames.size(); i++) {
 			values.add(db.getValues(columnNames.get(i)));
 		}
-						
+
 		int columns = values.size();
 		int rows = values.get(0).size();
-		
+
 		// Go through every entry in the database
 		for (int i = 0; i < rows; i++) {
 			try {
-				String fileName = "";
-				String copyPath = path.replace(".docx", "-" + (i + 1) + ".docx");
+				// Make path for copied files in a separate folder
+				String copyPath = filePath.replace(fileName,
+						fileName.replace(".docx", "-copies/" + fileName.replace(".docx", "-" + (i + 1) + ".docx")));
 
 				// Copy template file
-				File source = new File(path);
+				File source = new File(filePath);
 				File destination = new File(copyPath);
-
 				FileUtils.copyFile(source, destination);
 
 				// Make changes in the new file
@@ -116,7 +119,7 @@ public class WriteToWord {
 								for (int x = 0; x < columns; x++) {
 									text = text.replace("{" + columnNames.get(x) + "}", values.get(x).get(i));
 								}
-								
+
 								r.setText(text, 0);
 							}
 						}
@@ -131,7 +134,8 @@ public class WriteToWord {
 										String text = r.getText(0);
 										if (text != null) {
 											for (int x = 0; x < columns; x++) {
-												text = text.replace("{" + columnNames.get(x) + "}", "" + values.get(x).get(i));
+												text = text.replace("{" + columnNames.get(x) + "}",
+														"" + values.get(x).get(i));
 											}
 											r.setText(text, 0);
 										}
@@ -153,36 +157,4 @@ public class WriteToWord {
 			}
 		}
 	}
-
-	
-	
-	// XWPFDocument doc = new XWPFDocument();
-	// XWPFParagraph tmpPar = doc.createParagraph();
-	// XWPFRun tmpRun = tmpPar.createRun();
-	// tmpRun.setText("Hello");
-	//
-	// String folder = "/home/student/";
-	// String fileName = "123.docx";
-	//
-	// File f = new File(folder);
-	// if (!f.exists()) {
-	// System.out.println("Created folder: " + folder);
-	// f.mkdirs();
-	// }
-	//
-	// FileOutputStream out;
-	// try {
-	// out = new FileOutputStream(new File(folder + "111"));
-	// doc.write(out);
-	// doc.close();
-	// out.close();
-	//
-	// System.out.println("Wrote to: " + folder + fileName);
-	// } catch (FileNotFoundException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
 }
