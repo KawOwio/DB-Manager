@@ -46,7 +46,7 @@ public class WriteToWord {
 
 		openWordFile(frame);
 		replaceValuesFromExcel();
-		//replaceValuesFromMySQL();
+		// replaceValuesFromMySQL();
 	}
 
 	public static void openWordFile(JFrame frame) {
@@ -82,25 +82,25 @@ public class WriteToWord {
 
 		int columns = values.size();
 		int rows = values.get(0).size();
-		
+
 		replaceValues(rows, columns, columnNames, values);
 	}
 
 	public static void replaceValuesFromExcel() {
 		// TODO: change to user input path and name
 		String tmpPath = "/home/student/Excel-1.xlsx";
-		
+
 		// Getting all sheets from Excel
 		List<Object> sheets = new ArrayList<Object>();
 		try {
-			sheets = excelToJavaImport.excelToJava(tmpPath);
+			sheets = (List<Object>) excelToJavaImport.excelToJava(tmpPath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		// Getting data out of sheets
 		ArrayList<ArrayList<Object>> excelData = (ArrayList<ArrayList<Object>>) sheets.get(0);
-				
+
 		// Get rows and columns
 		int rows = excelData.size();
 		int columns = excelData.get(0).size();
@@ -110,23 +110,23 @@ public class WriteToWord {
 		for (int i = 0; i < columns; i++) {
 			columnNames.add(excelData.get(0).get(i).toString());
 		}
-		
-		// Remove a row with columns in it 
+
+		// Remove a row with columns in it
 		excelData.remove(0);
 		rows--;
-		
+
 		// Get all values as strings
 		ArrayList<ArrayList<String>> values = new ArrayList<ArrayList<String>>(excelData.size());
-		
+
 		// Convert list of objects to list of strings
-		for (int i = 0; i < rows; i++) { 
+		for (int i = 0; i < rows; i++) {
 			ArrayList<String> strings = new ArrayList<>(excelData.get(i).size());
 			for (Object object : excelData.get(i)) {
-			    strings.add(Objects.toString(object, null));
+				strings.add(Objects.toString(object, null));
 			}
 			values.add(strings);
-		}		
-		
+		}
+
 		// 'Rotate' list for consistent passing
 		ArrayList<ArrayList<String>> rotatedValues = new ArrayList<ArrayList<String>>(values.size());
 		for (int y = 0; y < values.get(0).size(); y++) {
@@ -136,11 +136,12 @@ public class WriteToWord {
 			}
 			rotatedValues.add(rotate);
 		}
-		
+
 		replaceValues(rows, columns, columnNames, rotatedValues);
 	}
 
-	public static void replaceValues(int rows, int columns, ArrayList<String> columnNames, ArrayList<ArrayList<String>> values) {
+	public static void replaceValues(int rows, int columns, ArrayList<String> columnNames,
+			ArrayList<ArrayList<String>> values) {
 		// Go through every entry in the database
 		for (int i = 0; i < rows; i++) {
 			try {
@@ -213,7 +214,7 @@ public class WriteToWord {
 			}
 		}
 	}
-	
+
 	public static String getDate() {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		Date today = new Date();
