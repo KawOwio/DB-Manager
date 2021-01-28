@@ -1,5 +1,7 @@
 package dbmanager;
 
+import java.io.File;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -96,9 +98,9 @@ public class Controller {
     	idexcel.setVisible(true);
     	idmysql.setVisible(false);
     	iddbm.setVisible(false);
-//    	FileChooser fileChooser = new FileChooser();
-//    	fileChooser.setTitle("Open Resource File");
-//    	fileChooser.showOpenDialog(primaryStage);
+    	FileChooser chooser = new FileChooser();
+        chooser.setTitle("Open File");
+        chooser.showOpenDialog(iddbm.getScene().getWindow());
     }
 
     @FXML
