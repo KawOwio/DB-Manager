@@ -93,9 +93,15 @@ public class JavaToMySQL {
 		frame.setVisible(true);
 
 		String excelFilePath = excelToJavaImport.openFile(frame);
-		Map<Integer, List<String>> mapWithData = excelToJavaImport.excelToJava(excelFilePath);
-		JavaToMySQL test = new JavaToMySQL();
-		test.fillTheDatabase(mapWithData);
+		//Map<Integer, List<String>> mapWithData = excelToJavaImport.excelToJava(excelFilePath);
+		//JavaToMySQL test = new JavaToMySQL();
+		List<Object> wholeDatabase = excelToJavaImport.excelToJava(excelFilePath);
+		List<Object> sheet = (List<Object>) wholeDatabase.get(0);
+		List<Object> row = (List<Object>) sheet.get(2);
+		Object value = row.get(1);
+		System.out.println(value);
+		System.out.println(value.getClass());
+		//test.fillTheDatabase(mapWithData);
 	}
 
 }
