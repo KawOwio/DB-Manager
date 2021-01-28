@@ -5,11 +5,18 @@ import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import com.jfoenix.controls.JFXTextField;
 
 public class Controller {
+	
+//	Images
+	
+	
 	
 //	Side bars buttons
 	
@@ -28,7 +35,10 @@ public class Controller {
 	@FXML
 	private Button import_myfiles_button;
 	
-//	Main windows buttons
+	@FXML
+	private Button word_button;
+	
+//	DB Manager windows buttons
 	
 	@FXML
 	private Button import_mysql_button_main;
@@ -62,7 +72,59 @@ public class Controller {
 	@FXML
 	private AnchorPane iddbm;
 	
-//	
+	@FXML
+	private AnchorPane idwordfilled;
+	
+//	Button id
+	
+	@FXML
+	private Button idword;
+	
+	@FXML
+	private Button idcalcimgbutton;
+	
+	@FXML
+	private Button idexcelimgbutton;
+	
+	@FXML
+	private Button idmysqlbutton;
+	
+	@FXML
+	private Button idwordimgbutton;
+	
+	@FXML
+	private Button idwriterimgbutton;
+	
+//	Main windows
+	
+	@FXML
+	private AnchorPane idexcelwindow;
+	
+	@FXML
+	private AnchorPane iddbmwindow;
+	
+	@FXML
+	private AnchorPane idcalctext;
+	
+	@FXML
+	private AnchorPane idexceltext;
+	
+	@FXML
+	private AnchorPane idmysqltext;
+	
+	@FXML
+	private AnchorPane idwordtext;
+	
+	@FXML
+	private AnchorPane idwritertext;
+	
+//	Setting up Excel field
+	
+	@FXML
+	private JFXTextField idsetcol;
+	
+	@FXML
+	private JFXTextField idsetrow;
 	
 //	@FXML
 //	public void initialize() {
@@ -70,6 +132,84 @@ public class Controller {
 //	}
 	
 //	Action on click
+	
+	@FXML
+	void clickword(ActionEvent event) {
+		FileChooser chooser = new FileChooser();
+        chooser.setTitle("Open File");
+        chooser.getExtensionFilters().add(new ExtensionFilter("Word Files", "*.docx"));
+        File myWordFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+	}
+	
+	@FXML
+	void calcimgbuttonchange(ActionEvent event) {
+		idcalcimgbutton.setStyle("-fx-border-color:  #92bbba; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idexcelimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idmysqlbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwordimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwriterimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalctext.setVisible(true);
+		idexceltext.setVisible(false);
+		idmysqltext.setVisible(false);
+		idwordtext.setVisible(false);
+		idwritertext.setVisible(false);
+	}
+	
+	@FXML
+	void excelimgbuttonchange(ActionEvent event) {
+		idexcelimgbutton.setStyle("-fx-border-color:  #92bbba; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalcimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idmysqlbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwordimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwriterimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalctext.setVisible(false);
+		idexceltext.setVisible(true);
+		idmysqltext.setVisible(false);
+		idwordtext.setVisible(false);
+		idwritertext.setVisible(false);
+	}
+	
+	@FXML
+	void mysqlimgbuttonchange(ActionEvent event) {
+		idmysqlbutton.setStyle("-fx-border-color:  #92bbba; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idexcelimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalcimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwordimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwriterimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalctext.setVisible(false);
+		idexceltext.setVisible(false);
+		idmysqltext.setVisible(true);
+		idwordtext.setVisible(false);
+		idwritertext.setVisible(false);
+	}
+	
+	@FXML
+	void wordimgbuttonchange(ActionEvent event) {
+		idwordimgbutton.setStyle("-fx-border-color:  #92bbba; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idexcelimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalcimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idmysqlbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwriterimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalctext.setVisible(false);
+		idexceltext.setVisible(false);
+		idmysqltext.setVisible(false);
+		idwordtext.setVisible(true);
+		idwritertext.setVisible(false);
+	}
+	
+	@FXML
+	void writerimgbuttonchange(ActionEvent event) {
+		idwriterimgbutton.setStyle("-fx-border-color:  #92bbba; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idexcelimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalcimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idmysqlbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idwordimgbutton.setStyle("-fx-border-color:  #fff; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
+		idcalctext.setVisible(false);
+		idexceltext.setVisible(false);
+		idmysqltext.setVisible(false);
+		idwordtext.setVisible(false);
+		idwritertext.setVisible(true);
+	}
 	
     @FXML
     void clickdbm(ActionEvent event) {
@@ -79,6 +219,9 @@ public class Controller {
     	idexcel.setVisible(false);
     	idmysql.setVisible(false);
     	iddbm.setVisible(true);
+    	idexcelwindow.setVisible(false);
+    	iddbmwindow.setVisible(true);
+    	idwordfilled.setVisible(false);
     }
 	
     @FXML
@@ -89,6 +232,9 @@ public class Controller {
     	idexcel.setVisible(false);
     	idmysql.setVisible(true);
     	iddbm.setVisible(false);
+    	idexcelwindow.setVisible(false);
+    	iddbmwindow.setVisible(false);
+    	idwordfilled.setVisible(true);
     }
     
     @FXML
@@ -102,7 +248,10 @@ public class Controller {
     	FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
         chooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xlsx"));
-        chooser.showOpenDialog(iddbm.getScene().getWindow());
+        File myExcelFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+        idexcelwindow.setVisible(true);
+        iddbmwindow.setVisible(false);
+        idwordfilled.setVisible(true);
     }
 
     @FXML
@@ -116,7 +265,10 @@ public class Controller {
     	FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
         chooser.getExtensionFilters().add(new ExtensionFilter("Open Document Spreadsheet", "*.ods"));
-        chooser.showOpenDialog(iddbm.getScene().getWindow());
+        File myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+        idexcelwindow.setVisible(false);
+        iddbmwindow.setVisible(false);
+        idwordfilled.setVisible(false);
     }
     
     @FXML
@@ -127,6 +279,9 @@ public class Controller {
     	idexcel.setVisible(false);
     	idmysql.setVisible(false);
     	iddbm.setVisible(false);
+    	idexcelwindow.setVisible(false);
+    	iddbmwindow.setVisible(false);
+    	idwordfilled.setVisible(false);
     }
     
 //    @Override
