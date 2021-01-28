@@ -5,8 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -39,23 +44,12 @@ public class WriteToWord {
 		frame.setLocation(750, 350);
 		frame.setVisible(true);
 
-		openFile(frame);
-		replaceValue();
-
-		// JButton btnOpenFile = new JButton("Open file");
-		// frame.getContentPane().add(btnOpenFile, BorderLayout.SOUTH);
-
-		// btnOpenFile.addActionListener(new ActionListener() {
-
-		// @Override
-		// public void actionPerformed(ActionEvent arg0) {
-		// openFile(frame);
-		// }
-
-		// });
+		openWordFile(frame);
+		replaceValuesFromExcel();
+		//replaceValuesFromMySQL();
 	}
 
-	public static void openFile(JFrame frame) {
+	public static void openWordFile(JFrame frame) {
 		JFileChooser fileChooser = new JFileChooser();
 		int selected = fileChooser.showOpenDialog(frame);
 
@@ -73,14 +67,13 @@ public class WriteToWord {
 		}
 	}
 
-	public static void replaceValue() {
-		// TODO: find a file name w/o extension
+	public static void replaceValuesFromMySQL() {
 		System.out.println(filePath);
 		// Get data from MySQL
 		MySQL db = new MySQL();
 		ArrayList<String> columnTypes = db.getColumnTypes();
 		ArrayList<String> columnNames = db.getColumnNames();
-		filePath.lastIndexOf("/");
+
 		// Set data to 2D ArrayList of Strings
 		ArrayList<ArrayList<String>> values = new ArrayList<ArrayList<String>>();
 		for (int i = 0; i < columnNames.size(); i++) {
@@ -89,10 +82,69 @@ public class WriteToWord {
 
 		int columns = values.size();
 		int rows = values.get(0).size();
+		
+		replaceValues(rows, columns, columnNames, values);
+	}
 
+	public static void replaceValuesFromExcel() {
+		// TODO: change to user input path and name
+		String tmpPath = "/home/student/Excel-1.xlsx";
+		
+		// Getting all sheets from Excel
+		List<Object> sheets = new ArrayList<Object>();
+		try {
+			sheets = excelToJavaImport.excelToJava(tmpPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Getting data out of sheets
+		ArrayList<ArrayList<Object>> excelData = (ArrayList<ArrayList<Object>>) sheets.get(0);
+				
+		// Get rows and columns
+		int rows = excelData.size();
+		int columns = excelData.get(0).size();
+
+		// Get columnNames
+		ArrayList<String> columnNames = new ArrayList<String>();
+		for (int i = 0; i < columns; i++) {
+			columnNames.add(excelData.get(0).get(i).toString());
+		}
+		
+		// Remove a row with columns in it 
+		excelData.remove(0);
+		rows--;
+		
+		// Get all values as strings
+		ArrayList<ArrayList<String>> values = new ArrayList<ArrayList<String>>(excelData.size());
+		
+		// Convert list of objects to list of strings
+		for (int i = 0; i < rows; i++) { 
+			ArrayList<String> strings = new ArrayList<>(excelData.get(i).size());
+			for (Object object : excelData.get(i)) {
+			    strings.add(Objects.toString(object, null));
+			}
+			values.add(strings);
+		}		
+		
+		// 'Rotate' list for consistent passing
+		ArrayList<ArrayList<String>> rotatedValues = new ArrayList<ArrayList<String>>(values.size());
+		for (int y = 0; y < values.get(0).size(); y++) {
+			ArrayList<String> rotate = new ArrayList<String>();
+			for (int x = 0; x < values.size(); x++) {
+				rotate.add(values.get(x).get(y));
+			}
+			rotatedValues.add(rotate);
+		}
+		
+		replaceValues(rows, columns, columnNames, rotatedValues);
+	}
+
+	public static void replaceValues(int rows, int columns, ArrayList<String> columnNames, ArrayList<ArrayList<String>> values) {
 		// Go through every entry in the database
 		for (int i = 0; i < rows; i++) {
 			try {
+				System.out.println("in");
 				// Make path for copied files in a separate folder
 				String copyPath = filePath.replace(fileName,
 						fileName.replace(".docx", "-copies/" + fileName.replace(".docx", "-" + (i + 1) + ".docx")));
@@ -106,6 +158,7 @@ public class WriteToWord {
 				FileInputStream fis = new FileInputStream(copyPath);
 				XWPFDocument output = new XWPFDocument(fis);
 
+				System.out.println("copied");
 				// Go through every paragraph
 				List<XWPFParagraph> par = output.getParagraphs();
 				for (XWPFParagraph p : par) {
@@ -115,11 +168,13 @@ public class WriteToWord {
 					if (runs != null) {
 						for (XWPFRun r : runs) {
 							String text = r.getText(0);
+							System.out.println(text);
 							if (text != null) {
 								for (int x = 0; x < columns; x++) {
+									System.out.println("C: " + columnNames.get(x) + " X: " + values.get(x).get(i));
 									text = text.replace("{" + columnNames.get(x) + "}", values.get(x).get(i));
 								}
-
+								text = text.replace("{DateToday}", getDate());
 								r.setText(text, 0);
 							}
 						}
@@ -137,6 +192,7 @@ public class WriteToWord {
 												text = text.replace("{" + columnNames.get(x) + "}",
 														"" + values.get(x).get(i));
 											}
+											text = text.replace("{DateToday}", getDate());
 											r.setText(text, 0);
 										}
 									}
@@ -156,5 +212,11 @@ public class WriteToWord {
 				System.out.print(ex1.getMessage());
 			}
 		}
+	}
+	
+	public static String getDate() {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date today = new Date();
+		return dateFormat.format(today).toString();
 	}
 }

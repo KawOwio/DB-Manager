@@ -4,11 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import org.apache.poi.ss.formula.FormulaType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,29 +27,24 @@ public class excelToJavaImport {
 		
 		String excelFilePath = openFile(frame);
 		excelToJava(excelFilePath);
-		
 	}
 		
-	public static List<Object> excelToJava(String excelFilePath) throws IOException {
+	public static LinkedHashMap<String, Object> excelToJava(String excelFilePath) throws IOException {
 		FileInputStream inputStream = new FileInputStream(excelFilePath);
 	    Workbook workbook = new XSSFWorkbook(inputStream);
-	    List<Object> sheets = new ArrayList <>();
+	   
+	    LinkedHashMap<String, Object> sheets = new LinkedHashMap<String, Object>();
+	  
 	    
 	    for (int j = 0; j < workbook.getNumberOfSheets(); j++) {
 	    	Sheet sheet = workbook.getSheetAt(j);
 	        List<ArrayList<Object>> excelData  = new ArrayList <>();
-	        sheets.add(new ArrayList<Object>());
+	        
 	        for(Row row :sheet) {
 	        	excelData.add(new ArrayList<Object>());  
-	        	
 	            for(Cell cell: row){ 
-	            	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
+	           // excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), "s");
 	                switch (cell.getCellType()) {
-	                	case BLANK:
-	                		System.out.print("Adding BLANK"  + "[" + cell.getRowIndex()    
-                        		+ "]" + cell.getColumnIndex() + "]");//for testing
-                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
-                        break;
 	                	case STRING: 
 	                		excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getRichStringCellValue().getString());
 	                		System.out.print("Adding string" + cell.getRichStringCellValue().getString() + "[" + cell.getRowIndex() 
@@ -60,10 +55,16 @@ public class excelToJavaImport {
 	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), (Date)cell.getDateCellValue());
 	                        	System.out.print("Adding date" + cell.getDateCellValue() + "[" + cell.getRowIndex() 
 	 	                        		+ "]" + cell.getColumnIndex() + "]");      //for testing
-	                        } else {
+	                        }
+	                        else if (cell.getNumericCellValue() % 1 == 0) {
+	                        	System.out.print("Adding numeric" + cell.getNumericCellValue() + "[" + cell.getRowIndex() 
+                        		+ "]" + cell.getColumnIndex() + "]");      //for testing
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), (int)cell.getNumericCellValue());
+	                        }
+	                        else {
 	                        	System.out.print("Adding numeric" + cell.getNumericCellValue() + "[" + cell.getRowIndex() 
 		                        		+ "]" + cell.getColumnIndex() + "]");      //for testing
-	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), (int)cell.getNumericCellValue());
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getNumericCellValue());
 	                        }
 	                        break;
 	                        case BOOLEAN: 
@@ -75,25 +76,23 @@ public class excelToJavaImport {
 	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getCellFormula());
 	                        	System.out.print("Adding formula" +  cell.getCellFormula() + "[" + cell.getRowIndex() 
 	                        		+ "]" + cell.getColumnIndex() + "]");           //for testing
-	                        break; 
+	                        break;  
 	                        default: 
 	                        	System.out.print("Adding empty"  + "[" + cell.getRowIndex() 
 	                        		+ "]" + cell.getColumnIndex() + "]");             //for testing
 	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
 	                        break;
 	                    }
-	            
 	                    System.out.println();            //for testing
 	            }
 	        }
+	        	System.out.println("VALUE: " + excelData.get(1).get(0).getClass());      //for testing
 	            System.out.println("ARRAYS: " + excelData);      //for testing
-	            System.out.println("Izmers " + excelData.size());     //for testing
-	            sheets.add(excelData);  
+	            System.out.println("Izmers " + excelData.get(1).size());     //for testing
+	            sheets.put(sheet.getSheetName(), excelData);  
 	            }
 	            workbook.close();
 	            System.out.println(sheets);  //for testing
-	            System.out.println(sheets.get(0)); //for testing
-	            System.out.println((sheets.get(2)));  // for testing
 				return sheets;
 }
 	  
