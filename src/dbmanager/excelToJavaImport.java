@@ -3,9 +3,12 @@ package dbmanager;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+
+import org.apache.poi.ss.formula.FormulaType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,11 +30,11 @@ public class excelToJavaImport {
 		
 	}
 		
-	public static List<ArrayList<Object>> excelToJava(String excelFilePath) throws IOException {
+	public static List<Object> excelToJava(String excelFilePath) throws IOException {
 		FileInputStream inputStream = new FileInputStream(excelFilePath);
-		
 	    Workbook workbook = new XSSFWorkbook(inputStream);
-	    List<ArrayList<Object>> sheets = new ArrayList <>();
+	    List<Object> sheets = new ArrayList <>();
+	    
 	    for (int j = 0; j < workbook.getNumberOfSheets(); j++) {
 	    	Sheet sheet = workbook.getSheetAt(j);
 	        List<ArrayList<Object>> excelData  = new ArrayList <>();
@@ -54,22 +57,22 @@ public class excelToJavaImport {
 	                     break;
 	                     case NUMERIC: 
 	                        if (DateUtil.isCellDateFormatted(cell)) {
-	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getDateCellValue() + "");
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), (Date)cell.getDateCellValue());
 	                        	System.out.print("Adding date" + cell.getDateCellValue() + "[" + cell.getRowIndex() 
 	 	                        		+ "]" + cell.getColumnIndex() + "]");      //for testing
 	                        } else {
 	                        	System.out.print("Adding numeric" + cell.getNumericCellValue() + "[" + cell.getRowIndex() 
 		                        		+ "]" + cell.getColumnIndex() + "]");      //for testing
-	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getNumericCellValue() + "");
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), (int)cell.getNumericCellValue());
 	                        }
 	                        break;
 	                        case BOOLEAN: 
-	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getBooleanCellValue() + "");
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), (boolean)cell.getBooleanCellValue());
 	                        	System.out.print("Adding boolean" +  cell.getBooleanCellValue() + "[" + cell.getRowIndex() 
 	                        			+ "]" + cell.getColumnIndex() + "]");        //for testing
 	                        break;
-	                        case FORMULA: 
-	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getCellFormula() + "");
+	                        case FORMULA:
+	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getCellFormula());
 	                        	System.out.print("Adding formula" +  cell.getCellFormula() + "[" + cell.getRowIndex() 
 	                        		+ "]" + cell.getColumnIndex() + "]");           //for testing
 	                        break; 
@@ -79,12 +82,13 @@ public class excelToJavaImport {
 	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
 	                        break;
 	                    }
+	            
 	                    System.out.println();            //for testing
 	            }
-	            }
-	            System.out.println(excelData);      //for testing
-	            System.out.println(excelData.size());     //for testing
-	            sheets.get(j).add(excelData);  
+	        }
+	            System.out.println("ARRAYS: " + excelData);      //for testing
+	            System.out.println("Izmers " + excelData.size());     //for testing
+	            sheets.add(excelData);  
 	            }
 	            workbook.close();
 	            System.out.println(sheets);  //for testing
