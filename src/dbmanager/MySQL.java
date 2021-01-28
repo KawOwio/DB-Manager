@@ -8,16 +8,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
 
 public class MySQL {
 	protected Connection conn;
 	private ArrayList<String> columnTypes;
 	private ArrayList<String> columnNames;
-	String username; // dynamically provided by user
-	String password; // dynamically provided by user
+	/*
+	* ASK USER TO PROVIDE ALL THE INFO!
+	*/
+	String username = "dbm"; // dynamically provided by user
+	String password = "dbmapp"; // dynamically provided by user
 	String databaseName = "dbmanager"; // dynamically provided by user
 	String tableName;
 	
@@ -25,12 +25,6 @@ public class MySQL {
 		
 		// Scanner sc = new Scanner(System.in);
 		try {
-			/*
-			 * ASK USER TO PROVIDE ALL THE INFO!
-			 */
-			username = "dbm"; // dynamically provided by user
-			password = "dbmapp"; // dynamically provided by user
-
 			conn = DriverManager.getConnection(
 					"jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", username,
 					password);
@@ -58,7 +52,6 @@ public class MySQL {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	public ArrayList<String> getColumnTypes() {
@@ -72,7 +65,7 @@ public class MySQL {
 
 	public ArrayList<String> getValues(String columnName){
 		ArrayList<String> rtnList = new ArrayList<>();
-		String sql = "SELECT " + columnName + " FROM dbmanager.Info"; 
+		String sql = "SELECT `" + columnName + "` FROM dbmanager.Info"; 
 		//System.out.println(sql);
 		PreparedStatement preparedStatement;
 		try {
@@ -108,12 +101,6 @@ public class MySQL {
 		}
 		return rtnList;
 	}
-	
-	public void exportFromExceltoMySQL() {
-		excelToJavaImport a = new excelToJavaImport();
-		
-	}
-	
 	
 	public static void main(String[] args) {
 		MySQL t = new MySQL();
