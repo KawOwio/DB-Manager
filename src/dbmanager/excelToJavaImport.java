@@ -4,11 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.TreeMap;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
@@ -46,13 +43,8 @@ public class excelToJavaImport {
 	        for(Row row :sheet) {
 	        	excelData.add(new ArrayList<Object>());  
 	            for(Cell cell: row){ 
-	            	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex());
+	           // excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), "s");
 	                switch (cell.getCellType()) {
-	                	case BLANK:
-	                		System.out.print("Adding BLANK"  + "[" + cell.getRowIndex()    
-                        		+ "]" + cell.getColumnIndex() + "]");//for testing
-                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
-                        break;
 	                	case STRING: 
 	                		excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getRichStringCellValue().getString());
 	                		System.out.print("Adding string" + cell.getRichStringCellValue().getString() + "[" + cell.getRowIndex() 
@@ -84,20 +76,19 @@ public class excelToJavaImport {
 	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getCellFormula());
 	                        	System.out.print("Adding formula" +  cell.getCellFormula() + "[" + cell.getRowIndex() 
 	                        		+ "]" + cell.getColumnIndex() + "]");           //for testing
-	                        break; 
+	                        break;  
 	                        default: 
 	                        	System.out.print("Adding empty"  + "[" + cell.getRowIndex() 
 	                        		+ "]" + cell.getColumnIndex() + "]");             //for testing
 	                        	excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), " ");
 	                        break;
 	                    }
-	            
 	                    System.out.println();            //for testing
 	            }
 	        }
 	        	System.out.println("VALUE: " + excelData.get(1).get(0).getClass());      //for testing
 	            System.out.println("ARRAYS: " + excelData);      //for testing
-	            System.out.println("Izmers " + excelData.size());     //for testing
+	            System.out.println("Izmers " + excelData.get(1).size());     //for testing
 	            sheets.put(sheet.getSheetName(), excelData);  
 	            }
 	            workbook.close();
