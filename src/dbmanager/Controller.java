@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Controller {
 	
@@ -100,6 +101,7 @@ public class Controller {
     	iddbm.setVisible(false);
     	FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
+        chooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xlsx"));
         chooser.showOpenDialog(iddbm.getScene().getWindow());
     }
 
@@ -111,6 +113,10 @@ public class Controller {
     	idexcel.setVisible(false);
     	idmysql.setVisible(false);
     	iddbm.setVisible(false);
+    	FileChooser chooser = new FileChooser();
+        chooser.setTitle("Open File");
+        chooser.getExtensionFilters().add(new ExtensionFilter("Open Document Spreadsheet", "*.ods"));
+        chooser.showOpenDialog(iddbm.getScene().getWindow());
     }
     
     @FXML
