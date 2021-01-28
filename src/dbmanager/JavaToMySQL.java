@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -93,15 +94,15 @@ public class JavaToMySQL {
 		frame.setVisible(true);
 
 		String excelFilePath = excelToJavaImport.openFile(frame);
-		//Map<Integer, List<String>> mapWithData = excelToJavaImport.excelToJava(excelFilePath);
-		//JavaToMySQL test = new JavaToMySQL();
-		List<Object> wholeDatabase = excelToJavaImport.excelToJava(excelFilePath);
-		List<Object> sheet = (List<Object>) wholeDatabase.get(0);
+
+		List<ArrayList<Object>> wholeDatabase = excelToJavaImport.excelToJava(excelFilePath);
+		List<Object> sheet = (List<Object>) wholeDatabase.get(2).get(0);
 		List<Object> row = (List<Object>) sheet.get(2);
-		Object value = row.get(1);
+		Object value = row.get(0);
 		System.out.println(value);
 		System.out.println(value.getClass());
 		//test.fillTheDatabase(mapWithData);
+
 	}
 
 }
