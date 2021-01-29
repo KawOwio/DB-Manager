@@ -257,7 +257,7 @@
             <AnchorPane layoutY="99.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #92bbba;" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="idmysqlwindow" layoutX="300.0" layoutY="65.0" prefHeight="735.0" prefWidth="900.0" style="-fx-background-color: #ececec; visibility: false;">
+      <AnchorPane fx:id="idmysqlwindow" layoutX="300.0" layoutY="65.0" prefHeight="735.0" prefWidth="900.0" style="-fx-background-color: #ececec; visibility: true;">
          <children>
             <AnchorPane fx:id="idlogin" layoutX="309.0" layoutY="14.0" prefHeight="38.0" prefWidth="270.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                <children>
@@ -313,7 +313,7 @@
                <content>
                   <AnchorPane fx:id="idfillwindowmysql" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="898.0">
                      <children>
-                        <JFXButton fx:id="idcolvaluesmysql" layoutX="316.0" layoutY="16.0" prefHeight="32.0" prefWidth="267.0" style="visibility: true; -fx-background-radius: 5em; -fx-border-radius: 5em; visibility: false;" text="FillMe" textFill="#545454">
+                        <JFXButton fx:id="idcolvaluesmysql" layoutX="316.0" layoutY="16.0" prefHeight="32.0" prefWidth="267.0" style="visibility: true; -fx-background-radius: 5em; -fx-border-radius: 5em;" text="FillMe" textFill="#545454">
                            <font>
                               <Font size="16.0" />
                            </font>
