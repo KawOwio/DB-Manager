@@ -24,8 +24,7 @@ public class JavaToMySQL {
 	 */
 	String username = "dbm"; // dynamically provided by user
 	String password = "dbmapp"; // dynamically provided by user
-	String databaseName = "fromExcel";
-	String tableName;
+	String databaseName = "fromExcel"; // dynamically provided by user
 
 	public JavaToMySQL() { // creating new database
 		try {
@@ -70,7 +69,7 @@ public class JavaToMySQL {
 				// getting data type from the data in second row (first row of actual data) -
 				// TRICKY!!!
 				if (((ArrayList<Object>) sheet.get(1)).get(i) instanceof Double) {
-					type = " decimal(255), ";
+					type = " decimal(65,2), ";
 				} else if (((ArrayList<Object>) sheet.get(1)).get(i) instanceof Integer) {
 					type = " int(255), ";
 				} else {
