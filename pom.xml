@@ -6,7 +6,6 @@
 	<artifactId>dbmanager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
-
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi/5.0.0 -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -41,12 +40,26 @@
 			<artifactId>jfoenix</artifactId>
 			<version>9.0.10</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.odftoolkit/simple-odf -->
+		<!-- https://mvnrepository.com/artifact/org.odftoolkit/odfdom-java -->
 		<dependency>
-			<groupId>org.apache.odftoolkit</groupId>
-			<artifactId>simple-odf</artifactId>
-			<version>0.8.2-incubating</version>
+			<groupId>org.odftoolkit</groupId>
+			<artifactId>odfdom-java</artifactId>
+			<version>0.8.7</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.odftoolkit/simple-odf -->
+		<dependency>
+			<groupId>org.odftoolkit</groupId>
+			<artifactId>simple-odf</artifactId>
+			<version>0.9.0-RC1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/xerces/xercesImpl -->
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-parsers -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<version>1.25</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
