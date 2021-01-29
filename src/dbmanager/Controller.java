@@ -49,8 +49,8 @@ public class Controller {
 	@FXML
 	private Button import_myfiles_button;
 	
-	@FXML
-	private Button word_button;
+//	@FXML
+//	private Button word_button;
 	
 //	DB Manager windows buttons
 	
@@ -86,8 +86,8 @@ public class Controller {
 	@FXML
 	private AnchorPane iddbm;
 	
-	@FXML
-	private AnchorPane idwordfilled;
+//	@FXML
+//	private AnchorPane idwordfilled;
 	
 //	Button id
 	
@@ -148,7 +148,7 @@ public class Controller {
 	
 	File myExcelFile;
 	File myWordFile;
-	
+
 	@FXML
 	void clickword(ActionEvent event) {
 		FileChooser chooser = new FileChooser();
@@ -240,7 +240,7 @@ public class Controller {
     	iddbm.setVisible(true);
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(true);
-    	idwordfilled.setVisible(false);
+//    	idwordfilled.setVisible(false);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
     }
@@ -255,7 +255,7 @@ public class Controller {
     	iddbm.setVisible(false);
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(false);
-    	idwordfilled.setVisible(true);
+//    	idwordfilled.setVisible(true);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(true);
     }
@@ -270,7 +270,7 @@ public class Controller {
     	iddbm.setVisible(false);
         idexcelwindow.setVisible(true);
         iddbmwindow.setVisible(false);
-        idwordfilled.setVisible(true);
+//        idwordfilled.setVisible(true);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
     	
@@ -294,7 +294,7 @@ public class Controller {
         File myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
         idexcelwindow.setVisible(false);
         iddbmwindow.setVisible(false);
-        idwordfilled.setVisible(false);
+//        idwordfilled.setVisible(false);
     	idcalcwindow.setVisible(true);
     	idmysqlwindow.setVisible(false);
     }
@@ -309,7 +309,7 @@ public class Controller {
     	iddbm.setVisible(false);
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(false);
-    	idwordfilled.setVisible(false);
+//    	idwordfilled.setVisible(false);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
     }
