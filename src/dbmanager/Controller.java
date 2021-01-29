@@ -5,6 +5,7 @@ import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
@@ -16,7 +17,20 @@ public class Controller {
 	
 //	Images
 	
-	
+	@FXML
+    private ImageView idimgmysql;
+
+    @FXML
+    private ImageView idimgword;
+
+    @FXML
+    private ImageView idimgexcel;
+
+    @FXML
+    private ImageView idimgcalc;
+
+    @FXML
+    private ImageView idimgwriter;
 	
 //	Side bars buttons
 	
@@ -99,6 +113,12 @@ public class Controller {
 	
 	@FXML
 	private AnchorPane idexcelwindow;
+	
+	@FXML
+	private AnchorPane idcalcwindow;
+	
+	@FXML
+	private AnchorPane idmysqlwindow;
 	
 	@FXML
 	private AnchorPane iddbmwindow;
@@ -222,6 +242,8 @@ public class Controller {
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(true);
     	idwordfilled.setVisible(false);
+    	idcalcwindow.setVisible(false);
+    	idmysqlwindow.setVisible(false);
     }
 	
     @FXML
@@ -235,6 +257,8 @@ public class Controller {
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(false);
     	idwordfilled.setVisible(true);
+    	idcalcwindow.setVisible(false);
+    	idmysqlwindow.setVisible(true);
     }
     
     @FXML
@@ -252,6 +276,8 @@ public class Controller {
         idexcelwindow.setVisible(true);
         iddbmwindow.setVisible(false);
         idwordfilled.setVisible(true);
+    	idcalcwindow.setVisible(false);
+    	idmysqlwindow.setVisible(false);
     }
 
     @FXML
@@ -269,6 +295,8 @@ public class Controller {
         idexcelwindow.setVisible(false);
         iddbmwindow.setVisible(false);
         idwordfilled.setVisible(false);
+    	idcalcwindow.setVisible(true);
+    	idmysqlwindow.setVisible(false);
     }
     
     @FXML
@@ -282,6 +310,8 @@ public class Controller {
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(false);
     	idwordfilled.setVisible(false);
+    	idcalcwindow.setVisible(false);
+    	idmysqlwindow.setVisible(false);
     }
     
 //    @Override
