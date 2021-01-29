@@ -32,14 +32,20 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
 		<dependency>
-		    <groupId>org.openjfx</groupId>
-		    <artifactId>javafx-fxml</artifactId>
-		    <version>15.0.1</version>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>15.0.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.jfoenix</groupId>
-		    <artifactId>jfoenix</artifactId>
-		    <version>9.0.10</version>
+			<groupId>com.jfoenix</groupId>
+			<artifactId>jfoenix</artifactId>
+			<version>9.0.10</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.odftoolkit/simple-odf -->
+		<dependency>
+			<groupId>org.apache.odftoolkit</groupId>
+			<artifactId>simple-odf</artifactId>
+			<version>0.8.2-incubating</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,44 +35,8 @@ import java.awt.BorderLayout;
 
 public class WriteToWord {
 
-	private static String fileName;
-	private static String filePath;
-
-	public static void main(String[] args) throws InvalidFormatException, IOException {
-
-		final JFrame frame = new JFrame("Document Reader");
-		frame.setSize(400, 400);
-		frame.setLocation(750, 350);
-		frame.setVisible(true);
-
-		openWordFile(frame);
-		replaceValuesFromExcel();
-		// replaceValuesFromMySQL();
-	}
-
-	public static void openWordFile(JFrame frame) {
-		JFileChooser fileChooser = new JFileChooser();
-		int selected = fileChooser.showOpenDialog(frame);
-
-		if (selected == JFileChooser.APPROVE_OPTION) {
-			String path = fileChooser.getSelectedFile().getAbsolutePath();
-			String[] splittedData = path.split("\\.");
-
-			if (splittedData.length > 0) {
-				if (splittedData[1].equalsIgnoreCase("docx")) {
-					// replaceValue(path);
-					filePath = path;
-					fileName = fileChooser.getSelectedFile().getName();
-				}
-			}
-		}
-	}
-
-	public static void replaceValuesFromMySQL() {
-		System.out.println(filePath);
+	public static void replaceValuesFromMySQL(MySQL db, File doc) {
 		// Get data from MySQL
-		MySQL db = new MySQL();
-		ArrayList<String> columnTypes = db.getColumnTypes();
 		ArrayList<String> columnNames = db.getColumnNames();
 
 		// Set data to 2D ArrayList of Strings
@@ -83,23 +48,22 @@ public class WriteToWord {
 		int columns = values.size();
 		int rows = values.get(0).size();
 
-		replaceValues(rows, columns, columnNames, values);
+		replaceValues(doc, rows, columns, columnNames, values);
 	}
 
-	public static void replaceValuesFromExcel() {
-		// TODO: change to user input path and name
-		String tmpPath = "/home/student/Excel-1.xlsx";
+	public static void replaceValuesFromExcel(File excel, File doc) {
 
 		// Getting all sheets from Excel
-		List<Object> sheets = new ArrayList<Object>();
+		LinkedHashMap<String, Object> sheets = new LinkedHashMap<>();
 		try {
-			sheets = (List<Object>) excelToJavaImport.excelToJava(tmpPath);
+			sheets = excelToJavaImport.excelToJava(excel.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		// Getting data out of sheets
-		ArrayList<ArrayList<Object>> excelData = (ArrayList<ArrayList<Object>>) sheets.get(0);
+		ArrayList<ArrayList<Object>> excelData = (ArrayList<ArrayList<Object>>) sheets.values().toArray()[0];
+		System.out.println(excelData);
 
 		// Get rows and columns
 		int rows = excelData.size();
@@ -137,18 +101,31 @@ public class WriteToWord {
 			rotatedValues.add(rotate);
 		}
 
-		replaceValues(rows, columns, columnNames, rotatedValues);
+		replaceValues(doc, rows, columns, columnNames, rotatedValues);
 	}
 
-	public static void replaceValues(int rows, int columns, ArrayList<String> columnNames,
+	public static void replaceValues(File doc, int rows, int columns, ArrayList<String> columnNames,
 			ArrayList<ArrayList<String>> values) {
 		// Go through every entry in the database
 		for (int i = 0; i < rows; i++) {
 			try {
-				System.out.println("in");
+				String filePath = doc.getAbsolutePath();
+				String fileName = doc.getName();
+				String copyPath;
+
+				System.out.println(fileName);
+
 				// Make path for copied files in a separate folder
-				String copyPath = filePath.replace(fileName,
-						fileName.replace(".docx", "-copies/" + fileName.replace(".docx", "-" + (i + 1) + ".docx")));
+				if (fileName.contains(".docx")) {
+					copyPath = filePath.replace(fileName,
+							fileName.replace(".docx", "-copies/" + fileName.replace(".docx", "-" + (i + 1) + ".docx")));
+				} else if (fileName.contains(".odt")) {
+					copyPath = filePath.replace(fileName,
+							fileName.replace(".odt", "-copies/" + fileName.replace(".odt", "-" + (i + 1) + ".odt")));
+				} else {
+					System.out.println("wrong file format");
+					return;
+				}
 
 				// Copy template file
 				File source = new File(filePath);
