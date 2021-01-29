@@ -146,19 +146,18 @@ public class Controller {
 	@FXML
 	private JFXTextField idsetrow;
 	
-//	@FXML
-//	public void initialize() {
-//		my_files_main_bar.setVisible(false);
-//	}
-	
-//	Action on click
+	File myExcelFile;
+	File myWordFile;
 	
 	@FXML
 	void clickword(ActionEvent event) {
 		FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
-        chooser.getExtensionFilters().add(new ExtensionFilter("Word Files", "*.docx"));
-        File myWordFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+        chooser.getExtensionFilters().addAll(new ExtensionFilter("Word File", "*.docx"), 
+        		new ExtensionFilter("OpenDocument File", "*.odt"));
+        myWordFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+        
+        WriteToWord.replaceValuesFromExcel(myExcelFile, myWordFile);
 	}
 	
 	@FXML
@@ -269,15 +268,16 @@ public class Controller {
     	idexcel.setVisible(true);
     	idmysql.setVisible(false);
     	iddbm.setVisible(false);
-    	FileChooser chooser = new FileChooser();
-        chooser.setTitle("Open File");
-        chooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xlsx"));
-        File myExcelFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
         idexcelwindow.setVisible(true);
         iddbmwindow.setVisible(false);
         idwordfilled.setVisible(true);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
+    	
+    	FileChooser chooser = new FileChooser();
+        chooser.setTitle("Open File");
+        chooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xlsx"));
+        myExcelFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
     }
 
     @FXML
