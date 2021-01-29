@@ -20,7 +20,7 @@ public class HelloFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Hello world Application");
         primaryStage.setWidth(1200);
-        primaryStage.setHeight(800);
+        primaryStage.setHeight(820);
         
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResource("/sample.fxml"));
