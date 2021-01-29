@@ -18,13 +18,13 @@ import javax.swing.JFrame;
 
 public class JavaToMySQL {
 
-	protected Connection conn;
+	public Connection conn;
 	/*
 	 * ASK USER TO PROVIDE ALL THE INFO!
 	 */
-	String username = "dbm"; // dynamically provided by user
-	String password = "dbmapp"; // dynamically provided by user
-	String databaseName = "fromExcel"; // dynamically provided by user
+	public String username = "dbm"; // dynamically provided by user
+	public String password = "dbmapp"; // dynamically provided by user
+	public String databaseName = "fromExcel"; // dynamically provided by user
 
 	public JavaToMySQL() { // creating new database
 		try {
