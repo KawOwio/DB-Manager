@@ -25,7 +25,7 @@ public class excelToJavaImport {
 		frame.setLocation(750, 350);
 		frame.setVisible(true);
 		
-		String excelFilePath = openFile(frame);
+		String excelFilePath = openFile(frame, "xlsx");
 		excelToJava(excelFilePath);
 	}
 		
@@ -43,7 +43,6 @@ public class excelToJavaImport {
 	        for(Row row :sheet) {
 	        	excelData.add(new ArrayList<Object>());  
 	            for(Cell cell: row){ 
-	           // excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), "s");
 	                switch (cell.getCellType()) {
 	                	case STRING: 
 	                		excelData.get(cell.getRowIndex()).add(cell.getColumnIndex(), cell.getRichStringCellValue().getString());
@@ -96,7 +95,7 @@ public class excelToJavaImport {
 				return sheets;
 }
 	  
-    public static String openFile(JFrame frame) {
+    public static String openFile(JFrame frame, String fileFormat) {
 		JFileChooser fileChooser = new JFileChooser();
 		int selected = fileChooser.showOpenDialog(frame);
 
@@ -105,7 +104,7 @@ public class excelToJavaImport {
 			String[] splittedData = path.split("\\.");
 
 			if (splittedData.length > 0) {
-				if (splittedData[1].equalsIgnoreCase("xlsx")) {
+				if (splittedData[1].equalsIgnoreCase(fileFormat)) {
 					frame.dispose(); // close window
 					frame.setVisible(false); // hide window
 					// replaceValue(path);
