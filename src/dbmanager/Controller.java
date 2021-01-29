@@ -4,6 +4,8 @@ import java.io.File;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -49,9 +51,6 @@ public class Controller {
 	@FXML
 	private Button import_myfiles_button;
 	
-//	@FXML
-//	private Button word_button;
-	
 //	DB Manager windows buttons
 	
 	@FXML
@@ -86,9 +85,6 @@ public class Controller {
 	@FXML
 	private AnchorPane iddbm;
 	
-//	@FXML
-//	private AnchorPane idwordfilled;
-	
 //	Button id
 	
 	@FXML
@@ -108,6 +104,12 @@ public class Controller {
 	
 	@FXML
 	private Button idwriterimgbutton;
+	
+	@FXML
+	private Button idapplymysql;
+	
+	@FXML
+	private Button idcancelmysql;
 	
 //	Main windows
 	
@@ -146,8 +148,57 @@ public class Controller {
 	@FXML
 	private JFXTextField idsetrow;
 	
+	@FXML
+	private JFXTextField idsetcolmysql;
+	
+	@FXML
+	private JFXTextField idsetrowmysql;
+	
+	@FXML
+	private JFXTextField iddatabasenameinput;
+	
+	@FXML
+	private JFXTextField idlogininput;
+	
+	@FXML
+	private JFXTextField idpasswordinput;
+	
+//	Files
+	
 	File myExcelFile;
 	File myWordFile;
+	
+//	Functions
+	
+	@FXML
+	void applymysql(ActionEvent event) {
+		if ((idsetcolmysql.getText() != null && !idsetcolmysql.getAccessibleText().isEmpty()) ||
+			(idsetrowmysql.getText() != null && !idsetrowmysql.getAccessibleText().isEmpty()) ||
+			(iddatabasenameinput.getText() != null && !iddatabasenameinput.getAccessibleText().isEmpty()) ||
+			(idlogininput.getText() != null && !idlogininput.getAccessibleText().isEmpty()) ||
+			(idpasswordinput.getText() != null && !idpasswordinput.getAccessibleText().isEmpty())) {
+			
+			
+			
+		} else {
+			// should add error message
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("ERROR");
+			alert.setContentText("Invalid iinput!");
+
+			alert.showAndWait();
+		}
+	}
+	
+	@FXML
+	void cancelmysql(ActionEvent event) {
+		idsetcolmysql.clear();
+		idsetrowmysql.clear();
+		iddatabasenameinput.clear();
+		idlogininput.clear();
+		idpasswordinput.clear();
+	}
 
 	@FXML
 	void clickword(ActionEvent event) {
@@ -240,7 +291,6 @@ public class Controller {
     	iddbm.setVisible(true);
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(true);
-//    	idwordfilled.setVisible(false);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
     }
@@ -255,7 +305,6 @@ public class Controller {
     	iddbm.setVisible(false);
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(false);
-//    	idwordfilled.setVisible(true);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(true);
     }
@@ -270,7 +319,6 @@ public class Controller {
     	iddbm.setVisible(false);
         idexcelwindow.setVisible(true);
         iddbmwindow.setVisible(false);
-//        idwordfilled.setVisible(true);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
     	
@@ -294,7 +342,6 @@ public class Controller {
         File myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
         idexcelwindow.setVisible(false);
         iddbmwindow.setVisible(false);
-//        idwordfilled.setVisible(false);
     	idcalcwindow.setVisible(true);
     	idmysqlwindow.setVisible(false);
     }
@@ -309,13 +356,8 @@ public class Controller {
     	iddbm.setVisible(false);
     	idexcelwindow.setVisible(false);
     	iddbmwindow.setVisible(false);
-//    	idwordfilled.setVisible(false);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
     }
     
-//    @Override
-//    public void initialize(URL url, ResourceBundle rb) {
-//    	
-//    }
 }
