@@ -9,31 +9,42 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-
-import javax.swing.JButton;
-import java.awt.BorderLayout;
+import org.apache.tika.parser.opendocument.OpenOfficeParser;
+import org.odftoolkit.odfdom.doc.OdfTextDocument;
+import org.odftoolkit.odfdom.dom.attribute.text.TextDontBalanceTextColumnsAttribute;
+import org.odftoolkit.odfdom.incubator.search.TextNavigation;
+import org.odftoolkit.odfdom.incubator.search.TextSelection;
+import org.odftoolkit.odfdom.pkg.OdfFileDom;
+import org.odftoolkit.simple.TextDocument;
+import org.odftoolkit.simple.draw.Textbox;
+import org.odftoolkit.simple.text.Paragraph;
 
 public class WriteToWord {
+
+	public static void main(String[] args) {
+		File excel = new File("/home/student/Excel-1.xlsx");
+		File doc = new File("/home/student/ODF-1.odt");
+		try {
+			replaceValuesFromExcel(excel, doc);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void replaceValuesFromMySQL(MySQL db, File doc) {
 		// Get data from MySQL
@@ -63,7 +74,6 @@ public class WriteToWord {
 
 		// Getting data out of sheets
 		ArrayList<ArrayList<Object>> excelData = (ArrayList<ArrayList<Object>>) sheets.values().toArray()[0];
-		System.out.println(excelData);
 
 		// Get rows and columns
 		int rows = excelData.size();
@@ -104,7 +114,7 @@ public class WriteToWord {
 		replaceValues(doc, rows, columns, columnNames, rotatedValues);
 	}
 
-	public static void replaceValues(File doc, int rows, int columns, ArrayList<String> columnNames,
+	private static void replaceValues(File doc, int rows, int columns, ArrayList<String> columnNames,
 			ArrayList<ArrayList<String>> values) {
 		// Go through every entry in the database
 		for (int i = 0; i < rows; i++) {
@@ -113,15 +123,18 @@ public class WriteToWord {
 				String fileName = doc.getName();
 				String copyPath;
 
-				System.out.println(fileName);
+				String extension = "";
 
 				// Make path for copied files in a separate folder
+				// Check what file extension it is 
 				if (fileName.contains(".docx")) {
 					copyPath = filePath.replace(fileName,
 							fileName.replace(".docx", "-copies/" + fileName.replace(".docx", "-" + (i + 1) + ".docx")));
+					extension = "docx";
 				} else if (fileName.contains(".odt")) {
 					copyPath = filePath.replace(fileName,
 							fileName.replace(".odt", "-copies/" + fileName.replace(".odt", "-" + (i + 1) + ".odt")));
+					extension = "odt";
 				} else {
 					System.out.println("wrong file format");
 					return;
@@ -132,62 +145,85 @@ public class WriteToWord {
 				File destination = new File(copyPath);
 				FileUtils.copyFile(source, destination);
 
-				// Make changes in the new file
-				FileInputStream fis = new FileInputStream(copyPath);
-				XWPFDocument output = new XWPFDocument(fis);
+				// If it's OpenOfficeDocument
+				if (extension == "odt") {
+					TextNavigation search;
+					OdfTextDocument document = (OdfTextDocument) OdfTextDocument.loadDocument(doc);
 
-				System.out.println("copied");
-				// Go through every paragraph
-				List<XWPFParagraph> par = output.getParagraphs();
-				for (XWPFParagraph p : par) {
-
-					// Go through every run and replace text
-					List<XWPFRun> runs = p.getRuns();
-					if (runs != null) {
-						for (XWPFRun r : runs) {
-							String text = r.getText(0);
-							System.out.println(text);
-							if (text != null) {
-								for (int x = 0; x < columns; x++) {
-									System.out.println("C: " + columnNames.get(x) + " X: " + values.get(x).get(i));
-									text = text.replace("{" + columnNames.get(x) + "}", values.get(x).get(i));
-								}
-								text = text.replace("{DateToday}", getDate());
-								r.setText(text, 0);
-							}
+					// Go through every column
+					for (int x = 0; x < columns; x++) {
+						search = new TextNavigation("&" + columnNames.get(x) + "&", document);
+						while (search.hasNext()) {
+							TextSelection item = (TextSelection) search.getCurrentItem();
+							item.replaceWith(values.get(x).get(i));
+						}
+						
+						search = new TextNavigation("&DateToday&", document);
+						while (search.hasNext()) {
+							TextSelection item = (TextSelection) search.getCurrentItem();
+							item.replaceWith(getDate());
 						}
 					}
+					
+					document.save(copyPath);
+					
+				} else if (extension == "docx") {
+					// Make changes in the new file
+					FileInputStream fis = new FileInputStream(copyPath);
+					XWPFDocument output = new XWPFDocument(fis);
 
-					// Go through tables (if any) and replace text in them
-					for (XWPFTable tbl : output.getTables()) {
-						for (XWPFTableRow row : tbl.getRows()) {
-							for (XWPFTableCell cell : row.getTableCells()) {
-								for (XWPFParagraph tblPar : cell.getParagraphs()) {
-									for (XWPFRun r : tblPar.getRuns()) {
-										String text = r.getText(0);
-										if (text != null) {
-											for (int x = 0; x < columns; x++) {
-												text = text.replace("{" + columnNames.get(x) + "}",
-														"" + values.get(x).get(i));
+					// Go through every paragraph
+					List<XWPFParagraph> par = output.getParagraphs();
+
+					for (XWPFParagraph p : par) {
+						// Go through every run and replace text
+						List<XWPFRun> runs = p.getRuns();
+						if (runs != null) {
+							for (XWPFRun r : runs) {
+								String text = r.getText(0);
+								if (text != null) {
+									for (int x = 0; x < columns; x++) {
+										text = text.replace("&" + columnNames.get(x) + "&", values.get(x).get(i));
+									}
+									text = text.replace("&DateToday&", getDate());
+									r.setText(text, 0);
+								}
+							}
+						}
+
+						// Go through tables (if any) and replace text in them
+						for (XWPFTable tbl : output.getTables()) {
+							for (XWPFTableRow row : tbl.getRows()) {
+								for (XWPFTableCell cell : row.getTableCells()) {
+									for (XWPFParagraph tblPar : cell.getParagraphs()) {
+										for (XWPFRun r : tblPar.getRuns()) {
+											String text = r.getText(0);
+											if (text != null) {
+												for (int x = 0; x < columns; x++) {
+													text = text.replace("&" + columnNames.get(x) + "&",
+															"" + values.get(x).get(i));
+												}
+												text = text.replace("&DateToday&", getDate());
+												r.setText(text, 0);
 											}
-											text = text.replace("{DateToday}", getDate());
-											r.setText(text, 0);
 										}
 									}
 								}
 							}
 						}
 					}
-				}
 
-				output.write(new FileOutputStream(copyPath));
-				output.close();
-				System.out.println("done");
+					output.write(new FileOutputStream(copyPath));
+					output.close();
+					System.out.println("done");
+				}
 
 			} catch (FileNotFoundException ex) {
 				System.out.print(ex.getMessage());
 			} catch (IOException ex1) {
 				System.out.print(ex1.getMessage());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
