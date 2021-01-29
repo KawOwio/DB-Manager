@@ -8,8 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JFrame;
 
@@ -21,8 +24,7 @@ public class JavaToMySQL {
 	 */
 	String username = "dbm"; // dynamically provided by user
 	String password = "dbmapp"; // dynamically provided by user
-	String databaseName = "fromExcel";
-	String tableName = "testTable";
+	String databaseName = "fromExcel"; // dynamically provided by user
 
 	public JavaToMySQL() { // creating new database
 		try {
@@ -39,7 +41,7 @@ public class JavaToMySQL {
 		}
 	}
 
-	public void fillTheDatabase(List<Object> sheet) {
+	public void fillTheDatabase(String tableName, List<Object> sheet) {
 		try {
 			String url = "jdbc:mysql://localhost:3306/" + databaseName + "?useSSL=false";
 			conn = DriverManager.getConnection(url, username, password);
@@ -67,7 +69,7 @@ public class JavaToMySQL {
 				// getting data type from the data in second row (first row of actual data) -
 				// TRICKY!!!
 				if (((ArrayList<Object>) sheet.get(1)).get(i) instanceof Double) {
-					type = " decimal(255), ";
+					type = " decimal(65,2), ";
 				} else if (((ArrayList<Object>) sheet.get(1)).get(i) instanceof Integer) {
 					type = " int(255), ";
 				} else {
@@ -121,13 +123,22 @@ public class JavaToMySQL {
 
 		JavaToMySQL test = new JavaToMySQL();
 		String excelFilePath = excelToJavaImport.openFile(frame);
-		List<Object> wholeDatabase = excelToJavaImport.excelToJava(excelFilePath); // whole Excel file as ArrayList
-		List<Object> sheet = (List<Object>) wholeDatabase.get(0); // whole sheet as ArrayList
-		List<Object> row = (List<Object>) sheet.get(3); // whole row as ArrayList
+		LinkedHashMap<String, Object> database = excelToJavaImport.excelToJava(excelFilePath); // whole Excel file as Map
+		Iterator<Map.Entry<String, Object>> itr = database.entrySet().iterator();
+		while (itr.hasNext()) {
+			Map.Entry<String, Object> pair = itr.next();
+			String key = pair.getKey();
+			List<Object> sheet = (List<Object>) database.get(key);
+			test.fillTheDatabase(key, sheet);
+		}
+		
+		
+		// List<Object> sheet = (List<Object>) wholeDatabase.get(0); // whole sheet as ArrayList
+		//List<Object> row = (List<Object>) sheet.get(3); // whole row as ArrayList
 		// Object value = row.get(15); // exact value from row
 		// System.out.println(value);
 		// System.out.println(value.getClass());
-		test.fillTheDatabase(sheet);
+		
 
 	}
 
