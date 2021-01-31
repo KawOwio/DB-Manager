@@ -15,7 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import com.jfoenix.controls.JFXTextField;
 
-public class Controller {
+public class Controller extends JavaToMySQL {
 	
 //	Images
 	
@@ -33,6 +33,12 @@ public class Controller {
 
     @FXML
     private ImageView idimgwriter;
+    
+    @FXML
+    private ImageView idnoexcel;
+
+    @FXML
+    private ImageView idyesexcel;
 	
 //	Side bars buttons
 	
@@ -111,6 +117,60 @@ public class Controller {
 	@FXML
 	private Button idcancelmysql;
 	
+	@FXML
+	private Button idexcelsearchyes;
+	
+	@FXML
+	private Button idexcelsearchno;
+	
+	@FXML
+	private Button idapplyexcel;
+	
+	@FXML
+	private Button idcancelexcel;
+	
+	@FXML
+	private Button idmysqlsearchyes;
+	
+	@FXML
+	private Button idemysqlsearchno;
+	
+	@FXML
+	private Button idcalcsearchyes;
+	
+	@FXML
+	private Button idcalcsearchno;
+	
+	@FXML
+	private Button idapplycalc;
+	
+	@FXML
+	private Button idcancelcalc;
+	
+	// make f on click
+	@FXML
+	private Button idsavechangesexcel;
+	
+	// make f on click
+	@FXML
+	private Button idexporttodocexcel;
+	
+	// make f on click
+	@FXML
+	private Button idsavechangesmysql;
+	
+	// make f on click
+	@FXML
+	private Button idexporttodocmysql;
+	
+	// make f on click
+	@FXML
+	private Button idsavechangescalc;
+	
+	// make f on click
+	@FXML
+	private Button idexporttodoccalc;
+	
 //	Main windows
 	
 	@FXML
@@ -140,7 +200,16 @@ public class Controller {
 	@FXML
 	private AnchorPane idwritertext;
 	
-//	Setting up Excel field
+	@FXML
+	private AnchorPane idtopexcel;
+	
+	@FXML
+	private AnchorPane idtopmysql;
+	
+	@FXML
+	private AnchorPane idtopcalc;
+	
+//	Setting up fields
 	
 	@FXML
 	private JFXTextField idsetcol;
@@ -155,13 +224,35 @@ public class Controller {
 	private JFXTextField idsetrowmysql;
 	
 	@FXML
-	private JFXTextField iddatabasenameinput;
+	private JFXTextField iddbnameinput;
 	
 	@FXML
 	private JFXTextField idlogininput;
 	
 	@FXML
 	private JFXTextField idpasswordinput;
+	
+	@FXML
+	private JFXTextField idsearchexcel;
+	
+	@FXML
+	private JFXTextField idsetexcelcol;
+	
+	@FXML
+	private JFXTextField idsetexcelrow;
+	
+	@FXML
+	private JFXTextField idsearchmysql;
+	
+	@FXML
+	private JFXTextField idsetcalccol;
+	
+	@FXML
+	private JFXTextField idsetcalcrow;
+	
+	@FXML
+	private JFXTextField idsearchcalc;
+	
 	
 //	Files
 	
@@ -170,15 +261,19 @@ public class Controller {
 	
 //	Functions
 	
+	//	calc
+	
 	@FXML
-	void applymysql(ActionEvent event) {
-//		if ((idsetcolmysql.getText() != null && !idsetcolmysql.getAccessibleText().isEmpty()) ||
-//			(idsetrowmysql.getText() != null && !idsetrowmysql.getAccessibleText().isEmpty()) ||
-//			(iddatabasenameinput.getText() != null && !iddatabasenameinput.getAccessibleText().isEmpty()) ||
-//			(idlogininput.getText() != null && !idlogininput.getAccessibleText().isEmpty()) ||
-//			(idpasswordinput.getText() != null && !idpasswordinput.getAccessibleText().isEmpty())) {
+	void applycalc(ActionEvent event) {
+//		if ((idsavechangescalc.getText() != null && !idsavechangescalc.getAccessibleText().isEmpty()) ||
+//			(idexporttodoccalc.getText() != null && !idexporttodoccalc.getAccessibleText().isEmpty())) {
 //			
-//			
+//			calcMainCol = idsetcalccol.getText();
+//			calcMainRow = idsetcalcrow.getText();
+		
+		idsavechangescalc.setVisible(true);
+		idexporttodoccalc.setVisible(true);
+		
 //			
 //		} else {
 //			// should add error message
@@ -188,26 +283,164 @@ public class Controller {
 //			alert.setContentText("Invalid input!");
 //
 //			alert.showAndWait();
-//		}
-		
-//		databaseName = iddatabasenameinput.getText();
-//		username = idlogininput.getText();
-//		password = idpasswordinput.getText();
 //		
+//			idsavechangescalc.setVisible(false);
+//			idexporttodoccalc.setVisible(false);
+//		
+//		}
+	}
+	
+	@FXML
+	void cancelcalc(ActionEvent event) {
+		idsetcalccol.clear();
+		idsetcalcrow.clear();
+		
+		idsavechangescalc.setVisible(false);
+		idexporttodoccalc.setVisible(false);
+		
+//		colExcel = "";
+//		rowExcel = "";
+	}
+	
+	@FXML
+	void calcsearchyes(ActionEvent event) {
+		//		display calc col with the inserted values in - idsearchcalc
+//		String searchCalc = idsearchcalc.getText();
+		//		find rows where fields match with searchCalc
+	}
+	
+	@FXML
+	void calcsearchno(ActionEvent event) {
+		//		clear - idsearchcalc and display all
+		idsearchcalc.clear();
+		//		display all again
+	}
+	
+	//	excel
+	
+	@FXML
+	void applyexcel(ActionEvent event) {
+//		if ((idsetexcelcol.getText() != null && !idsetexcelcol.getAccessibleText().isEmpty()) ||
+//			(idsetexcelrow.getText() != null && !idsetexcelrow.getAccessibleText().isEmpty())) {
+//			
+//			excelMainCol = idsetexcelcol.getText();
+//			excelMainRow = idsetexcelrow.getText();
+		
+		idsavechangesexcel.setVisible(true);
+		idexporttodocexcel.setVisible(true);
+		
+//			
+//		} else {
+//			// should add error message
+//			Alert alert = new Alert(AlertType.ERROR);
+//			alert.setTitle("Error Dialog");
+//			alert.setHeaderText("ERROR");
+//			alert.setContentText("Invalid input!");
+//
+//			alert.showAndWait();
+//		
+//			idsavechangesexcel.setVisible(false);
+//			idexporttodocexcel.setVisible(false);
+//		
+//		}
+	}
+	
+	@FXML
+	void cancelexcel(ActionEvent event) {
+		idsetexcelcol.clear();
+		idsetexcelrow.clear();
+		
+		idsavechangesexcel.setVisible(false);
+		idexporttodocexcel.setVisible(false);
+		
+//		colExcel = "";
+//		rowExcel = "";
+	}
+	
+	@FXML
+	void excelsearchyes(ActionEvent event) {
+		//		display ecxel col with the inserted values in - idsearchexcel
+//		String searchExcel = idsearchexcel.getText();
+		//		find rows where fields match with searchexcel
+	}
+	
+	@FXML
+	void excelsearchno(ActionEvent event) {
+		//		clear - idsearchexcel and display all
+		idsearchexcel.clear();
+		//		display all again
+	}
+	
+	// mysql
+	
+	@FXML
+	void applymysql(ActionEvent event) {
+//		if ((idsetcolmysql.getText() != null && !idsetcolmysql.getAccessibleText().isEmpty()) ||
+//			(idsetrowmysql.getText() != null && !idsetrowmysql.getAccessibleText().isEmpty()) ||
+//			(iddbnameinput.getText() != null && !iddbnameinput.getAccessibleText().isEmpty()) ||
+//			(idlogininput.getText() != null && !idlogininput.getAccessibleText().isEmpty()) ||
+//			(idpasswordinput.getText() != null && !idpasswordinput.getAccessibleText().isEmpty())) {
+		
+		idexporttodocmysql.setVisible(true);
+		idsavechangesmysql.setVisible(true);
+		
+		databaseName = iddbnameinput.getText();
+		username = idlogininput.getText();
+		password = idpasswordinput.getText();
+		
 //		mysqlMainCol = idsetcolmysql.getText();
 //		mysqlMainRow = idsetrowmysql.getText();
+//			
+//		} else {
+//			// should add error message
+//			Alert alert = new Alert(AlertType.ERROR);
+//			alert.setTitle("Error Dialog");
+//			alert.setHeaderText("ERROR");
+//			alert.setContentText("Invalid input!");
+//
+//			alert.showAndWait();
+//		
+//		idexporttodocmysql.setVisible(false);
+//		idsavechangesmysql.setVisible(false);
+//		
+//		}	
 	}
 	
 	@FXML
 	void cancelmysql(ActionEvent event) {
 		idsetcolmysql.clear();
 		idsetrowmysql.clear();
-		iddatabasenameinput.clear();
+		iddbnameinput.clear();
 		idlogininput.clear();
 		idpasswordinput.clear();
+		
+		databaseName = "";
+		username = "";
+		password = "";
+//		colmysql = "";
+//		rowmysql = "";
+		
+		idexporttodocmysql.setVisible(false);
+		idsavechangesmysql.setVisible(false);
 	}
-
+	
 	@FXML
+	void mysqlsearchyes(ActionEvent event) {
+		//		display MySQL col with the inserted values in - idsearchmysql
+//		String searchMySQL = idsearchmysql.getText();
+		//		find rows where fields match with searchMySQL
+	}
+	
+	@FXML
+	void mysqlsearchno(ActionEvent event) {
+		//		clear - idsearchmysql and display all
+		idsearchmysql.clear();
+		//		display all again
+	}
+	
+	// all
+	
+		@FXML
 	void clickword(ActionEvent event) {
 		FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
@@ -217,7 +450,7 @@ public class Controller {
         
         WriteToWord.replaceValuesFromExcel(myExcelFile, myWordFile);
 	}
-	
+		
 	@FXML
 	void calcimgbuttonchange(ActionEvent event) {
 		idcalcimgbutton.setStyle("-fx-border-color:  #92bbba; -fx-background-radius:  5em; -fx-border-radius:  5em; -fx-border-width:  3px");
@@ -300,6 +533,9 @@ public class Controller {
     	iddbmwindow.setVisible(true);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
+    	idtopexcel.setVisible(false);
+    	idtopmysql.setVisible(false);
+    	idtopcalc.setVisible(false);
     }
 	
     @FXML
@@ -314,6 +550,9 @@ public class Controller {
     	iddbmwindow.setVisible(false);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(true);
+    	idtopexcel.setVisible(false);
+    	idtopmysql.setVisible(true);
+    	idtopcalc.setVisible(false);
     }
     
     @FXML
@@ -328,6 +567,9 @@ public class Controller {
         iddbmwindow.setVisible(false);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
+    	idtopexcel.setVisible(true);
+    	idtopmysql.setVisible(false);
+    	idtopcalc.setVisible(false);
     	
     	FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
@@ -343,14 +585,19 @@ public class Controller {
     	idexcel.setVisible(false);
     	idmysql.setVisible(false);
     	iddbm.setVisible(false);
+    	
     	FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
         chooser.getExtensionFilters().add(new ExtensionFilter("Open Document Spreadsheet", "*.ods"));
         File myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+        
         idexcelwindow.setVisible(false);
         iddbmwindow.setVisible(false);
     	idcalcwindow.setVisible(true);
     	idmysqlwindow.setVisible(false);
+    	idtopexcel.setVisible(false);
+    	idtopmysql.setVisible(false);
+    	idtopcalc.setVisible(true);
     }
     
     @FXML
@@ -365,6 +612,9 @@ public class Controller {
     	iddbmwindow.setVisible(false);
     	idcalcwindow.setVisible(false);
     	idmysqlwindow.setVisible(false);
+    	idtopexcel.setVisible(false);
+    	idtopmysql.setVisible(false);
+    	idtopcalc.setVisible(false);
     }
     
 }
