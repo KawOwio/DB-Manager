@@ -172,23 +172,30 @@ public class Controller {
 	
 	@FXML
 	void applymysql(ActionEvent event) {
-		if ((idsetcolmysql.getText() != null && !idsetcolmysql.getAccessibleText().isEmpty()) ||
-			(idsetrowmysql.getText() != null && !idsetrowmysql.getAccessibleText().isEmpty()) ||
-			(iddatabasenameinput.getText() != null && !iddatabasenameinput.getAccessibleText().isEmpty()) ||
-			(idlogininput.getText() != null && !idlogininput.getAccessibleText().isEmpty()) ||
-			(idpasswordinput.getText() != null && !idpasswordinput.getAccessibleText().isEmpty())) {
-			
-			
-			
-		} else {
-			// should add error message
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("ERROR");
-			alert.setContentText("Invalid iinput!");
-
-			alert.showAndWait();
-		}
+//		if ((idsetcolmysql.getText() != null && !idsetcolmysql.getAccessibleText().isEmpty()) ||
+//			(idsetrowmysql.getText() != null && !idsetrowmysql.getAccessibleText().isEmpty()) ||
+//			(iddatabasenameinput.getText() != null && !iddatabasenameinput.getAccessibleText().isEmpty()) ||
+//			(idlogininput.getText() != null && !idlogininput.getAccessibleText().isEmpty()) ||
+//			(idpasswordinput.getText() != null && !idpasswordinput.getAccessibleText().isEmpty())) {
+//			
+//			
+//			
+//		} else {
+//			// should add error message
+//			Alert alert = new Alert(AlertType.ERROR);
+//			alert.setTitle("Error Dialog");
+//			alert.setHeaderText("ERROR");
+//			alert.setContentText("Invalid input!");
+//
+//			alert.showAndWait();
+//		}
+		
+//		databaseName = iddatabasenameinput.getText();
+//		username = idlogininput.getText();
+//		password = idpasswordinput.getText();
+//		
+//		mysqlMainCol = idsetcolmysql.getText();
+//		mysqlMainRow = idsetrowmysql.getText();
 	}
 	
 	@FXML

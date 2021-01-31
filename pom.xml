@@ -6,8 +6,6 @@
 	<artifactId>dbmanager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
-<<<<<<< HEAD
-
 	<!-- https://mvnrepository.com/artifact/org.apache.odftoolkit/odfdom-java -->
 	<dependency>
     		<groupId>org.apache.odftoolkit</groupId>
@@ -28,10 +26,6 @@
     			<artifactId>odfdom-java</artifactId>
     			<version>0.9.0-RC1</version>
 		</dependency>
-
-
-=======
->>>>>>> a9b2bd92aff6649f4c2bc69b42233b772879cd77
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi/5.0.0 -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -72,6 +66,13 @@
 			<artifactId>odfdom-java</artifactId>
 			<version>0.8.7</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.jfoenix</groupId>
+			<artifactId>jfoenix</artifactId>
+			<version>9.0.10</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.odftoolkit/simple-odf -->
 		<dependency>
 			<groupId>org.odftoolkit</groupId>
