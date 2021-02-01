@@ -26,7 +26,6 @@ public class JavaToMySQL {
 	public String password = ""; // dynamically provided by user
 	public String databaseName = ""; // dynamically provided by user
 
-
 	public JavaToMySQL() { // creating new database
 		if (!"".equals(username)) {
 			try {
@@ -59,7 +58,7 @@ public class JavaToMySQL {
 			}
 			System.out.println(columnNames);
 			for (int i = 0; i < columnNames.size(); i++) {
-				columnNames.set(i, "`" + columnNames.get(i) + "`");
+				columnNames.set(i, "`" + columnNames.get(i).trim() + "`");
 			}
 			String argumentsToCreateColumns = "(";
 			ArrayList<String> dataTypes = new ArrayList<>();
@@ -74,6 +73,8 @@ public class JavaToMySQL {
 				} else if (((ArrayList<Object>) sheet.get(1)).get(i) instanceof Integer) {
 					type = " int(255), ";
 				} else {
+					if (((String) ((ArrayList<Object>) sheet.get(1)).get(i)).isEmpty())
+						((List<Object>) sheet.get(1)).set(i, " ");
 					type = " varchar(255), ";
 				}
 				dataTypes.add(type);
@@ -116,16 +117,26 @@ public class JavaToMySQL {
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		final JFrame frame = new JFrame("Document Reader");
 		frame.setSize(400, 400);
 		frame.setLocation(750, 350);
 		frame.setVisible(true);
 
 		JavaToMySQL test = new JavaToMySQL();
-		String excelFilePath = excelToJavaImport.openFile(frame, "xlsx");
-		LinkedHashMap<String, Object> database = excelToJavaImport.excelToJava(excelFilePath); // whole Excel file as
-																								// Map
+		boolean isItXLSX = false;
+		String excelFilePath;
+		String odfFilePath;
+		LinkedHashMap<String, Object> database;
+
+		if (isItXLSX) {
+			excelFilePath = excelToJavaImport.openFile(frame, "xlsx");
+			database = excelToJavaImport.excelToJava(excelFilePath);
+		} else {
+			odfFilePath = excelToJavaImport.openFile(frame, "ods");
+			database = odfToJava.odfToJavaImport(odfFilePath);
+		}
+
 		Iterator<Map.Entry<String, Object>> itr = database.entrySet().iterator();
 		while (itr.hasNext()) {
 			Map.Entry<String, Object> pair = itr.next();
