@@ -75,7 +75,7 @@ public class odfToJava {
 						else if (cell.getValueType().equals("date")) {
 							
 							tableData.get(row).add(column, cell.getDateValue());
-							System.out.println("Adding Date" + cell.getDateValue().toString() + "[" + row 
+							System.out.println("Adding Date" + cell.getDateValue().getTime() + "[" + row 
                 					+ "]" + column + "]");     //for testing
 						}
 						else if (cell.getValueType().equals("currency")) {
