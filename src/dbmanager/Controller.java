@@ -1,9 +1,13 @@
 package dbmanager;
 
 import java.io.File;
+import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -13,6 +17,8 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
+
 import com.jfoenix.controls.JFXTextField;
 
 public class Controller extends JavaToMySQL {
@@ -254,57 +260,9 @@ public class Controller extends JavaToMySQL {
 	private JFXTextField idsearchcalc;
 	
 //	calculator
-	
+
 	@FXML
-	private AnchorPane idcalculator;
-	
-	@FXML
-	private Button idcalculator1;
-	
-	@FXML
-	private Button idcalculator2;
-	
-	@FXML
-	private Button idcalculator3;
-	
-	@FXML
-	private Button idcalculator4;
-	
-	@FXML
-	private Button idcalculator5;
-	
-	@FXML
-	private Button idcalculator6;
-	
-	@FXML
-	private Button idcalculator7;
-	
-	@FXML
-	private Button idcalculator8;
-	
-	@FXML
-	private Button idcalculator9;
-	
-	@FXML
-	private Button idcalculator0;
-	
-	@FXML
-	private Button idcalculatorplus;
-	
-	@FXML
-	private Button idcalculatorminus;
-	
-	@FXML
-	private Button idcalculatormultiply;
-	
-	@FXML
-	private Button idcalculatorequals;
-	
-	@FXML
-	private Button idcalculatorcl;
-	
-	@FXML
-	private Button idcalculatordivide;
+	private Button iddisplaycalculator;
 	
 //	Files
 	
@@ -671,6 +629,19 @@ public class Controller extends JavaToMySQL {
     
 //    calculator
     
-//    MouseControlUtil.makeDraggable(idcalculator);
+    @FXML
+    void displaycalculator(ActionEvent event) {
+    	Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/calculator.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Calculator");
+            stage.setScene(new Scene(root, 400, 500));
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
 }
