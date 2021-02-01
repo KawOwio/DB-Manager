@@ -9,11 +9,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
@@ -23,25 +20,19 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.apache.tika.parser.opendocument.OpenOfficeParser;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
-import org.odftoolkit.odfdom.dom.attribute.text.TextDontBalanceTextColumnsAttribute;
 import org.odftoolkit.odfdom.incubator.search.TextNavigation;
 import org.odftoolkit.odfdom.incubator.search.TextSelection;
-import org.odftoolkit.odfdom.pkg.OdfFileDom;
-import org.odftoolkit.simple.TextDocument;
-import org.odftoolkit.simple.draw.Textbox;
-import org.odftoolkit.simple.text.Paragraph;
+
 
 public class WriteToWord {
 
 	public static void main(String[] args) {
-		File excel = new File("/home/student/Excel-1.xlsx");
-		File doc = new File("/home/student/ODF-1.odt");
+		File excel = new File("/home/student/ODS-1.ods");
+		File doc = new File("/home/student/Word-1.docx");
 		try {
-			replaceValuesFromExcel(excel, doc);
+			replaceValuesFromSpreadsheet(excel, doc);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -62,18 +53,27 @@ public class WriteToWord {
 		replaceValues(doc, rows, columns, columnNames, values);
 	}
 
-	public static void replaceValuesFromExcel(File excel, File doc) {
+	public static void replaceValuesFromSpreadsheet(File spreadsheet, File doc) {
 
 		// Getting all sheets from Excel
 		LinkedHashMap<String, Object> sheets = new LinkedHashMap<>();
 		try {
-			sheets = excelToJavaImport.excelToJava(excel.getAbsolutePath());
+			if (spreadsheet.getName().contains("xlsx")) {
+				sheets = excelToJavaImport.excelToJava(spreadsheet.getAbsolutePath());
+			} else if (spreadsheet.getName().contains("ods")) {
+				sheets = odfToJava.odfToJavaImport(spreadsheet.getAbsolutePath());
+			} else {
+				System.out.println("WRONG FORMAT");
+			}
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// Getting data out of sheets
 		ArrayList<ArrayList<Object>> excelData = (ArrayList<ArrayList<Object>>) sheets.values().toArray()[0];
+		System.out.print(excelData);
 
 		// Get rows and columns
 		int rows = excelData.size();
@@ -100,7 +100,7 @@ public class WriteToWord {
 			}
 			values.add(strings);
 		}
-
+		
 		// 'Rotate' list for consistent passing
 		ArrayList<ArrayList<String>> rotatedValues = new ArrayList<ArrayList<String>>(values.size());
 		for (int y = 0; y < values.get(0).size(); y++) {
@@ -149,12 +149,15 @@ public class WriteToWord {
 				if (extension == "odt") {
 					TextNavigation search;
 					OdfTextDocument document = (OdfTextDocument) OdfTextDocument.loadDocument(doc);
-
+					
 					// Go through every column
 					for (int x = 0; x < columns; x++) {
-						search = new TextNavigation("&" + columnNames.get(x) + "&", document);
+						String s = "&" + columnNames.get(x) + "&";
+						System.out.println("Search: " + s);
+						search = new TextNavigation(s, document);
 						while (search.hasNext()) {
 							TextSelection item = (TextSelection) search.getCurrentItem();
+							System.out.println("Get: " + values.get(x).get(i));
 							item.replaceWith(values.get(x).get(i));
 						}
 						
