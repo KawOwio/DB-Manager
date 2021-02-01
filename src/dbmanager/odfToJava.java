@@ -1,16 +1,11 @@
 package dbmanager;
 
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
-import org.odftoolkit.simple.table.Column;
-import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
 import javax.swing.JFrame;
