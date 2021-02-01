@@ -253,6 +253,58 @@ public class Controller extends JavaToMySQL {
 	@FXML
 	private JFXTextField idsearchcalc;
 	
+//	calculator
+	
+	@FXML
+	private AnchorPane idcalculator;
+	
+	@FXML
+	private Button idcalculator1;
+	
+	@FXML
+	private Button idcalculator2;
+	
+	@FXML
+	private Button idcalculator3;
+	
+	@FXML
+	private Button idcalculator4;
+	
+	@FXML
+	private Button idcalculator5;
+	
+	@FXML
+	private Button idcalculator6;
+	
+	@FXML
+	private Button idcalculator7;
+	
+	@FXML
+	private Button idcalculator8;
+	
+	@FXML
+	private Button idcalculator9;
+	
+	@FXML
+	private Button idcalculator0;
+	
+	@FXML
+	private Button idcalculatorplus;
+	
+	@FXML
+	private Button idcalculatorminus;
+	
+	@FXML
+	private Button idcalculatormultiply;
+	
+	@FXML
+	private Button idcalculatorequals;
+	
+	@FXML
+	private Button idcalculatorcl;
+	
+	@FXML
+	private Button idcalculatordivide;
 	
 //	Files
 	
@@ -616,5 +668,9 @@ public class Controller extends JavaToMySQL {
     	idtopmysql.setVisible(false);
     	idtopcalc.setVisible(false);
     }
+    
+//    calculator
+    
+//    MouseControlUtil.makeDraggable(idcalculator);
     
 }

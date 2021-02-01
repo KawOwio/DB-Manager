@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
+import org.odftoolkit.simple.table.Column;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 
@@ -29,18 +30,21 @@ public class odfToJava {
 	}
 	public static LinkedHashMap<String, Object> odfToJavaImport(String odfFilePath) throws Exception {
 		SpreadsheetDocument tableDoc  = SpreadsheetDocument.loadDocument(odfFilePath);
-		
+	
 		 LinkedHashMap<String, Object> sheets = new LinkedHashMap<String, Object>();
 		
-		for (int i = 0 ; i < tableDoc.getSheetCount(); i++) {
+		 for (int i = 0 ; i < tableDoc.getSheetCount(); i++) {
 			Table sheet = tableDoc.getSheetByIndex(i);
 			List<ArrayList<Object>> tableData  = new ArrayList <>();
+			System.out.println("Row COUNT " + sheet.getRowCount());
+			System.out.println("COLUMN COUNT " + sheet.getColumnCount());
 			
-				for (int row = 0; row < sheet.getRowCount(); row++) {
+		
+			for (int row = 0; row < sheet.getRowCount(); row++) {
 					tableData.add(new ArrayList<Object>());  
 					for(int column = 0; column < sheet.getColumnCount(); column++) {
 						Cell cell = sheet.getCellByPosition(column, row);
-						System.out.println("COLUMNCOUNT " + sheet.getColumnCount());
+						System.out.println("COLUMN COUNT " + sheet.getColumnCount());
 						System.out.println("VALUE TYPE AS STRING " + cell.getValueType());
 						System.out.println("STRING TYPE " + cell.getStringValue());
 						
@@ -74,9 +78,10 @@ public class odfToJava {
 						}
 						else if (cell.getValueType().equals("date")) {
 							
-							tableData.get(row).add(column, cell.getDateValue());
-							System.out.println("Adding Date" + cell.getDateValue().getTime() + "[" + row 
+							tableData.get(row).add(column, cell.getDateValue().getTime().toString());
+							System.out.println("Adding Date" + cell.getDateValue().getTime().toString() + "[" + row 
                 					+ "]" + column + "]");     //for testing
+							
 						}
 						else if (cell.getValueType().equals("currency")) {
 							tableData.get(row).add(column, cell.getCurrencyValue());
@@ -93,8 +98,8 @@ public class odfToJava {
 				System.out.println("ARRAYS: " + tableData);      //for testing
 	            System.out.println("Izmers " + tableData.get(1).size());     //for testing
 	            sheets.put(sheet.getTableName(), tableData);  
-				 
-			 }
+			
+			 }	
 		
 		System.out.println(sheets);
 		

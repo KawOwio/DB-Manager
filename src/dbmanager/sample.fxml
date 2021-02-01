@@ -581,5 +581,6 @@
             </AnchorPane>
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="idcalculator" layoutX="400.0" layoutY="150.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #fff; -fx-background-radius: 1em; -fx-border-radius: 1em; visibility: false;" />
    </children>
 </AnchorPane>
