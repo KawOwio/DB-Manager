@@ -23,24 +23,24 @@ public class JavaToMySQL {
 	 * ASK USER TO PROVIDE ALL THE INFO!
 	 */
 	public String username = ""; // dynamically provided by user
-//	public String username = "dbm"; // dynamically provided by user
 	public String password = ""; // dynamically provided by user
-//	public String password = "dbmapp"; // dynamically provided by user
 	public String databaseName = ""; // dynamically provided by user
-//	public String databaseName = "fromExcel"; // dynamically provided by user
+
 
 	public JavaToMySQL() { // creating new database
-		try {
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", username,
-					password);
-			conn.setAutoCommit(false);
-			Statement st = conn.createStatement();
-			String sql = "CREATE DATABASE IF NOT EXISTS " + databaseName;
-			System.out.println(sql);
-			st.executeUpdate(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (!"".equals(username)) {
+			try {
+				conn = DriverManager.getConnection(
+						"jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8",
+						username, password);
+				conn.setAutoCommit(false);
+				Statement st = conn.createStatement();
+				String sql = "CREATE DATABASE IF NOT EXISTS " + databaseName;
+				System.out.println(sql);
+				st.executeUpdate(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -64,9 +64,7 @@ public class JavaToMySQL {
 			String argumentsToCreateColumns = "(";
 			ArrayList<String> dataTypes = new ArrayList<>();
 			for (int i = 0; i < columnNames.size(); i++) { // creating columns in database table
-				
-					
-				
+
 				String type = "";
 
 				// getting data type from the data in second row (first row of actual data) -
@@ -104,7 +102,7 @@ public class JavaToMySQL {
 				}
 				dataToFillColumns = dataToFillColumns.substring(0, dataToFillColumns.length() - 2) + ")";
 				System.out.println(dataToFillColumns);
-				sql = "insert into " + tableName +  argumentsColumnNames  + dataToFillColumns;
+				sql = "insert into " + tableName + argumentsColumnNames + dataToFillColumns;
 				System.out.println(sql);
 				PreparedStatement insertStmt = conn.prepareStatement(sql);
 				insertStmt.executeUpdate();
@@ -125,8 +123,9 @@ public class JavaToMySQL {
 		frame.setVisible(true);
 
 		JavaToMySQL test = new JavaToMySQL();
-		String excelFilePath = excelToJavaImport.openFile(frame);
-		LinkedHashMap<String, Object> database = excelToJavaImport.excelToJava(excelFilePath); // whole Excel file as Map
+		String excelFilePath = excelToJavaImport.openFile(frame, "xlsx");
+		LinkedHashMap<String, Object> database = excelToJavaImport.excelToJava(excelFilePath); // whole Excel file as
+																								// Map
 		Iterator<Map.Entry<String, Object>> itr = database.entrySet().iterator();
 		while (itr.hasNext()) {
 			Map.Entry<String, Object> pair = itr.next();
@@ -134,14 +133,13 @@ public class JavaToMySQL {
 			List<Object> sheet = (List<Object>) database.get(key);
 			test.fillTheDatabase(key, sheet);
 		}
-		
-		
-		// List<Object> sheet = (List<Object>) wholeDatabase.get(0); // whole sheet as ArrayList
-		//List<Object> row = (List<Object>) sheet.get(3); // whole row as ArrayList
+
+		// List<Object> sheet = (List<Object>) wholeDatabase.get(0); // whole sheet as
+		// ArrayList
+		// List<Object> row = (List<Object>) sheet.get(3); // whole row as ArrayList
 		// Object value = row.get(15); // exact value from row
 		// System.out.println(value);
 		// System.out.println(value.getClass());
-		
 
 	}
 
