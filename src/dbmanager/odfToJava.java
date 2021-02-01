@@ -39,10 +39,12 @@ public class odfToJava {
 			System.out.println("Row COUNT " + sheet.getRowCount());
 			System.out.println("COLUMN COUNT " + sheet.getColumnCount());
 			
-		
+			int columnCount = columnCount(sheet);
+			System.out.print("COOOLLL" + columnCount);
+
 			for (int row = 0; row < sheet.getRowCount(); row++) {
 					tableData.add(new ArrayList<Object>());  
-					for(int column = 0; column < sheet.getColumnCount(); column++) {
+					for(int column = 0; column < columnCount; column++) {
 						Cell cell = sheet.getCellByPosition(column, row);
 						System.out.println("COLUMN COUNT " + sheet.getColumnCount());
 						System.out.println("VALUE TYPE AS STRING " + cell.getValueType());
@@ -51,46 +53,46 @@ public class odfToJava {
 						if (cell.getValueType() == null) {
 							tableData.get(row).add(column, " ");
 	                		System.out.println("Adding nothing"  + "[" + row 
-	                					+ "]" + column + "]");     //for testing
-	                		break;
+	                					+ "][" + column + "]");     //for testing
+	                		
 						}
-						if  (cell.getValueType().equals("string")) {
+						else if  (cell.getValueType().equals("string")) {
 							tableData.get(row).add(column, cell.getStringValue());
 	                		System.out.println("Adding string" + cell.getStringValue() + "[" + row 
-	                					+ "]" + column + "]");     //for testing
+	                					+ "][" + column + "]");     //for testing
 						}
 						else if  (cell.getValueType().equals("float")) {
 							if (cell.getDoubleValue() % 1 == 0) {
 								tableData.get(row).add(column, cell.getDoubleValue().intValue());
 		                		System.out.println("Adding long" + cell.getDoubleValue().longValue() + "[" + row 
-		                					+ "]" + column + "]");     //for testing
+		                					+ "][" + column + "]");     //for testing
 							}
 							else {
 								tableData.get(row).add(column, cell.getDoubleValue());
 								System.out.println("Adding double" + cell.getDoubleValue() + "[" + row 
-	                					+ "]" + column + "]");     //for testing
+	                					+ "][" + column + "]");     //for testing
 							}
 						}
 						else if (cell.getValueType().equals("boolean")) {
 							tableData.get(row).add(column, cell.getBooleanValue());
 							System.out.println("Adding boolean" + cell.getBooleanValue() + "[" + row 
-                					+ "]" + column + "]");     //for testing
+                					+ "][" + column + "]");     //for testing
 						}
 						else if (cell.getValueType().equals("date")) {
 							
 							tableData.get(row).add(column, cell.getDateValue().getTime().toString());
 							System.out.println("Adding Date" + cell.getDateValue().getTime().toString() + "[" + row 
-                					+ "]" + column + "]");     //for testing
+                					+ "][" + column + "]");     //for testing
 							
 						}
 						else if (cell.getValueType().equals("currency")) {
 							tableData.get(row).add(column, cell.getCurrencyValue());
 							System.out.println("Adding currency" + cell.getCurrencyValue() + "[" + row 
-                					+ "]" + column + "]");     //for testing
+                					+ "][" + column + "]");     //for testing
 						} else {
 							tableData.get(row).add(column, "");
 	                		System.out.println("Adding nothing"  + "[" + row 
-	                					+ "]" + column + "]");     //for testing
+	                					+ "][" + column + "]");     //for testing
 						}
 							
 					}
@@ -104,6 +106,17 @@ public class odfToJava {
 		System.out.println(sheets);
 		
 		return sheets;
+		
+	}
+	
+	public static int columnCount(Table sheet) {
+		int column = sheet.getColumnCount();
+		while((sheet.getCellByPosition(column, 0)).getValueType() == null){
+			column--;
+		}
+		sheet.removeColumnsByIndex(column + 1, sheet.getColumnCount());
+		
+		return sheet.getColumnCount() ;
 		
 	}
 }
