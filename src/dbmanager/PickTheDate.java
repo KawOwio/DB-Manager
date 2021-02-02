@@ -25,7 +25,7 @@ public class PickTheDate extends Application{
         Label l = new Label("no date selected"); 
   
         // create a date picker 
-        javafx.scene.control.DatePicker d = new javafx.scene.control.DatePicker();
+        DatePicker d = new DatePicker();
         
         // action event 
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() { 
