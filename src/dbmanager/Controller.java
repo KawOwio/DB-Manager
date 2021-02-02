@@ -271,6 +271,7 @@ public class Controller {
 //	Files
 	
 	File myExcelFile;
+	File myCalcFile;
 	File myWordFile;
 	
 //	File repeated imports
@@ -447,12 +448,12 @@ public class Controller {
 		
 	    for (int i = 0; i < rowCountMySQL; i++) {
 	    	
-//	    	<JFXButton fx:id="idcolvaluesmysql" layoutX="316.0" layoutY="16.0" prefHeight="32.0" prefWidth="267.0" style="visibility: true; -fx-background-radius: 5em; -fx-border-radius: 5em; visibility: false;" text="FillMe" textFill="#545454">
-//	            <font>
-//	               <Font size="16.0" />
-//	            </font>
-//	         </JFXButton>
-	    	
+			//	    	<JFXButton fx:id="idcolvaluesmysql" layoutX="316.0" layoutY="16.0" prefHeight="32.0" prefWidth="267.0" style="visibility: true; -fx-background-radius: 5em; -fx-border-radius: 5em; visibility: false;" text="FillMe" textFill="#545454">
+			//	            <font>
+			//	               <Font size="16.0" />
+			//	            </font>
+			//	         </JFXButton>
+				    	
 	    	Button mysqlButton = new Button("Button" + row);
 	    	idfillwindowmysql.add(mysqlButton);
 	    	
@@ -477,7 +478,7 @@ public class Controller {
 	    	
 	    }
 	    
-//		} else {
+//		 else {
 //			// should add error message
 //			Alert alert = new Alert(AlertType.ERROR);
 //			alert.setTitle("Error Dialog");
@@ -543,7 +544,7 @@ public class Controller {
 	
 	// all
 	
-		@FXML
+	@FXML
 	void clickword(ActionEvent event) {
 		FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
@@ -551,7 +552,9 @@ public class Controller {
         		new ExtensionFilter("OpenDocument File", "*.odt"));
         myWordFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
         
-        WriteToWord.replaceValuesFromExcel(myExcelFile, myWordFile);
+        WriteToWord toWord = new WriteToWord();
+        
+        toWord.replaceValuesFromSpreadsheet(myExcelFile, myWordFile);
 	}
 		
 	@FXML
@@ -706,7 +709,7 @@ public class Controller {
     		FileChooser chooser = new FileChooser();
             chooser.setTitle("Open File");
             chooser.getExtensionFilters().add(new ExtensionFilter("Open Document Spreadsheet", "*.ods"));
-            File myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+            myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
             
     	}
     }
