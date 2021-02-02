@@ -2,8 +2,10 @@ package dbmanager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -280,11 +282,9 @@ public class Controller {
 	boolean impCalc = true;
 	boolean colInsertedExcel = false;
 	boolean colInsertedCalc = false;
-	boolean colInsertedMySQL = false;
+	boolean theSameMySQL = true;
 	
 //	Class connections
-	
-	MySQL mysql = new MySQL();
 	
 	double layoutXMySQL = 320.0d;
 	double layoutYMySQL = 16.0d;
@@ -300,33 +300,32 @@ public class Controller {
 	
 	@FXML
 	void applycalc(ActionEvent event) {
-//		if ((idsavechangescalc.getText() != null && !idsavechangescalc.getAccessibleText().isEmpty()) ||
-//			(idexporttodoccalc.getText() != null && !idexporttodoccalc.getAccessibleText().isEmpty())) {
-//			
+		if (!(idsavechangescalc.getText().isEmpty()) &&
+			!(idexporttodoccalc.getText().isEmpty())) {
+			
 //			calcMainCol = idsetcalccol.getText();
 //			calcMainRow = idsetcalcrow.getText();
 		
-		idsavechangescalc.setVisible(true);
-		idexporttodoccalc.setVisible(true);
+			idsavechangescalc.setVisible(true);
+			idexporttodoccalc.setVisible(true);
+			
+			impCalc = false;
+			
+			} else {
+				
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error Dialog");
+				alert.setHeaderText("ERROR");
+				alert.setContentText("Invalid input!");
+	
+				alert.showAndWait();
+			
+				idsavechangescalc.setVisible(false);
+				idexporttodoccalc.setVisible(false);
+			
+			impCalc = true;
 		
-		impCalc = false;
-		
-//			
-//		} else {
-//			// should add error message
-//			Alert alert = new Alert(AlertType.ERROR);
-//			alert.setTitle("Error Dialog");
-//			alert.setHeaderText("ERROR");
-//			alert.setContentText("Invalid input!");
-//
-//			alert.showAndWait();
-//		
-//			idsavechangescalc.setVisible(false);
-//			idexporttodoccalc.setVisible(false);
-		
-		impCalc = true;
-//		
-//		}
+		}
 	}
 	
 	@FXML
@@ -361,33 +360,33 @@ public class Controller {
 	
 	@FXML
 	void applyexcel(ActionEvent event) {
-//		if ((idsetexcelcol.getText() != null && !idsetexcelcol.getAccessibleText().isEmpty()) ||
-//			(idsetexcelrow.getText() != null && !idsetexcelrow.getAccessibleText().isEmpty())) {
-//			
+		if (!(idsetexcelcol.getText().isEmpty()) &&
+			!(idsetexcelrow.getText().isEmpty())) {
+			
 //			excelMainCol = idsetexcelcol.getText();
 //			excelMainRow = idsetexcelrow.getText();
 		
-		idsavechangesexcel.setVisible(true);
-		idexporttodocexcel.setVisible(true);
+			idsavechangesexcel.setVisible(true);
+			idexporttodocexcel.setVisible(true);
+			
+			impExcel = false;
 		
-		impExcel = false;
+			
+		} else {
+			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("ERROR");
+			alert.setContentText("Invalid input!");
+
+			alert.showAndWait();
 		
-//			
-//		} else {
-//			// should add error message
-//			Alert alert = new Alert(AlertType.ERROR);
-//			alert.setTitle("Error Dialog");
-//			alert.setHeaderText("ERROR");
-//			alert.setContentText("Invalid input!");
-//
-//			alert.showAndWait();
-//		
-//			idsavechangesexcel.setVisible(false);
-//			idexporttodocexcel.setVisible(false);
+			idsavechangesexcel.setVisible(false);
+			idexporttodocexcel.setVisible(false);
 		
-		impExcel = true;
-//		
-//		}
+			impExcel = true;
+		
+		}
 	}
 	
 	@FXML
@@ -422,124 +421,140 @@ public class Controller {
 	
 	@FXML
 	void applymysql(ActionEvent event) {
-//		if ((idsetcolmysql.getText() != null && !idsetcolmysql.getAccessibleText().isEmpty()) ||
-//			(idsettablenamemysql.getText() != null && !idsettablenamemysql.getAccessibleText().isEmpty()) ||
-//			(iddbnameinput.getText() != null && !iddbnameinput.getAccessibleText().isEmpty()) ||
-//			(idlogininput.getText() != null && !idlogininput.getAccessibleText().isEmpty()) ||
-//			(idpasswordinput.getText() != null && !idpasswordinput.getAccessibleText().isEmpty())) {
+		if (!(idsetcolmysql.getText().isEmpty()) &&
+			!(idsettablenamemysql.getText().isEmpty()) &&
+			!(iddbnameinput.getText().isEmpty()) &&
+			!(idlogininput.getText().isEmpty()) &&
+			!(idpasswordinput.getText().isEmpty())) {
 		
-		idexporttodocmysql.setVisible(true);
-		idsavechangesmysql.setVisible(true);
+			layoutYMySQL = 16.0;
+			
+			System.out.println("I'm working!");
+			
+			idexporttodocmysql.setVisible(true);
+			idsavechangesmysql.setVisible(true);
+			
+			MySQL mysql = new MySQL(idlogininput.getText(), idpasswordinput.getText(), iddbnameinput.getText(), idsettablenamemysql.getText());
+			
+			mysqlMainCol = idsetcolmysql.getText();
+			
+			ArrayList<String> valuesMySQL = mysql.getValues(mysqlMainCol);
+			
+			int rowCountMySQL = valuesMySQL.size();
+			int colCountMySQL = mysql.getColumnNames().size(); 
+		    
+			int row = 0;
+			
+		    for (int i = 0; i < rowCountMySQL; i++) {
+					    	
+		    	Button mysqlButton = new Button("Button" + row);
+		    	idfillwindowmysql.getChildren().add(mysqlButton);
+		    	
+		    	// Add the same name that you extract from table
+		    	// There could be problems if there are spaces
+		    	String idMySQL = valuesMySQL.get(i);
+		    	
+		    	mysqlButton.setId(idMySQL);
+		    	mysqlButton.setOnAction((buttonEvent) -> {
+		    		
+		    		System.out.println(idMySQL);
+		    		
+		    		Parent root;
+		            try {
+		                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
+		                Stage stage = new Stage();
+		                stage.setTitle(idMySQL);
+		                stage.setScene(new Scene(root, 600, 800));
+		                stage.show();
+		            }
+		            catch (IOException e) {
+		                e.printStackTrace();
+		            }	
+		    		
+		    	});
+		    	mysqlButton.setLayoutX(layoutXMySQL);
+		    	mysqlButton.setLayoutY(layoutYMySQL);
+		    	mysqlButton.setPrefWidth(prefWidthMySQL);
+		    	mysqlButton.setPrefHeight(prefHeightMySQL);
+		    	mysqlButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
+		    	mysqlButton.setText(idMySQL);
+		    	mysqlButton.setTextFill(Color.rgb(54, 54, 54));
+		    	// FIXME:
+		    	mysqlButton.getFont().font(fontSizeMySQL);
+		    	
+		    	row++;
+		    	
+		    	layoutYMySQL += 32.0;
+	    	
+		    } 
+		    
+		    theSameMySQL = true;
+		    
+		} else {
+			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("ERROR");
+			alert.setContentText("Invalid input!");
+
+			alert.showAndWait();
 		
-		mysql.databaseName = iddbnameinput.getText();
-		mysql.username = idlogininput.getText();
-		mysql.password = idpasswordinput.getText();
-		mysql.tableName = idsettablenamemysql.getText();
+			idexporttodocmysql.setVisible(false);
+			idsavechangesmysql.setVisible(false);
 		
-		mysqlMainCol = idsetcolmysql.getText();
-		
-		int rowCountMySQL = mysql.getValues(mysqlMainCol).size();
-		int colCountMySQL = mysql.getColumnNames().size(); 
-		
-		//	    Display MySQL INSERT main col info
-	    
-		colInsertedMySQL = true;
-		int row = 0;
-		
-	    for (int i = 0; i < rowCountMySQL; i++) {
-	    	
-			//	    	<JFXButton fx:id="idcolvaluesmysql" layoutX="316.0" layoutY="16.0" prefHeight="32.0" prefWidth="267.0" style="visibility: true; -fx-background-radius: 5em; -fx-border-radius: 5em; visibility: false;" text="FillMe" textFill="#545454">
-			//	            <font>
-			//	               <Font size="16.0" />
-			//	            </font>
-			//	         </JFXButton>
-				    	
-	    	Button mysqlButton = new Button("Button" + row);
-	    	idfillwindowmysql.add(mysqlButton);
-	    	
-	    	// Add the same name that you extract from table
-	    	// There could be problems if there are spaces
-	    	String idMySQL = mysql.getValues(mysqlMainCol).get(i);
-	    	
-	    	mysqlButton.setId(idMySQL);
-	    	mysqlButton.setLayoutX(layoutXMySQL);
-	    	mysqlButton.setLayoutY(layoutYMySQL);
-	    	mysqlButton.setPrefWidth(prefWidthMySQL);
-	    	mysqlButton.setPrefHeight(prefHeightMySQL);
-	    	mysqlButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em");
-	    	mysqlButton.setText(idMySQL);
-	    	mysqlButton.setTextFill(Color.rgb(54, 54, 54));
-	    	// FIXME:
-	    	mysqlButton.getFont().font(fontSizeMySQL);
-	    	
-	    	row++;
-	    	
-	    	layoutYMySQL += 32.0;
-	    	
-	    }
-	    
-//		 else {
-//			// should add error message
-//			Alert alert = new Alert(AlertType.ERROR);
-//			alert.setTitle("Error Dialog");
-//			alert.setHeaderText("ERROR");
-//			alert.setContentText("Invalid input!");
-//
-//			alert.showAndWait();
-//		
-//		idexporttodocmysql.setVisible(false);
-//		idsavechangesmysql.setVisible(false);
-//		
-//		}	
+		}	
 	}
 	
 	@FXML
 	void cancelmysql(ActionEvent event) {
 		
 //	    Display MySQL DELETE main col info
-	    
-		if (colInsertedMySQL == true) {
 			
-			int colCountMySQL = 0; // TODO: add col count!!!!
-		    for (int i = 0; i < colCountMySQL; i++) {
-		    	
-		    	// TODO: take it as a text field not a string
-		    	String idMySQL = mysql.getValues(mysqlMainCol).get(i);
-		    	
-		    	idfillwindowmysql.getChildren().remove(idMySQL);
-		    	
-		    }
-		    
-		}
+		idfillwindowmysql.getChildren().clear();
 		
 		idsettablenamemysql.clear();
 		iddbnameinput.clear();
 		idlogininput.clear();
 		idpasswordinput.clear();
-		
-		
-		mysql.databaseName = "";
-		mysql.username = "";
-		mysql.password = "";
-		mysql.tableName = "";
+		idsetcolmysql.setText("id");
 		
 		idexporttodocmysql.setVisible(false);
 		idsavechangesmysql.setVisible(false);
+		
+		layoutYMySQL = 16.0;
 		
 	}
 	
 	@FXML
 	void mysqlsearchyes(ActionEvent event) {
 		//		display MySQL col with the inserted values in - idsearchmysql
-//		String searchMySQL = idsearchmysql.getText();
+		String searchMySQL = idsearchmysql.getText();
 		//		find rows where fields match with searchMySQL
+		layoutYMySQL = 16.0;
+		// for loop with  an if statement inside
+		
+		// reset the layout back
+		layoutYMySQL = 16.0;
+		theSameMySQL = false;
+		
 	}
 	
 	@FXML
 	void mysqlsearchno(ActionEvent event) {
-		//		clear - idsearchmysql and display all
+		
 		idsearchmysql.clear();
+		
 		//		display all again
+		// FIXME:
+		
+		if (theSameMySQL == true) {
+			
+			idfillwindowmysql.getChildren().clear();
+			
+		}
+		theSameMySQL = true;
+		
+		
 	}
 	
 	// all
