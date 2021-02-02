@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class MySQL {
 	
 	protected Connection conn;
-	private ArrayList<String> columnTypes;
-	private ArrayList<String> columnNames;
+	private ArrayList<String> columnTypes = new ArrayList<>();
+	private ArrayList<String> columnNames = new ArrayList<>();
 	/*
 	* ASK USER TO PROVIDE ALL THE INFO!
 	*/
@@ -26,18 +26,28 @@ public class MySQL {
 	String databaseName;
 	String tableName;
 	
-	public MySQL() {
+	public MySQL(String username, String password, String databaseName, String tableName) {
+		
+		this.username = username;
+		this.password = password;
+		this.databaseName = databaseName;
+		this.tableName = tableName;
 		
 		// Scanner sc = new Scanner(System.in);
 		try {
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", username,
-					password);
+			
+//			conn = DriverManager.getConnection(
+//					"jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", username,
+//					password);
+			
+			String url = "jdbc:mysql://localhost/" + databaseName;
+			conn = DriverManager.getConnection(url, username, password);
+			
 			conn.setAutoCommit(false);
 
 //			databaseName = "dbmanager"; // dynamically provided by user
 //			tableName = "Info"; // dynamically provided by user
-			tableName = "Test"; // dynamically provided by user
+//			tableName = "Test"; // dynamically provided by user
 
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * from " + databaseName + "." + tableName);
@@ -72,7 +82,7 @@ public class MySQL {
 	public ArrayList<String> getValues(String columnName){
 		ArrayList<String> rtnList = new ArrayList<>();
 		String sql = "SELECT " + columnName + " FROM " + databaseName + "." + tableName +"";
-		//System.out.println(sql);
+		System.out.println(sql);
 		PreparedStatement preparedStatement;
 		try {
 			preparedStatement = conn.prepareStatement(sql);
@@ -108,10 +118,25 @@ public class MySQL {
 		return rtnList;
 	}
 	
-	public static void main(String[] args) {
-		MySQL t = new MySQL();
-		for (String name : t.columnNames) {
-		System.out.println(t.getValues(name));
-		}
+	public void addColumn(String columnName, String dataType) throws SQLException {
+		String url = "jdbc:mysql://localhost/" + databaseName;
+		conn = DriverManager.getConnection(url, username, password);
+		conn.setAutoCommit(false);
+		Statement st = conn.createStatement();
+		String sql = "ALTER TABLE " + tableName + " ADD " + columnName + " " + dataType;
+		System.out.println(sql);
+		st.executeUpdate(sql);
 	}
+
+//	public static void main(String[] args) throws SQLException {
+//		MySQL t = new MySQL();
+//		for (String name : t.columnNames) {
+//		for (String name : t.columnNames) {
+//		System.out.println(t.getValues(name));
+//		System.out.println(t.getValues(name));
+//		}
+//		}
+//		t.addColumn("newColumntn", "varchar(10)");
+//	}
+	
 }
