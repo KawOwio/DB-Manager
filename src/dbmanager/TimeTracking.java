@@ -34,4 +34,13 @@ public class TimeTracking {
 		elapsedTime += seconds + " seconds(s).";					// add seconds that are left
 		return elapsedTime;
 	}
+	
+//	public static void main(String[] args) {
+	// start
+//		TimeTracking test = new TimeTracking();
+	// end
+//		System.out.println(test.elapsedTime());
+//		
+//	}
+	
 }

@@ -15,13 +15,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 import com.jfoenix.controls.JFXTextField;
 
-public class Controller extends JavaToMySQL {
+public class Controller {
 	
 //	Images
 	
@@ -215,6 +216,9 @@ public class Controller extends JavaToMySQL {
 	@FXML
 	private AnchorPane idtopcalc;
 	
+	@FXML
+	private AnchorPane idfillwindowmysql;
+	
 //	Setting up fields
 	
 	@FXML
@@ -227,7 +231,7 @@ public class Controller extends JavaToMySQL {
 	private JFXTextField idsetcolmysql;
 	
 	@FXML
-	private JFXTextField idsetrowmysql;
+	private JFXTextField idsettablenamemysql;
 	
 	@FXML
 	private JFXTextField iddbnameinput;
@@ -269,6 +273,26 @@ public class Controller extends JavaToMySQL {
 	File myExcelFile;
 	File myWordFile;
 	
+//	File repeated imports
+	
+	boolean impExcel = true;
+	boolean impCalc = true;
+	boolean colInsertedExcel = false;
+	boolean colInsertedCalc = false;
+	boolean colInsertedMySQL = false;
+	
+//	Class connections
+	
+	MySQL mysql = new MySQL();
+	
+	double layoutXMySQL = 320.0d;
+	double layoutYMySQL = 16.0d;
+	double prefWidthMySQL = 267.0d;
+	double prefHeightMySQL = 32.0d;
+	double fontSizeMySQL = 16.0d;
+	
+	String mysqlMainCol;
+	
 //	Functions
 	
 	//	calc
@@ -284,6 +308,8 @@ public class Controller extends JavaToMySQL {
 		idsavechangescalc.setVisible(true);
 		idexporttodoccalc.setVisible(true);
 		
+		impCalc = false;
+		
 //			
 //		} else {
 //			// should add error message
@@ -296,6 +322,8 @@ public class Controller extends JavaToMySQL {
 //		
 //			idsavechangescalc.setVisible(false);
 //			idexporttodoccalc.setVisible(false);
+		
+		impCalc = true;
 //		
 //		}
 	}
@@ -308,8 +336,10 @@ public class Controller extends JavaToMySQL {
 		idsavechangescalc.setVisible(false);
 		idexporttodoccalc.setVisible(false);
 		
-//		colExcel = "";
-//		rowExcel = "";
+		impCalc = true;
+		
+//		colCalc = "";
+//		rowCalc = "";
 	}
 	
 	@FXML
@@ -339,6 +369,8 @@ public class Controller extends JavaToMySQL {
 		idsavechangesexcel.setVisible(true);
 		idexporttodocexcel.setVisible(true);
 		
+		impExcel = false;
+		
 //			
 //		} else {
 //			// should add error message
@@ -351,6 +383,8 @@ public class Controller extends JavaToMySQL {
 //		
 //			idsavechangesexcel.setVisible(false);
 //			idexporttodocexcel.setVisible(false);
+		
+		impExcel = true;
 //		
 //		}
 	}
@@ -362,6 +396,8 @@ public class Controller extends JavaToMySQL {
 		
 		idsavechangesexcel.setVisible(false);
 		idexporttodocexcel.setVisible(false);
+		
+		impExcel = true;
 		
 //		colExcel = "";
 //		rowExcel = "";
@@ -386,7 +422,7 @@ public class Controller extends JavaToMySQL {
 	@FXML
 	void applymysql(ActionEvent event) {
 //		if ((idsetcolmysql.getText() != null && !idsetcolmysql.getAccessibleText().isEmpty()) ||
-//			(idsetrowmysql.getText() != null && !idsetrowmysql.getAccessibleText().isEmpty()) ||
+//			(idsettablenamemysql.getText() != null && !idsettablenamemysql.getAccessibleText().isEmpty()) ||
 //			(iddbnameinput.getText() != null && !iddbnameinput.getAccessibleText().isEmpty()) ||
 //			(idlogininput.getText() != null && !idlogininput.getAccessibleText().isEmpty()) ||
 //			(idpasswordinput.getText() != null && !idpasswordinput.getAccessibleText().isEmpty())) {
@@ -394,13 +430,53 @@ public class Controller extends JavaToMySQL {
 		idexporttodocmysql.setVisible(true);
 		idsavechangesmysql.setVisible(true);
 		
-		databaseName = iddbnameinput.getText();
-		username = idlogininput.getText();
-		password = idpasswordinput.getText();
+		mysql.databaseName = iddbnameinput.getText();
+		mysql.username = idlogininput.getText();
+		mysql.password = idpasswordinput.getText();
+		mysql.tableName = idsettablenamemysql.getText();
 		
-//		mysqlMainCol = idsetcolmysql.getText();
-//		mysqlMainRow = idsetrowmysql.getText();
-//			
+		mysqlMainCol = idsetcolmysql.getText();
+		
+		int rowCountMySQL = mysql.getValues(mysqlMainCol).size();
+		int colCountMySQL = mysql.getColumnNames().size(); 
+		
+		//	    Display MySQL INSERT main col info
+	    
+		colInsertedMySQL = true;
+		int row = 0;
+		
+	    for (int i = 0; i < rowCountMySQL; i++) {
+	    	
+//	    	<JFXButton fx:id="idcolvaluesmysql" layoutX="316.0" layoutY="16.0" prefHeight="32.0" prefWidth="267.0" style="visibility: true; -fx-background-radius: 5em; -fx-border-radius: 5em; visibility: false;" text="FillMe" textFill="#545454">
+//	            <font>
+//	               <Font size="16.0" />
+//	            </font>
+//	         </JFXButton>
+	    	
+	    	Button mysqlButton = new Button("Button" + row);
+	    	idfillwindowmysql.add(mysqlButton);
+	    	
+	    	// Add the same name that you extract from table
+	    	// There could be problems if there are spaces
+	    	String idMySQL = mysql.getValues(mysqlMainCol).get(i);
+	    	
+	    	mysqlButton.setId(idMySQL);
+	    	mysqlButton.setLayoutX(layoutXMySQL);
+	    	mysqlButton.setLayoutY(layoutYMySQL);
+	    	mysqlButton.setPrefWidth(prefWidthMySQL);
+	    	mysqlButton.setPrefHeight(prefHeightMySQL);
+	    	mysqlButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em");
+	    	mysqlButton.setText(idMySQL);
+	    	mysqlButton.setTextFill(Color.rgb(54, 54, 54));
+	    	// FIXME:
+	    	mysqlButton.getFont().font(fontSizeMySQL);
+	    	
+	    	row++;
+	    	
+	    	layoutYMySQL += 32.0;
+	    	
+	    }
+	    
 //		} else {
 //			// should add error message
 //			Alert alert = new Alert(AlertType.ERROR);
@@ -418,20 +494,37 @@ public class Controller extends JavaToMySQL {
 	
 	@FXML
 	void cancelmysql(ActionEvent event) {
-		idsetcolmysql.clear();
-		idsetrowmysql.clear();
+		
+//	    Display MySQL DELETE main col info
+	    
+		if (colInsertedMySQL == true) {
+			
+			int colCountMySQL = 0; // TODO: add col count!!!!
+		    for (int i = 0; i < colCountMySQL; i++) {
+		    	
+		    	// TODO: take it as a text field not a string
+		    	String idMySQL = mysql.getValues(mysqlMainCol).get(i);
+		    	
+		    	idfillwindowmysql.getChildren().remove(idMySQL);
+		    	
+		    }
+		    
+		}
+		
+		idsettablenamemysql.clear();
 		iddbnameinput.clear();
 		idlogininput.clear();
 		idpasswordinput.clear();
 		
-		databaseName = "";
-		username = "";
-		password = "";
-//		colmysql = "";
-//		rowmysql = "";
+		
+		mysql.databaseName = "";
+		mysql.username = "";
+		mysql.password = "";
+		mysql.tableName = "";
 		
 		idexporttodocmysql.setVisible(false);
 		idsavechangesmysql.setVisible(false);
+		
 	}
 	
 	@FXML
@@ -581,10 +674,15 @@ public class Controller extends JavaToMySQL {
     	idtopmysql.setVisible(false);
     	idtopcalc.setVisible(false);
     	
-    	FileChooser chooser = new FileChooser();
-        chooser.setTitle("Open File");
-        chooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xlsx"));
-        myExcelFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+    	if (impExcel == true) {
+    		
+    		FileChooser chooser = new FileChooser();
+	        chooser.setTitle("Open File");
+	        chooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xlsx"));
+	        myExcelFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+        
+    	}
+    	
     }
 
     @FXML
@@ -595,12 +693,6 @@ public class Controller extends JavaToMySQL {
     	idexcel.setVisible(false);
     	idmysql.setVisible(false);
     	iddbm.setVisible(false);
-    	
-    	FileChooser chooser = new FileChooser();
-        chooser.setTitle("Open File");
-        chooser.getExtensionFilters().add(new ExtensionFilter("Open Document Spreadsheet", "*.ods"));
-        File myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
-        
         idexcelwindow.setVisible(false);
         iddbmwindow.setVisible(false);
     	idcalcwindow.setVisible(true);
@@ -608,6 +700,15 @@ public class Controller extends JavaToMySQL {
     	idtopexcel.setVisible(false);
     	idtopmysql.setVisible(false);
     	idtopcalc.setVisible(true);
+    	
+    	if (impCalc == true) {
+    		
+    		FileChooser chooser = new FileChooser();
+            chooser.setTitle("Open File");
+            chooser.getExtensionFilters().add(new ExtensionFilter("Open Document Spreadsheet", "*.ods"));
+            File myCalcFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+            
+    	}
     }
     
     @FXML
@@ -643,5 +744,4 @@ public class Controller extends JavaToMySQL {
             e.printStackTrace();
         }
     }
-    
 }

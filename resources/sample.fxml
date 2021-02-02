@@ -43,7 +43,7 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="iddbmwindow" layoutX="300.0" layoutY="68.0" prefHeight="705.0" prefWidth="900.0" style="-fx-background-color: #ececec; visibility: false;">
+      <AnchorPane fx:id="iddbmwindow" layoutX="300.0" layoutY="68.0" prefHeight="705.0" prefWidth="900.0" style="-fx-background-color: #ececec; visibility: true;">
          <children>
             <ImageView id="#mysql_img" fx:id="idimgmysql" fitHeight="81.0" fitWidth="130.0" layoutX="397.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -242,7 +242,7 @@
             <AnchorPane layoutY="99.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #92bbba;" />
          </children>
       </AnchorPane>
-      <AnchorPane id="#dbm_main_bar" fx:id="iddbm" layoutY="234.0" prefHeight="140.0" prefWidth="375.0" style="visibility: false;">
+      <AnchorPane id="#dbm_main_bar" fx:id="iddbm" layoutY="234.0" prefHeight="140.0" prefWidth="375.0" style="visibility: true;">
          <children>
             <AnchorPane layoutX="236.0" layoutY="25.0" prefHeight="90.0" prefWidth="66.0" style="-fx-background-color: #ececec;" />
             <AnchorPane layoutX="51.0" layoutY="46.0" prefHeight="54.0" prefWidth="282.0" style="-fx-background-color: #ececec; -fx-background-radius: 5em; -fx-border-radius: 5em;">
@@ -258,7 +258,7 @@
             <AnchorPane layoutY="99.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #92bbba;" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="idmysqlwindow" layoutX="300.0" layoutY="65.0" prefHeight="735.0" prefWidth="900.0" style="-fx-background-color: #ececec; visibility: false;">
+      <AnchorPane fx:id="idmysqlwindow" layoutX="300.0" layoutY="65.0" prefHeight="735.0" prefWidth="900.0" style="-fx-background-color: #ececec; visibility: true;">
          <children>
             <AnchorPane fx:id="idlogin" layoutX="309.0" layoutY="14.0" prefHeight="38.0" prefWidth="270.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                <children>
@@ -285,17 +285,17 @@
                   <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main column:" textAlignment="CENTER" wrappingWidth="154.0" />
                   <AnchorPane layoutX="177.0" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                      <children>
-                        <JFXTextField fx:id="idsetcolmysql" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" unFocusColor="#ffffff00" />
+                        <JFXTextField fx:id="idsetcolmysql" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" text="id" unFocusColor="#ffffff00" />
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="475.0" layoutY="73.0" prefHeight="38.0" prefWidth="282.0" style="-fx-background-color: #92bbba; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                <children>
-                  <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main row:" textAlignment="CENTER" wrappingWidth="154.0" />
-                  <AnchorPane layoutX="177.0" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
+                  <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Table name:" textAlignment="CENTER" wrappingWidth="93.72949218749989" />
+                  <AnchorPane layoutX="115.0" prefHeight="38.0" prefWidth="167.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                      <children>
-                        <JFXTextField fx:id="idsetrowmysql" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" unFocusColor="#ffffff00" />
+                        <JFXTextField fx:id="idsettablenamemysql" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="130.0" unFocusColor="#ffffff00" />
                      </children>
                   </AnchorPane>
                </children>
@@ -310,7 +310,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <ScrollPane layoutY="133.0" prefHeight="537.0" prefWidth="900.0" style="-fx-background-color: #ececec;">
+            <ScrollPane layoutY="133.0" prefHeight="537.0" prefWidth="900.0" style="-fx-background: #ececec; -fx-background-color: #ececec;">
                <content>
                   <AnchorPane fx:id="idfillwindowmysql" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="898.0">
                      <children>
@@ -340,7 +340,7 @@
                   <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main column:" textAlignment="CENTER" wrappingWidth="154.0" />
                   <AnchorPane layoutX="177.0" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                      <children>
-                        <JFXTextField fx:id="idsetexcelcol" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" unFocusColor="#ffffff00" />
+                        <JFXTextField fx:id="idsetexcelcol" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" text="A" unFocusColor="#ffffff00" />
                      </children>
                   </AnchorPane>
                </children>
@@ -350,12 +350,12 @@
                   <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main row:" textAlignment="CENTER" wrappingWidth="154.0" />
                   <AnchorPane layoutX="177.0" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                      <children>
-                        <JFXTextField fx:id="idsetexcelrow" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" unFocusColor="#ffffff00" />
+                        <JFXTextField fx:id="idsetexcelrow" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" text="1" unFocusColor="#ffffff00" />
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <ScrollPane layoutY="94.0" prefHeight="572.0" prefWidth="900.0" style="-fx-background-color: #ececec;">
+            <ScrollPane layoutY="94.0" prefHeight="572.0" prefWidth="900.0" style="-fx-background-color: #ececec; -fx-background: #ececec;">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="123.0" prefWidth="896.0">
                      <children>
@@ -381,7 +381,7 @@
                   <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main column:" textAlignment="CENTER" wrappingWidth="154.0" />
                   <AnchorPane layoutX="177.0" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                      <children>
-                        <JFXTextField fx:id="idsetcalccol" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" unFocusColor="#ffffff00" />
+                        <JFXTextField fx:id="idsetcalccol" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" text="A" unFocusColor="#ffffff00" />
                      </children>
                   </AnchorPane>
                </children>
@@ -391,12 +391,12 @@
                   <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main row:" textAlignment="CENTER" wrappingWidth="154.0" />
                   <AnchorPane layoutX="177.0" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                      <children>
-                        <JFXTextField fx:id="idsetcalcrow" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" unFocusColor="#ffffff00" />
+                        <JFXTextField fx:id="idsetcalcrow" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" text="1" unFocusColor="#ffffff00" />
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <ScrollPane layoutY="94.0" prefHeight="572.0" prefWidth="900.0" style="-fx-background-color: #ececec;">
+            <ScrollPane layoutY="94.0" prefHeight="572.0" prefWidth="900.0" style="-fx-background-color: #ececec; -fx-background: #ececec;">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="123.0" prefWidth="896.0">
                      <children>

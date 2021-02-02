@@ -10,15 +10,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class MySQL {
+	
 	protected Connection conn;
 	private ArrayList<String> columnTypes;
 	private ArrayList<String> columnNames;
 	/*
 	* ASK USER TO PROVIDE ALL THE INFO!
 	*/
-	String username = "dbm"; // dynamically provided by user
-	String password = "dbmapp"; // dynamically provided by user
-	String databaseName = "dbmanager"; // dynamically provided by user
+//	String username = "dbm"; // dynamically provided by user
+//	String password = "dbmapp"; // dynamically provided by user
+//	String databaseName = "dbmanager"; // dynamically provided by user
+//	String databaseName = "test"; // dynamically provided by user
+	String username;
+	String password;
+	String databaseName;
 	String tableName;
 	
 	public MySQL() {
@@ -30,8 +35,9 @@ public class MySQL {
 					password);
 			conn.setAutoCommit(false);
 
-			databaseName = "dbmanager"; // dynamically provided by user
-			tableName = "Info"; // dynamically provided by user
+//			databaseName = "dbmanager"; // dynamically provided by user
+//			tableName = "Info"; // dynamically provided by user
+			tableName = "Test"; // dynamically provided by user
 
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * from " + databaseName + "." + tableName);
@@ -65,7 +71,7 @@ public class MySQL {
 
 	public ArrayList<String> getValues(String columnName){
 		ArrayList<String> rtnList = new ArrayList<>();
-		String sql = "SELECT `" + columnName + "` FROM dbmanager.Info"; 
+		String sql = "SELECT " + columnName + " FROM " + databaseName + "." + tableName +"";
 		//System.out.println(sql);
 		PreparedStatement preparedStatement;
 		try {
