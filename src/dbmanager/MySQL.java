@@ -21,33 +21,22 @@ public class MySQL {
 //	String password = "dbmapp"; // dynamically provided by user
 //	String databaseName = "dbmanager"; // dynamically provided by user
 //	String databaseName = "test"; // dynamically provided by user
-	String username;
-	String password;
-	String databaseName;
+	String username = "";
+	String password = "";
+	String databaseName = "";
 	String tableName;
 	
-	public MySQL(String username, String password, String databaseName, String tableName) {
-		
-		this.username = username;
-		this.password = password;
-		this.databaseName = databaseName;
-		this.tableName = tableName;
+	public MySQL() {
 		
 		// Scanner sc = new Scanner(System.in);
 		try {
-			
-//			conn = DriverManager.getConnection(
-//					"jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", username,
-//					password);
-			
 			String url = "jdbc:mysql://localhost/" + databaseName;
 			conn = DriverManager.getConnection(url, username, password);
-			
 			conn.setAutoCommit(false);
 
 //			databaseName = "dbmanager"; // dynamically provided by user
 //			tableName = "Info"; // dynamically provided by user
-//			tableName = "Test"; // dynamically provided by user
+			tableName = "Test"; // dynamically provided by user
 
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * from " + databaseName + "." + tableName);
@@ -67,7 +56,7 @@ public class MySQL {
 			//System.out.println(columnTypes.toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	public ArrayList<String> getColumnTypes() {
@@ -77,12 +66,11 @@ public class MySQL {
 	public ArrayList<String> getColumnNames() {
 		return columnNames;
 	}
-
-
+	
 	public ArrayList<String> getValues(String columnName){
 		ArrayList<String> rtnList = new ArrayList<>();
 		String sql = "SELECT " + columnName + " FROM " + databaseName + "." + tableName +"";
-		System.out.println(sql);
+		//System.out.println(sql);
 		PreparedStatement preparedStatement;
 		try {
 			preparedStatement = conn.prepareStatement(sql);
@@ -127,16 +115,12 @@ public class MySQL {
 		System.out.println(sql);
 		st.executeUpdate(sql);
 	}
-
-//	public static void main(String[] args) throws SQLException {
-//		MySQL t = new MySQL();
-//		for (String name : t.columnNames) {
-//		for (String name : t.columnNames) {
-//		System.out.println(t.getValues(name));
-//		System.out.println(t.getValues(name));
-//		}
-//		}
-//		t.addColumn("newColumntn", "varchar(10)");
-//	}
 	
+	public static void main(String[] args) throws SQLException {
+		MySQL t = new MySQL();
+		for (String name : t.columnNames) {
+		System.out.println(t.getValues(name));
+		}
+		t.addColumn("newColumntn", "varchar(10)");
+	}
 }
