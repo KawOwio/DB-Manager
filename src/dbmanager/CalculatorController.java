@@ -198,7 +198,7 @@ public class CalculatorController {
 	    		
 	    		idcalculatortext.setText(String.valueOf(all));
 	    		operation = -1;
-	    		coma = false;
+	    		coma = true;
 	    	}
     	}
     }	
