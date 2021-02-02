@@ -10,3 +10,4 @@ logs/**
 target/**
 wbp-meta/**
 /target/
+bin/**
