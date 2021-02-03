@@ -135,40 +135,49 @@ public class MySQL {
 		System.out.println("commit");
 	}
 
-	public void getRowContent(String columnName, String data) throws SQLException {
-		String url = "jdbc:mysql://localhost/" + databaseName;
-		conn = DriverManager.getConnection(url, username, password);
-		conn.setAutoCommit(false);
-		
-		ArrayList<String> rowContent = new ArrayList<>();
-		int rowIndex = 0;
-		ArrayList<String> columnValues = getValues(columnName);
-		for (int i = 0; i < columnValues.size(); i++) {
-			if (data.equals((columnValues).get(i))) {
-				rowIndex = i;
-			}
-		}
-		for (String colName : columnNames) {
-			rowContent.add(getValues(colName).get(rowIndex));
-		}
+	public ArrayList<ArrayList<String>> getRowContent(String columnName, String data) throws SQLException {
+        String url = "jdbc:mysql://localhost/" + databaseName;
+        conn = DriverManager.getConnection(url, username, password);
+        conn.setAutoCommit(false);
 
-		ArrayList<ArrayList<String>> allTheInfo = new ArrayList<>();
-		allTheInfo.add(columnNames);
-		allTheInfo.add(columnTypes);
-		allTheInfo.add(rowContent);
-		System.out.println(allTheInfo);
-	}
+        ArrayList<String> rowContent = new ArrayList<>();
+        int rowIndex = 0;
+        ArrayList<String> columnValues = getValues(columnName);
+        for (int i = 0; i < columnValues.size(); i++) {
+            if (data.equals((columnValues).get(i))) {
+                rowIndex = i;
+            }
+        }
+        for (String colName : columnNames) {
+            rowContent.add(getValues(colName).get(rowIndex));
+        }
+
+        ArrayList<ArrayList<String>> allTheInfo = new ArrayList<>();
+        allTheInfo.add(columnNames);
+        allTheInfo.add(columnTypes);
+        allTheInfo.add(rowContent);
+
+        // for (int i = 0; i < columnNames.size(); i++) {
+        //
+        // System.out.println(allTheInfo.get(0).get(i));
+        // System.out.println(allTheInfo.get(1).get(i));
+        // System.out.println(allTheInfo.get(2).get(i));
+        // System.out.println();
+        // }
+        
+        return allTheInfo;
+    }
 
 	public void addRow(String columnName, Object data) throws SQLException {
-		String url = "jdbc:mysql://localhost/" + databaseName;
-		conn = DriverManager.getConnection(url, username, password);
-		conn.setAutoCommit(false);
-		Statement st = conn.createStatement();
-		String sql = "INSERT INTO `"+ databaseName + "`.`" + tableName + "` (`" + columnName + "`) VALUES ('" + data + "');"; 
-		System.out.println(sql);
-		st.executeUpdate(sql);
-		conn.commit();
-	}
+        String url = "jdbc:mysql://localhost/" + databaseName;
+        conn = DriverManager.getConnection(url, username, password);
+        conn.setAutoCommit(false);
+        Statement st = conn.createStatement();
+        String sql = "INSERT INTO "+ databaseName + "." + tableName + " (" + columnName + ") VALUES ('" + data + "');"; 
+        System.out.println(sql);
+        st.executeUpdate(sql);
+        conn.commit();
+    }
 
  	public static void main(String[] args) throws SQLException {
  		MySQL t = new MySQL("dbm", "dbmapp", "Test", "Test");

@@ -584,10 +584,15 @@ public class Controller {
 		    		
 		    		Parent root;
 		            try {
-		                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
+		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/display.fxml"));
+		                root = loader.load();
 		                Stage stage = new Stage();
 		                stage.setTitle(idMySQL);
 		                stage.setScene(new Scene(root, 600, 800));
+		                
+		                DisplayController displayController = loader.getController();
+		                displayController.initData(idMySQL, mysqlMainCol, mysql);
+		                
 		                stage.show();
 		            }
 		            catch (IOException e) {

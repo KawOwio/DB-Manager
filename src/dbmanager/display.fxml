@@ -59,6 +59,6 @@
         </content>
       </ScrollPane>
       <Button fx:id="idsave" layoutX="490.0" layoutY="748.0" mnemonicParsing="false" onAction="#savebutton" prefHeight="38.0" prefWidth="94.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Save" textFill="#658382" />
-      <Button fx:id="idaddcolumn" layoutX="14.0" layoutY="748.0" mnemonicParsing="false" onAction="#addcolumn" prefHeight="38.0" prefWidth="115.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Add Column" textFill="#658382" />
+      <Button fx:id="idaddcolumn" layoutX="14.0" layoutY="748.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Add Column" textFill="#658382" />
    </children>
 </AnchorPane>
