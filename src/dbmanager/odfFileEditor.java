@@ -1,9 +1,7 @@
 package dbmanager;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
