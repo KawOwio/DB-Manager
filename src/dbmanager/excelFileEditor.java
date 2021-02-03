@@ -114,13 +114,6 @@ public class excelFileEditor {
 		public void copyColumn(Workbook workbook, Sheet whereToCopy, int colomnToCopy, int whereToCopy) {
 											
 		}
-		// TODO Edit cell
-		public void editCell(Workbook workbook, Cell cell, String datatype) {
-											
-		}
-		// TODO Change font
-		public void formatCell(Workbook workbook, Cell cell, Font font) {
-											
-		}
+		
 		
 }           
