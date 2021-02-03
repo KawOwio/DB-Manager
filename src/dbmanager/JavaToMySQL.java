@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -22,9 +23,9 @@ public class JavaToMySQL {
 	/*
 	 * ASK USER TO PROVIDE ALL THE INFO!
 	 */
-	public String username = ""; // dynamically provided by user
-	public String password = ""; // dynamically provided by user
-	public String databaseName = ""; // dynamically provided by user
+	public String username = "dbm"; // dynamically provided by user
+	public String password = "dbmapp"; // dynamically provided by user
+	public String databaseName = "fromODS"; // dynamically provided by user
 
 	public JavaToMySQL() { // creating new database
 		if (!"".equals(username)) {
@@ -43,13 +44,13 @@ public class JavaToMySQL {
 		}
 	}
 
-	public void fillTheDatabase(String tableName, List<Object> sheet) {
+	public void fillTheDatabase(String tableName, List<ArrayList<Object>> sheet) {
 		try {
 			String url = "jdbc:mysql://localhost:3306/" + databaseName + "?useSSL=false";
 			conn = DriverManager.getConnection(url, username, password);
 			conn.setAutoCommit(false);
 			Statement st = conn.createStatement();
-			List<String> columnNames = (List<String>) sheet.get(0);
+			ArrayList<Object> columnNames = sheet.get(0);
 			for (int i = 0; i < columnNames.size(); i++) {
 				if (columnNames.get(i).equals("") || columnNames.get(i).equals(" ")) {
 					columnNames.remove(columnNames.get(i));
@@ -58,7 +59,7 @@ public class JavaToMySQL {
 			}
 			System.out.println(columnNames);
 			for (int i = 0; i < columnNames.size(); i++) {
-				columnNames.set(i, "`" + columnNames.get(i).trim() + "`");
+				columnNames.set(i, "`" + ((String) columnNames.get(i)).trim() + "`");
 			}
 			String argumentsToCreateColumns = "(";
 			ArrayList<String> dataTypes = new ArrayList<>();
@@ -88,7 +89,7 @@ public class JavaToMySQL {
 			st.executeUpdate(sql);
 
 			String argumentsColumnNames = "("; // column names for INSERT string
-			for (String columnName : columnNames) {
+			for (Object columnName : columnNames) {
 				argumentsColumnNames += columnName + ", ";
 			}
 			argumentsColumnNames = argumentsColumnNames.substring(0, argumentsColumnNames.length() - 2) + ")";
@@ -127,7 +128,7 @@ public class JavaToMySQL {
 		boolean isItXLSX = false;
 		String excelFilePath;
 		String odfFilePath;
-		LinkedHashMap<String, Object> database;
+		LinkedHashMap<String, List<ArrayList<Object>>> database;
 
 		if (isItXLSX) {
 			excelFilePath = excelToJavaImport.openFile(frame, "xlsx");
@@ -137,11 +138,11 @@ public class JavaToMySQL {
 			database = odfToJava.odfToJavaImport(odfFilePath);
 		}
 
-		Iterator<Map.Entry<String, Object>> itr = database.entrySet().iterator();
+		Iterator<Map.Entry<String, List<ArrayList<Object>>>> itr = database.entrySet().iterator();
 		while (itr.hasNext()) {
-			Map.Entry<String, Object> pair = itr.next();
+			Entry<String, List<ArrayList<Object>>> pair = itr.next();
 			String key = pair.getKey();
-			List<Object> sheet = (List<Object>) database.get(key);
+			List<ArrayList<Object>> sheet =  database.get(key);
 			test.fillTheDatabase(key, sheet);
 		}
 
