@@ -2,7 +2,10 @@ package dbmanager;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -259,7 +262,7 @@ public class Controller {
 	private JFXTextField idsetexcelcol;
 	
 	@FXML
-	private JFXTextField idsetexcelrow;
+	private JFXTextField idsetexcelsheet;
 	
 	@FXML
 	private JFXTextField idsearchmysql;
@@ -315,9 +318,12 @@ public class Controller {
 	double fontSizeExcel = 16.0d;
 	
 	String excelMainCol;
+	String excelMainSheet;
 	int excelCol = 0;
 	boolean firstValExcel = true;
 	boolean theSameExcel = true;
+	
+	List<Object> excelMain;
 	
 	// Calc
 	
@@ -331,6 +337,8 @@ public class Controller {
 	int calcCol = 0;
 	boolean firstValCalc = true;
 	boolean theSameCalc = true;
+	
+	ArrayList<Object> calcMain;
 	
 //    @FXML
 //    private Button idaddcolumn;
@@ -415,7 +423,7 @@ public class Controller {
 	@FXML
 	void applyexcel(ActionEvent event) {
 		if (!(idsetexcelcol.getText().isEmpty()) &&
-			!(idsetexcelrow.getText().isEmpty())) {
+			!(idsetexcelsheet.getText().isEmpty())) {
 			
 			layoutYExcel = 16.0;
 			System.out.println("I'm working Excel!");
@@ -424,8 +432,6 @@ public class Controller {
 			idexporttodocexcel.setVisible(true);
 			
 			ExcelRun();
-			
-			
 			
 			impExcel = false;
 			theSameExcel = true;
@@ -453,7 +459,8 @@ public class Controller {
 		idfillwindowexcel.getChildren().clear();
 		
 		idsetexcelcol.setText("A");
-		idsetexcelrow.setText("1");
+		idsetexcelsheet.clear();
+		excelMainSheet = "";
 		
 		idsavechangesexcel.setVisible(false);
 		idexporttodocexcel.setVisible(false);
@@ -858,10 +865,15 @@ public class Controller {
 	    		
 	    		Parent root;
 	            try {
-	                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
+	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/display.fxml"));
+	                root = loader.load();
 	                Stage stage = new Stage();
 	                stage.setTitle(idMySQL);
 	                stage.setScene(new Scene(root, 600, 800));
+	                
+	                DisplayController displayController = loader.getController();
+	                displayController.initData(idMySQL, mysqlMainCol, mysql);
+	                
 	                stage.show();
 	            }
 	            catch (IOException e) {
@@ -895,8 +907,10 @@ public class Controller {
     
     public void ExcelRun() {
     	
+    	excelCol = 0;
+    	
     	excelMainCol = idsetexcelcol.getText();
-//		excelMainRow = idsetexcelrow.getText();
+		excelMainSheet = idsetexcelsheet.getText();
 		
 		char[] chExcelMainCol = new char[excelMainCol.length()];
 		
@@ -924,18 +938,31 @@ public class Controller {
 					firstValExcel = false;
 				}
 			}
-			
+		}
+		
+		String filePathExcel = myExcelFile.toPath().toString();
+
+		LinkedHashMap<String, List<ArrayList<Object>>> table;
+		List<Object> columnValues = new ArrayList<>();
+		try {
+			table = excelToJavaImport.excelToJava(filePathExcel);
+			for(int i = 1; i < table.get(excelMainSheet).size(); i++) {
+				columnValues.add(table.get(excelMainSheet).get(i).get(excelCol - 1));
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
 		// TODO: get the size of the list with needed data (row count)
 		// FIXME: 0 !!!!
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < columnValues.size(); i++) {
 			
 			Button excelButton = new Button("ButtonExcel" + i);
 			idfillwindowexcel.getChildren().add(excelButton);
 	    	
 			// TODO: Get value of the cell!
-	    	String idExcel = "";
+	    	String idExcel = columnValues.get(i).toString();
 	    	
 	    	excelButton.setId(idExcel);
 	    	excelButton.setOnAction((buttonEventExcel) -> {
@@ -972,6 +999,8 @@ public class Controller {
     }
     
     public void CalcRun() {
+    	
+    	calcCol = 0;
     	
     	calcMainCol = idsetcalccol.getText();
 //		calcMainRow = idsetcalcrow.getText();

@@ -1,5 +1,9 @@
 package dbmanager;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 
@@ -15,16 +19,15 @@ public class DisplayController {
 	@FXML
 	private AnchorPane idfillme;
 	
-	@FXML
-	private JFXTextField idsettitle;
+    @FXML
+    private Text idsettitle;
 	
 	@FXML
 	private Button idsave;
 	
-//	Connection
-	
-	Controller controller = new Controller();
-	
+	String idMySQL;
+	String mysqlMainCol;
+	MySQL mysql;
 	
 //	Functions
 	
@@ -102,11 +105,31 @@ public class DisplayController {
 	double prefWidthc = 30.0d;
 	double prefHeightc = 30.0d;
 	
-	for (int i = 0; i < controller.colCountMySQL; i++) {
+	public void displayData() {
 		
-		// TODO: Add function!
+		idsettitle.setText(idMySQL);
+
+		ArrayList<ArrayList<String>> list = mysql.getRowContent(mysqlMainCol, idMySQL);
 		
-		if (type != "CheckBox") {
+		//		list.get(2).get(i)
+		
+		//		allTheInfo.add(columnNames);
+		//		allTheInfo.add(columnTypes);
+		//		allTheInfo.add(rowContent);
+
+		// 		System.out.println(allTheInfo.get(0).get(i));
+		// 		System.out.println(allTheInfo.get(1).get(i));
+		// 		System.out.println(allTheInfo.get(2).get(i));
+		
+		
+		for (int i = 0; i < mysql.getColumnNames().size(); i++) {
+			
+			Pattern stringPattern = Pattern.compile("VARCHAR", Pattern.CASE_INSENSITIVE);
+			Pattern intPattern = Pattern.compile("INT", Pattern.CASE_INSENSITIVE);
+			Pattern decimalPattern = Pattern.compile("DECIMAL", Pattern.CASE_INSENSITIVE);
+			Matcher stringMatcher = stringPattern.matcher(list.get(0).get(i));
+			Matcher intMatcher = intPattern.matcher(list.get(0).get(i));
+			Matcher decimalMatcher = decimalPattern.matcher(list.get(0).get(i));
 			
 			// 1st
 			
@@ -114,7 +137,7 @@ public class DisplayController {
 			idfillme.getChildren().add(anchorPanea1);
 			
 			// FIXME:
-			anchorPanea1.setId();
+//			anchorPanea1.setId(anchorPanea1);
 			anchorPanea1.setLayoutX(layoutXa1);
 			anchorPanea1.setLayoutY(layoutYa1);
 			anchorPanea1.setPrefWidth(prefWidtha1);
@@ -129,9 +152,9 @@ public class DisplayController {
 			anchorPanea1.getChildren().add(text);
 			
 			// FIXME:
-			text.setId();
+//			text.setId();
 			// FIXME:
-			text.setText();
+			text.setText(list.get(0).get(i));
 			text.setFill(Color.rgb(75, 75, 75));
 			// FIXME:
 			text.setStrokeType(StrokeType.OUTSIDE);
@@ -139,115 +162,78 @@ public class DisplayController {
 			text.setWrappingWidth(wrappingWidth);
 			text.setLayoutX(layoutXt1);
 			text.setLayoutY(layoutYt1);
-			text.setPrefWidth(prefWidtht1);
-			text.setPrefHeight(prefHeightt1);
 			// FIXME:
 			text.getFont().font(fontSizet1);
 			
-			// 3rd
+			if (stringMatcher.find() || intMatcher.find() || decimalMatcher.find()) {
+				
+				// 3rd
+				
+				AnchorPane anchorPanea2 = new AnchorPane();
+				// FIXME: have to get the right ID!!!
+				anchorPanea1.getChildren().add(anchorPanea2);
+				
+				// FIXME:
+	//			anchorPanea2.setId();
+				anchorPanea2.setLayoutX(layoutXa2);
+				anchorPanea2.setLayoutY(layoutYa2);
+				anchorPanea2.setPrefWidth(prefWidtha2);
+				anchorPanea2.setPrefHeight(prefHeighta2);
+				anchorPanea2.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
+				
+				// 4th
+				
+				JFXTextField jfxTextField = new JFXTextField();
+				// FIXME: have to get the right ID!!!
+				anchorPanea2.getChildren().add(jfxTextField);
+				
+				// FIXME:
+//				jfxTextField.setId();
+				jfxTextField.getFont().font(fontSizet2);
+				jfxTextField.setFocusColor(Color.WHITE);
+				jfxTextField.setLayoutX(layoutXt2);
+				jfxTextField.setLayoutY(layoutYt2);
+				jfxTextField.setPrefWidth(prefWidtht2);
+				jfxTextField.setPrefHeight(prefHeightt2);
+				jfxTextField.setUnFocusColor(Color.WHITE);
+				// FIXME: insert what you get from the function
+				jfxTextField.setText(list.get(2).get(i));
 			
-			AnchorPane anchorPanea2 = new AnchorPane();
-			// FIXME: have to get the right ID!!!
-			anchorPanea1.getChildren().add(anchorPanea2);
-			
-			// FIXME:
-			anchorPanea2.setId();
-//			anchorPanea2.setId("anchorPanea2" + i);
-			anchorPanea2.setLayoutX(layoutXa2);
-			anchorPanea2.setLayoutY(layoutYa2);
-			anchorPanea2.setPrefWidth(prefWidtha2);
-			anchorPanea2.setPrefHeight(prefHeighta2);
-			anchorPanea2.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
-			
-			// 4th
-			
-			JFXTextField jfxTextField = new JFXTextField();
-			// FIXME: have to get the right ID!!!
-			anchorPanea2.getChildren().add(jfxTextField);
-			
-			// FIXME:
-			jfxTextField.setId();
-			jfxTextField.getFont().font(fontSizet2);
-			jfxTextField.setFocusColor(Color.WHITE);
-			jfxTextField.setLayoutX(layoutXt2);
-			jfxTextField.setLayoutY(layoutYt2);
-			jfxTextField.setPrefWidth(prefWidtht2);
-			jfxTextField.setPrefHeight(prefHeightt2);
-			jfxTextField.setUnFocusColor(Color.WHITE);
-			// FIXME: insert what you get from the function
-			jfxTextField.setText();
-		
-		} else {
-			
-			// 1st
-			
-			AnchorPane anchorPanea1 = new AnchorPane();
-			idfillme.getChildren().add(anchorPanea1);
-			
-			// FIXME:
-			anchorPanea1.setId();
-			anchorPanea1.setLayoutX(layoutXa1);
-			anchorPanea1.setLayoutY(layoutYa1);
-			anchorPanea1.setPrefWidth(prefWidtha1);
-			anchorPanea1.setPrefHeight(prefHeighta1);
-			
-			layoutYa1 += 9.0;
-			
-			// 2nd
-			
-			Text text = new Text();
-			//FIXME: have to get the right ID!!!
-			anchorPanea1.getChildren().add(text);
-			
-			// FIXME:
-			text.setId();
-			// FIXME:
-			text.setText();
-			text.setFill(Color.rgb(75, 75, 75));
-			// FIXME:
-			text.setStrokeType(StrokeType.OUTSIDE);
-			text.setStrokeWidth(strokeWidth);
-			text.setWrappingWidth(wrappingWidth);
-			text.setLayoutX(layoutXt1);
-			text.setLayoutY(layoutYt1);
-			text.setPrefWidth(prefWidtht1);
-			text.setPrefHeight(prefHeightt1);
-			// FIXME:
-			text.getFont().font(fontSizet1);
-			
-			// 3rd
-			
-			AnchorPane anchorPanea3 = new AnchorPane();
-			// FIXME: have to get the right ID!!!
-			anchorPanea1.getChildren().add(anchorPanea3);
-			
-			// FIXME:
-			anchorPanea3.setId();
-//						anchorPanea2.setId("anchorPanea2" + i);
-			anchorPanea3.setLayoutX(layoutXa3);
-			anchorPanea3.setLayoutY(layoutYa3);
-			anchorPanea3.setPrefWidth(prefWidtha3);
-			anchorPanea3.setPrefHeight(prefHeighta3);
-			anchorPanea3.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
-			
-			// 4th
-			
-			JFXCheckBox jfxCheckBox = new JFXCheckBox();
-			// FIXME: have to get the right ID!!!
-			anchorPanea3.getChildren().add(jfxCheckBox);
-			
-			// FIXME:
-			jfxCheckBox.setId();
-			// FIXME: checkedColor="#92bbba"
-			jfxCheckBox.setCheckedColor(Color.rgb(92, bb, ba));
-			jfxCheckBox.setLayoutX(layoutXc);
-			jfxCheckBox.setLayoutY(layoutYc);
-			jfxCheckBox.setPrefWidth(prefWidthc);
-			jfxCheckBox.setPrefHeight(prefHeightc);
-			jfxCheckBox.setUnCheckedColor(Color.WHITE);
+			} else {
+				
+				// 3rd
+				
+				AnchorPane anchorPanea3 = new AnchorPane();
+				// FIXME: have to get the right ID!!!
+				anchorPanea1.getChildren().add(anchorPanea3);
+				
+				// FIXME:
+	//			anchorPanea3.setId();
+				anchorPanea3.setLayoutX(layoutXa3);
+				anchorPanea3.setLayoutY(layoutYa3);
+				anchorPanea3.setPrefWidth(prefWidtha3);
+				anchorPanea3.setPrefHeight(prefHeighta3);
+				anchorPanea3.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
+				
+				// 4th
+				
+				JFXCheckBox jfxCheckBox = new JFXCheckBox();
+				// FIXME: have to get the right ID!!!
+				anchorPanea3.getChildren().add(jfxCheckBox);
+				
+				// FIXME:
+	//			jfxCheckBox.setId();
+				// FIXME: checkedColor="#92bbba"
+//				jfxCheckBox.setCheckedColor(Color.rgb(92, bb, ba));
+				jfxCheckBox.setLayoutX(layoutXc);
+				jfxCheckBox.setLayoutY(layoutYc);
+				jfxCheckBox.setPrefWidth(prefWidthc);
+				jfxCheckBox.setPrefHeight(prefHeightc);
+				jfxCheckBox.setUnCheckedColor(Color.WHITE);
+				
+			}
 			
 		}
-		
 	}
 	
 	// Save button on click
@@ -256,5 +242,15 @@ public class DisplayController {
     void savebutton(ActionEvent event) {
 
     }
+
+	public void initData(String idMySQL, String mysqlMainCol, MySQL mysql) {
+		// TODO Auto-generated method stub
+		this.idMySQL = idMySQL;
+		this.mysqlMainCol = mysqlMainCol;
+		this.mysql = mysql;
+		
+		displayData();
+	}
+	
 	
 }
