@@ -23,10 +23,10 @@ public class odfToJava {
 		String odfFilePath = excelToJavaImport.openFile(frame, "ods");
 		odfToJavaImport(odfFilePath);
 	}
-	public static LinkedHashMap<String, Object> odfToJavaImport(String odfFilePath) throws Exception {
+	public static LinkedHashMap<String, List<ArrayList<Object>>> odfToJavaImport(String odfFilePath) throws Exception {
 		SpreadsheetDocument tableDoc  = SpreadsheetDocument.loadDocument(odfFilePath);
 	
-		 LinkedHashMap<String, Object> sheets = new LinkedHashMap<String, Object>();
+		 LinkedHashMap<String, List<ArrayList<Object>>> sheets = new LinkedHashMap<String, List<ArrayList<Object>>>();
 		
 		 for (int i = 0 ; i < tableDoc.getSheetCount(); i++) {
 			Table sheet = tableDoc.getSheetByIndex(i);
