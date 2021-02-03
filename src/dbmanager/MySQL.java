@@ -127,9 +127,12 @@ public class MySQL {
 		conn = DriverManager.getConnection(url, username, password);
 		conn.setAutoCommit(false);
 		Statement st = conn.createStatement();
-		String sql = "ALTER TABLE " + tableName + " ADD " + columnName + " " + dataType;
+		String sql = "ALTER TABLE " + tableName + " ADD " + columnName + " " + dataType + ";";
 		System.out.println(sql);
 		st.executeUpdate(sql);
+		System.out.println("executeUpdate");
+		conn.commit ();
+		System.out.println("commit");
 	}
 
 	public void getRowContent(String columnName, String data) throws SQLException {
@@ -153,33 +156,30 @@ public class MySQL {
 		allTheInfo.add(columnNames);
 		allTheInfo.add(columnTypes);
 		allTheInfo.add(rowContent);
-		
-		// for (int i = 0; i < columnNames.size(); i++) {
-		// 	
-		// System.out.println(allTheInfo.get(0).get(i));
-		// System.out.println(allTheInfo.get(1).get(i));
-		// System.out.println(allTheInfo.get(2).get(i));
-		// System.out.println();
-		// }
+		System.out.println(allTheInfo);
+	}
+
+	public void addRow(String columnName, Object data) throws SQLException {
+		String url = "jdbc:mysql://localhost/" + databaseName;
+		conn = DriverManager.getConnection(url, username, password);
+		conn.setAutoCommit(false);
+		String sql = "INSERT INTO " + tableName + "(" + columnName + ") VALUES ('" + data + "')"; 
+		System.out.println(sql);
+		PreparedStatement preparedStmt = conn.prepareStatement(sql);
+		preparedStmt.executeUpdate();
 	}
 
  	public static void main(String[] args) throws SQLException {
- 		MySQL t = new MySQL("dbm", "dbmapp", "dbmanager", "Info");
- 		t.addColumn("newblablabla", "varchar(50)");
- 		// t.addColumn("newblablabla", "int");
+ 		MySQL t = new MySQL("dbm", "dbmapp", "Test", "Test");
+ 		// t.addColumn("newColumn1", "varchar(50)");
+ 		
+ 		// t.addColumn("test56", "int");
  		// t.addColumn("newblablabla", "decimal(50, 2)");
- 		// t.getRowContent("name", "name2");
+ 		
+ 		// t.getRowContent("test1", "2");
+ 		
+ 		t.addRow("num", 1);
  	}
 
-//	public static void main(String[] args) throws SQLException {
-//		MySQL t = new MySQL();
-//		for (String name : t.columnNames) {
-//		for (String name : t.columnNames) {
-//		System.out.println(t.getValues(name));
-//		System.out.println(t.getValues(name));
-//		}
-//		}
-//		t.addColumn("newColumntn", "varchar(10)");
-//	}
 
 }
