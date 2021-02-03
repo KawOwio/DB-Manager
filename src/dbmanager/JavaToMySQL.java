@@ -23,9 +23,9 @@ public class JavaToMySQL {
 	/*
 	 * ASK USER TO PROVIDE ALL THE INFO!
 	 */
-	public String username = "dbm"; // dynamically provided by user
-	public String password = "dbmapp"; // dynamically provided by user
-	public String databaseName = "fromExcel"; // dynamically provided by user
+	public String username = ""; // dynamically provided by user
+	public String password = ""; // dynamically provided by user
+	public String databaseName = ""; // dynamically provided by user
 
 	public JavaToMySQL() { // creating new database
 		if (!"".equals(username)) {

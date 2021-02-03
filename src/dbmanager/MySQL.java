@@ -163,10 +163,11 @@ public class MySQL {
 		String url = "jdbc:mysql://localhost/" + databaseName;
 		conn = DriverManager.getConnection(url, username, password);
 		conn.setAutoCommit(false);
-		String sql = "INSERT INTO " + tableName + "(" + columnName + ") VALUES ('" + data + "')"; 
+		Statement st = conn.createStatement();
+		String sql = "INSERT INTO `"+ databaseName + "`.`" + tableName + "` (`" + columnName + "`) VALUES ('" + data + "');"; 
 		System.out.println(sql);
-		PreparedStatement preparedStmt = conn.prepareStatement(sql);
-		preparedStmt.executeUpdate();
+		st.executeUpdate(sql);
+		conn.commit();
 	}
 
  	public static void main(String[] args) throws SQLException {
@@ -178,7 +179,7 @@ public class MySQL {
  		
  		// t.getRowContent("test1", "2");
  		
- 		t.addRow("num", 1);
+ 		t.addRow("idTest", 6);
  	}
 
 
