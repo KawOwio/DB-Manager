@@ -23,9 +23,9 @@ public class JavaToMySQL {
 	/*
 	 * ASK USER TO PROVIDE ALL THE INFO!
 	 */
-	public String username = ""; // dynamically provided by user
-	public String password = ""; // dynamically provided by user
-	public String databaseName = ""; // dynamically provided by user
+	public String username = "dbm"; // dynamically provided by user
+	public String password = "dbmapp"; // dynamically provided by user
+	public String databaseName = "fromExcel"; // dynamically provided by user
 
 	public JavaToMySQL() { // creating new database
 		if (!"".equals(username)) {
@@ -74,7 +74,7 @@ public class JavaToMySQL {
 				} else if (((ArrayList<Object>) sheet.get(1)).get(i) instanceof Integer) {
 					type = " int(255), ";
 				} else {
-					if (((String) ((ArrayList<Object>) sheet.get(1)).get(i)).isEmpty())
+					if ((((ArrayList<Object>) sheet.get(1)).get(i)).toString().isEmpty())
 						((List<Object>) sheet.get(1)).set(i, " ");
 					type = " varchar(255), ";
 				}
@@ -125,7 +125,7 @@ public class JavaToMySQL {
 		frame.setVisible(true);
 
 		JavaToMySQL test = new JavaToMySQL();
-		boolean isItXLSX = false;
+		boolean isItXLSX = true;
 		String excelFilePath;
 		String odfFilePath;
 		LinkedHashMap<String, List<ArrayList<Object>>> database;
