@@ -560,7 +560,7 @@ public class Controller {
 	    	// There could be problems if there are spaces
 	    	// FIXME: set case insensitive
 	    	String idMySQL = valuesMySQL.get(i);
-	    	Pattern mysqlPattern = Pattern.compile(searchMySQL);
+	    	Pattern mysqlPattern = Pattern.compile(searchMySQL, Pattern.CASE_INSENSITIVE);
 	    	Matcher mysqlMatcher = mysqlPattern.matcher(idMySQL);
 	    	
 	    	if (mysqlMatcher.find()) {
