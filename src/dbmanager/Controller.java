@@ -293,6 +293,8 @@ public class Controller {
 	double fontSizeMySQL = 16.0d;
 	
 	String mysqlMainCol;
+	int rowCountMySQL = 0;
+	int colCountMySQL = 0; 
 	
 //	Functions
 	
@@ -440,8 +442,8 @@ public class Controller {
 			
 			ArrayList<String> valuesMySQL = mysql.getValues(mysqlMainCol);
 			
-			int rowCountMySQL = valuesMySQL.size();
-			int colCountMySQL = mysql.getColumnNames().size(); 
+			rowCountMySQL = valuesMySQL.size();
+			colCountMySQL = mysql.getColumnNames().size(); 
 		    
 			int row = 0;
 			
