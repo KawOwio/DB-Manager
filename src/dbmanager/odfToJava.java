@@ -33,6 +33,8 @@ public class odfToJava {
 			List<ArrayList<Object>> tableData  = new ArrayList <>();
 			System.out.println("Row COUNT " + sheet.getRowCount());
 			System.out.println("COLUMN COUNT " + sheet.getColumnCount());
+			sheet.appendRow();
+			System.out.println("Row COUNT " + sheet.getRowCount());
 			
 			int columnCount = columnCount(sheet);
 			System.out.print("COOOLLL" + columnCount);
