@@ -221,6 +221,9 @@ public class Controller {
 	@FXML
 	private AnchorPane idfillwindowmysql;
 	
+	@FXML
+	private AnchorPane idfillwindowexcel;
+	
 //	Setting up fields
 	
 	@FXML
@@ -286,6 +289,8 @@ public class Controller {
 	
 //	Class connections
 	
+	// MySQL
+	
 	double layoutXMySQL = 320.0d;
 	double layoutYMySQL = 16.0d;
 	double prefWidthMySQL = 267.0d;
@@ -295,6 +300,23 @@ public class Controller {
 	String mysqlMainCol;
 	int rowCountMySQL = 0;
 	int colCountMySQL = 0; 
+	
+	// Excel
+	
+	double layoutXExcel = 320.0d;
+	double layoutYExcel = 16.0d;
+	double prefWidthExcel = 267.0d;
+	double prefHeightExcel = 32.0d;
+	double fontSizeExcel = 16.0d;
+	
+	String excelMainCol;
+	int excelCol = 0;
+	
+//    @FXML
+//    private Button idaddcolumn;
+//    
+//    @FXML
+//    private JFXTextField addcoltext;
 	
 //	Functions
 	
@@ -365,11 +387,38 @@ public class Controller {
 		if (!(idsetexcelcol.getText().isEmpty()) &&
 			!(idsetexcelrow.getText().isEmpty())) {
 			
-//			excelMainCol = idsetexcelcol.getText();
-//			excelMainRow = idsetexcelrow.getText();
+			layoutYExcel = 16.0;
+			
+			System.out.println("I'm working Excel!");
 		
 			idsavechangesexcel.setVisible(true);
 			idexporttodocexcel.setVisible(true);
+			
+			excelMainCol = idsetexcelcol.getText();
+//			excelMainRow = idsetexcelrow.getText();
+			
+			char[] chExcelMainCol = new char[excelMainCol.length()];
+			
+			for (int i = 0; i < excelMainCol.length(); i++) {
+				chExcelMainCol[i] = excelMainCol.charAt(i);
+			}
+			
+			for (int i = 0; i < excelMainCol.length(); i++) {
+				
+				if (chExcelMainCol[i] >= 'a' && chExcelMainCol[i] <= 'z') {
+					int val = chExcelMainCol[i];
+					excelCol = excelCol + val - 96;
+				} else if (chExcelMainCol[i] >= 'A' && chExcelMainCol[i] <= 'Z') {
+					int val = chExcelMainCol[i];
+					excelCol = excelCol + val - 64;
+				} else if (chExcelMainCol[i] >= '0' && chExcelMainCol[i] <= '9') {
+					int val = chExcelMainCol[i];
+					excelCol = excelCol + val;
+				}
+				
+			}
+			
+			
 			
 			impExcel = false;
 		
@@ -393,6 +442,9 @@ public class Controller {
 	
 	@FXML
 	void cancelexcel(ActionEvent event) {
+		
+		idfillwindowexcel.getChildren().clear();
+		
 		idsetexcelcol.clear();
 		idsetexcelrow.clear();
 		
@@ -431,7 +483,7 @@ public class Controller {
 		
 			layoutYMySQL = 16.0;
 			
-			System.out.println("I'm working!");
+			System.out.println("I'm working MySQL!");
 			
 			idexporttodocmysql.setVisible(true);
 			idsavechangesmysql.setVisible(true);
@@ -487,6 +539,12 @@ public class Controller {
 		    	row++;
 		    	
 		    	layoutYMySQL += 32.0;
+		    	
+//		    	idaddcolumn.setOnAction((addColEvent) -> {
+//		        	
+//		        	mysql.addColumn(mysqlMainCol, addcoltext.getText());
+//		        	
+//		        });
 	    	
 		    } 
 		    
@@ -764,4 +822,5 @@ public class Controller {
             e.printStackTrace();
         }
     }
+    
 }
