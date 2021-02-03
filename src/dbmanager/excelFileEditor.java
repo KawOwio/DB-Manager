@@ -16,79 +16,64 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class excelFileEditor {
-	public static void main(String args[]) throws IOException   {
 
-		final JFrame frame = new JFrame("Document Reader");
-		frame.setSize(400, 400);
-		frame.setLocation(750, 350);
-		frame.setVisible(true);
-		String excelFilePath = excelToJavaImport.openFile(frame, "xlsx");
-		FileInputStream inputStream = new FileInputStream(excelFilePath);
-	    Workbook workbook = new XSSFWorkbook(inputStream);
-	}
 
-	public excelFileEditor(String excelFilePath) {
+	// save  Workbook
+		public void saveWorkbook(Workbook workbook, FileOutputStream output) throws IOException {
+		workbook.write(output);
+		output.close();
+		}
 		
-		
-	}
-	
-	
 	// change cell Numeric value 
-		public void editCellNumeric(Workbook workbook, Sheet sheet, int rowNr, int columnNr, Double value) {
-		Row row = sheet.getRow(rowNr);
-		Cell cell = row.getCell(columnNr);
+		public void editCellNumeric(Cell cell, Double value) {
 		cell.setCellValue(value);
 		}
 
 	// change cell String value 
-		public void editCellString(Workbook workbook, Sheet sheet, int rowNr, int columnNr, String value) {
-		Row row = sheet.getRow(rowNr);
-		Cell cell = row.getCell(columnNr);
+		public void editCellString(Cell cell, String value) {
 		cell.setCellValue(value);
 		}
 
 	// change cell Numeric value 
-		public void editCellBoolean(Workbook workbook, Sheet sheet, int rowNr, int columnNr, Boolean condition) {
-		Row row = sheet.getRow(rowNr);
-		Cell cell = row.getCell(columnNr);
+		public void editCellBoolean(Cell cell, Boolean condition) {
 		cell.setCellValue(condition);
 		}
 
 	// change cell Date value 
-		public void editCellDate(Workbook workbook, Sheet sheet, int rowNr, int columnNr, Date date) {
-		Row row = sheet.getRow(rowNr);
-		Cell cell = row.getCell(columnNr);
+		public void editCellDate(Cell cell, Date date) {
 		cell.setCellValue(date);
 		}
 
 	// change cell Numeric value 
-		public void editCellFormula(Workbook workbook, Sheet sheet, int rowNr, int columnNr, String formula) {
-		Row row = sheet.getRow(rowNr);
-		Cell cell = row.getCell(columnNr);
+		public void editCellFormula(Cell cell,  String formula) {
 		cell.setCellFormula(formula);
 		}
 
-
-	
 	// creates new Sheet 
 		public void addSheet(Workbook workbook, String sheetName) {
 		workbook.createSheet(sheetName);
 		}
 	
-	// TODO  adds row at the end
-		public void addRow(Workbook workbook) {
-		
+	// adds row at the end
+		public void addRow(Sheet sheet) {
+			sheet.createRow(sheet.getLastRowNum() + 1);
 		}
+		
+	//  adds new Column at the end
+		public void addColumn(Sheet sheet, String columnName) {
+			for(Row row : sheet) {
+				row.createCell(row.getLastCellNum());
+				if (row.getRowNum() == 0 ) {
+					row.getCell(row.getLastCellNum() - 1).setCellValue(columnName);
+				}
+			}
+		}	
 	
 	// TODO adds row somewhere in the sheet
 		public void addRow(Workbook workbook, int rowNr) {
 			
 		}
-		
-	// TODO adds new Column at the end
-		public void addColumn(Workbook workbook) {
-					
-		}
+	
 		
 	// TODO adds new Column somewhere in the sheet
 		public void addColumn(Workbook workbook, int columnNr) {
@@ -129,13 +114,6 @@ public class excelFileEditor {
 		public void copyColumn(Workbook workbook, Sheet whereToCopy, int colomnToCopy, int whereToCopy) {
 											
 		}
-		// TODO Edit cell
-		public void editCell(Workbook workbook, Cell cell, String datatype) {
-											
-		}
-		// TODO Change font
-		public void formatCell(Workbook workbook, Cell cell, Font font) {
-											
-		}
+		
 		
 }           

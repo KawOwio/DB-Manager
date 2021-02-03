@@ -18,7 +18,7 @@ public class HelloFX extends Application {
 				
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Hello world Application");
+        primaryStage.setTitle("Database Manager");
         primaryStage.setWidth(1200);
         primaryStage.setHeight(820);
         

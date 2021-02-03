@@ -29,17 +29,18 @@ public class excelToJavaImport {
 		excelToJava(excelFilePath);
 	}
 		
-	public static LinkedHashMap<String, Object> excelToJava(String excelFilePath) throws IOException {
+	public static LinkedHashMap<String, List<ArrayList<Object>>> excelToJava(String excelFilePath) throws IOException {
 		FileInputStream inputStream = new FileInputStream(excelFilePath);
 	    Workbook workbook = new XSSFWorkbook(inputStream);
 	   
-	    LinkedHashMap<String, Object> sheets = new LinkedHashMap<String, Object>();
+	    LinkedHashMap<String, List<ArrayList<Object>>> sheets = new LinkedHashMap<String, List<ArrayList<Object>>>();
 	  
 	    
 	    for (int j = 0; j < workbook.getNumberOfSheets(); j++) {
 	    	Sheet sheet = workbook.getSheetAt(j);
 	        List<ArrayList<Object>> excelData  = new ArrayList <>();
-	        
+
+	  
 	        for(Row row :sheet) {
 	        	excelData.add(new ArrayList<Object>());  
 	            for(Cell cell: row){ 
@@ -92,6 +93,9 @@ public class excelToJavaImport {
 	            }
 	            workbook.close();
 	            System.out.println(sheets);  //for testing
+	         
+	            System.out.println(sheets.entrySet());  //for testing
+	            System.out.println(sheets.get("Adreses"));  //for testing
 				return sheets;
 }
 	  

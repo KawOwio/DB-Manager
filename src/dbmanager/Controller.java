@@ -3,6 +3,8 @@ package dbmanager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -221,6 +223,12 @@ public class Controller {
 	@FXML
 	private AnchorPane idfillwindowmysql;
 	
+	@FXML
+	private AnchorPane idfillwindowexcel;
+	
+	@FXML
+	private AnchorPane idfillwindowcalc;
+	
 //	Setting up fields
 	
 	@FXML
@@ -286,6 +294,8 @@ public class Controller {
 	
 //	Class connections
 	
+	// MySQL
+	
 	double layoutXMySQL = 320.0d;
 	double layoutYMySQL = 16.0d;
 	double prefWidthMySQL = 267.0d;
@@ -293,6 +303,40 @@ public class Controller {
 	double fontSizeMySQL = 16.0d;
 	
 	String mysqlMainCol;
+	int rowCountMySQL = 0;
+	int colCountMySQL = 0; 
+	
+	// Excel
+	
+	double layoutXExcel = 320.0d;
+	double layoutYExcel = 16.0d;
+	double prefWidthExcel = 267.0d;
+	double prefHeightExcel = 32.0d;
+	double fontSizeExcel = 16.0d;
+	
+	String excelMainCol;
+	int excelCol = 0;
+	boolean firstValExcel = true;
+	boolean theSameExcel = true;
+	
+	// Calc
+	
+	double layoutXCalc = 320.0d;
+	double layoutYCalc = 16.0d;
+	double prefWidthCalc = 267.0d;
+	double prefHeightCalc = 32.0d;
+	double fontSizeCalc = 16.0d;
+	
+	String calcMainCol;
+	int calcCol = 0;
+	boolean firstValCalc = true;
+	boolean theSameCalc = true;
+	
+//    @FXML
+//    private Button idaddcolumn;
+//    
+//    @FXML
+//    private JFXTextField addcoltext;
 	
 //	Functions
 	
@@ -303,26 +347,25 @@ public class Controller {
 		if (!(idsavechangescalc.getText().isEmpty()) &&
 			!(idexporttodoccalc.getText().isEmpty())) {
 			
-//			calcMainCol = idsetcalccol.getText();
-//			calcMainRow = idsetcalcrow.getText();
-		
-			idsavechangescalc.setVisible(true);
-			idexporttodoccalc.setVisible(true);
+			layoutYCalc = 16.0;	
+			System.out.println("I'm working Calc!");
 			
+			CalcRun();
+			
+			theSameCalc = true;
 			impCalc = false;
 			
-			} else {
-				
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error Dialog");
-				alert.setHeaderText("ERROR");
-				alert.setContentText("Invalid input!");
-	
-				alert.showAndWait();
+		} else {
 			
-				idsavechangescalc.setVisible(false);
-				idexporttodoccalc.setVisible(false);
-			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("ERROR");
+			alert.setContentText("Invalid input!");
+			alert.showAndWait();
+		
+			idsavechangescalc.setVisible(false);
+			idexporttodoccalc.setVisible(false);
+		
 			impCalc = true;
 		
 		}
@@ -330,30 +373,41 @@ public class Controller {
 	
 	@FXML
 	void cancelcalc(ActionEvent event) {
-		idsetcalccol.clear();
-		idsetcalcrow.clear();
+		
+		idfillwindowcalc.getChildren().clear();
+		
+		idsetcalccol.setText("A");
+		idsetcalcrow.setText("1");
 		
 		idsavechangescalc.setVisible(false);
 		idexporttodoccalc.setVisible(false);
 		
 		impCalc = true;
+		layoutYCalc = 16.0;
 		
-//		colCalc = "";
-//		rowCalc = "";
 	}
 	
 	@FXML
 	void calcsearchyes(ActionEvent event) {
 		//		display calc col with the inserted values in - idsearchcalc
-//		String searchCalc = idsearchcalc.getText();
+		String searchCalc = idsearchcalc.getText();
+		idfillwindowcalc.getChildren().clear();
 		//		find rows where fields match with searchCalc
+		
+		theSameCalc = false;
 	}
 	
 	@FXML
 	void calcsearchno(ActionEvent event) {
-		//		clear - idsearchcalc and display all
+		
 		idsearchcalc.clear();
-		//		display all again
+		
+		if (theSameCalc != true) {
+			idfillwindowcalc.getChildren().clear();
+			CalcRun();
+		}
+		
+		theSameCalc = true;
 	}
 	
 	//	excel
@@ -363,13 +417,18 @@ public class Controller {
 		if (!(idsetexcelcol.getText().isEmpty()) &&
 			!(idsetexcelrow.getText().isEmpty())) {
 			
-//			excelMainCol = idsetexcelcol.getText();
-//			excelMainRow = idsetexcelrow.getText();
+			layoutYExcel = 16.0;
+			System.out.println("I'm working Excel!");
 		
 			idsavechangesexcel.setVisible(true);
 			idexporttodocexcel.setVisible(true);
 			
+			ExcelRun();
+			
+			
+			
 			impExcel = false;
+			theSameExcel = true;
 		
 			
 		} else {
@@ -378,7 +437,6 @@ public class Controller {
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("ERROR");
 			alert.setContentText("Invalid input!");
-
 			alert.showAndWait();
 		
 			idsavechangesexcel.setVisible(false);
@@ -391,30 +449,41 @@ public class Controller {
 	
 	@FXML
 	void cancelexcel(ActionEvent event) {
-		idsetexcelcol.clear();
-		idsetexcelrow.clear();
+		
+		idfillwindowexcel.getChildren().clear();
+		
+		idsetexcelcol.setText("A");
+		idsetexcelrow.setText("1");
 		
 		idsavechangesexcel.setVisible(false);
 		idexporttodocexcel.setVisible(false);
 		
 		impExcel = true;
+		layoutYExcel = 16.0;
 		
-//		colExcel = "";
-//		rowExcel = "";
 	}
 	
 	@FXML
 	void excelsearchyes(ActionEvent event) {
 		//		display ecxel col with the inserted values in - idsearchexcel
-//		String searchExcel = idsearchexcel.getText();
+		String searchExcel = idsearchexcel.getText();
+		idfillwindowexcel.getChildren().clear();
 		//		find rows where fields match with searchexcel
+		
+		theSameExcel = false;
 	}
 	
 	@FXML
 	void excelsearchno(ActionEvent event) {
-		//		clear - idsearchexcel and display all
-		idsearchexcel.clear();
-		//		display all again
+
+		idsearchexcel.clear();		
+		
+		if (theSameExcel != true) {
+			idfillwindowexcel.getChildren().clear();
+			ExcelRun();
+		}
+		
+		theSameExcel = true;
 	}
 	
 	// mysql
@@ -428,31 +497,78 @@ public class Controller {
 			!(idpasswordinput.getText().isEmpty())) {
 		
 			layoutYMySQL = 16.0;
-			
-			System.out.println("I'm working!");
+			System.out.println("I'm working MySQL!");
 			
 			idexporttodocmysql.setVisible(true);
 			idsavechangesmysql.setVisible(true);
 			
-			MySQL mysql = new MySQL(idlogininput.getText(), idpasswordinput.getText(), iddbnameinput.getText(), idsettablenamemysql.getText());
-			
-			mysqlMainCol = idsetcolmysql.getText();
-			
-			ArrayList<String> valuesMySQL = mysql.getValues(mysqlMainCol);
-			
-			int rowCountMySQL = valuesMySQL.size();
-			int colCountMySQL = mysql.getColumnNames().size(); 
+			MySQLRun();
 		    
-			int row = 0;
+		    theSameMySQL = true;
+		    
+		} else {
 			
-		    for (int i = 0; i < rowCountMySQL; i++) {
-					    	
-		    	Button mysqlButton = new Button("Button" + row);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("ERROR");
+			alert.setContentText("Invalid input!");
+			alert.showAndWait();
+		
+			idexporttodocmysql.setVisible(false);
+			idsavechangesmysql.setVisible(false);
+		
+		}	
+	}
+	
+	@FXML
+	void cancelmysql(ActionEvent event) {
+
+		idfillwindowmysql.getChildren().clear();
+		
+		idsettablenamemysql.clear();
+		iddbnameinput.clear();
+		idlogininput.clear();
+		idpasswordinput.clear();
+		idsetcolmysql.setText("id");
+		
+		idexporttodocmysql.setVisible(false);
+		idsavechangesmysql.setVisible(false);
+		
+		layoutYMySQL = 16.0;
+		
+	}
+	
+	@FXML
+	void mysqlsearchyes(ActionEvent event) {
+		
+		String searchMySQL = idsearchmysql.getText();
+		idfillwindowmysql.getChildren().clear();
+		layoutYMySQL = 16.0;
+		
+		MySQL mysql = new MySQL(idlogininput.getText(), idpasswordinput.getText(), iddbnameinput.getText(), idsettablenamemysql.getText());
+		
+		mysqlMainCol = idsetcolmysql.getText();
+		
+		ArrayList<String> valuesMySQL = mysql.getValues(mysqlMainCol);
+		
+		rowCountMySQL = valuesMySQL.size();
+		colCountMySQL = mysql.getColumnNames().size(); 
+	    
+		int row = 0;
+		
+	    for (int i = 0; i < rowCountMySQL; i++) {
+	    	
+	    	// Add the same name that you extract from table
+	    	// There could be problems if there are spaces
+	    	// FIXME: set case insensitive
+	    	String idMySQL = valuesMySQL.get(i);
+	    	Pattern mysqlPattern = Pattern.compile(searchMySQL, Pattern.CASE_INSENSITIVE);
+	    	Matcher mysqlMatcher = mysqlPattern.matcher(idMySQL);
+	    	
+	    	if (mysqlMatcher.find()) {
+	    		
+	    		Button mysqlButton = new Button("Button" + row);
 		    	idfillwindowmysql.getChildren().add(mysqlButton);
-		    	
-		    	// Add the same name that you extract from table
-		    	// There could be problems if there are spaces
-		    	String idMySQL = valuesMySQL.get(i);
 		    	
 		    	mysqlButton.setId(idMySQL);
 		    	mysqlButton.setOnAction((buttonEvent) -> {
@@ -485,55 +601,10 @@ public class Controller {
 		    	row++;
 		    	
 		    	layoutYMySQL += 32.0;
-	    	
-		    } 
-		    
-		    theSameMySQL = true;
-		    
-		} else {
-			
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("ERROR");
-			alert.setContentText("Invalid input!");
-
-			alert.showAndWait();
+	    		
+	    	}
+	    } 
 		
-			idexporttodocmysql.setVisible(false);
-			idsavechangesmysql.setVisible(false);
-		
-		}	
-	}
-	
-	@FXML
-	void cancelmysql(ActionEvent event) {
-		
-//	    Display MySQL DELETE main col info
-			
-		idfillwindowmysql.getChildren().clear();
-		
-		idsettablenamemysql.clear();
-		iddbnameinput.clear();
-		idlogininput.clear();
-		idpasswordinput.clear();
-		idsetcolmysql.setText("id");
-		
-		idexporttodocmysql.setVisible(false);
-		idsavechangesmysql.setVisible(false);
-		
-		layoutYMySQL = 16.0;
-		
-	}
-	
-	@FXML
-	void mysqlsearchyes(ActionEvent event) {
-		//		display MySQL col with the inserted values in - idsearchmysql
-		String searchMySQL = idsearchmysql.getText();
-		//		find rows where fields match with searchMySQL
-		layoutYMySQL = 16.0;
-		// for loop with  an if statement inside
-		
-		// reset the layout back
 		layoutYMySQL = 16.0;
 		theSameMySQL = false;
 		
@@ -544,17 +615,12 @@ public class Controller {
 		
 		idsearchmysql.clear();
 		
-		//		display all again
-		// FIXME:
-		
-		if (theSameMySQL == true) {
-			
+		if (theSameMySQL != true) {
 			idfillwindowmysql.getChildren().clear();
-			
+			MySQLRun();
 		}
+		
 		theSameMySQL = true;
-		
-		
 	}
 	
 	// all
@@ -762,4 +828,228 @@ public class Controller {
             e.printStackTrace();
         }
     }
+    
+    public void MySQLRun() {
+    	
+		MySQL mysql = new MySQL(idlogininput.getText(), idpasswordinput.getText(), iddbnameinput.getText(), idsettablenamemysql.getText());
+		
+		mysqlMainCol = idsetcolmysql.getText();
+		
+		ArrayList<String> valuesMySQL = mysql.getValues(mysqlMainCol);
+		
+		rowCountMySQL = valuesMySQL.size();
+		colCountMySQL = mysql.getColumnNames().size(); 
+	    
+		int row = 0;
+		
+	    for (int i = 0; i < rowCountMySQL; i++) {
+				    	
+	    	Button mysqlButton = new Button("Button" + row);
+	    	idfillwindowmysql.getChildren().add(mysqlButton);
+	    	
+	    	// Add the same name that you extract from table
+	    	// There could be problems if there are spaces
+	    	String idMySQL = valuesMySQL.get(i);
+	    	
+	    	mysqlButton.setId(idMySQL);
+	    	mysqlButton.setOnAction((buttonEvent) -> {
+	    		
+	    		System.out.println(idMySQL);
+	    		
+	    		Parent root;
+	            try {
+	                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
+	                Stage stage = new Stage();
+	                stage.setTitle(idMySQL);
+	                stage.setScene(new Scene(root, 600, 800));
+	                stage.show();
+	            }
+	            catch (IOException e) {
+	                e.printStackTrace();
+	            }	
+	    		
+	    	});
+	    	mysqlButton.setLayoutX(layoutXMySQL);
+	    	mysqlButton.setLayoutY(layoutYMySQL);
+	    	mysqlButton.setPrefWidth(prefWidthMySQL);
+	    	mysqlButton.setPrefHeight(prefHeightMySQL);
+	    	mysqlButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
+	    	mysqlButton.setText(idMySQL);
+	    	mysqlButton.setTextFill(Color.rgb(54, 54, 54));
+	    	// FIXME:
+	    	mysqlButton.getFont().font(fontSizeMySQL);
+	    	
+	    	row++;
+	    	
+	    	layoutYMySQL += 32.0;
+	    	
+//	    	idaddcolumn.setOnAction((addColEvent) -> {
+//	        	
+//	        	mysql.addColumn(mysqlMainCol, addcoltext.getText());
+//	        	
+//	        });
+    	
+	    } 
+    	
+    }
+    
+    public void ExcelRun() {
+    	
+    	excelMainCol = idsetexcelcol.getText();
+//		excelMainRow = idsetexcelrow.getText();
+		
+		char[] chExcelMainCol = new char[excelMainCol.length()];
+		
+		for (int i = 0; i < excelMainCol.length(); i++) {
+			chExcelMainCol[i] = excelMainCol.charAt(i);
+		}
+		
+		for (int i = 0; i < excelMainCol.length(); i++) {
+			
+			if (chExcelMainCol[i] >= 'a' && chExcelMainCol[i] <= 'z') {
+				int val = chExcelMainCol[i];
+				excelCol = excelCol + val - 96;
+				firstValExcel = false;
+			} else if (chExcelMainCol[i] >= 'A' && chExcelMainCol[i] <= 'Z') {
+				int val = chExcelMainCol[i];
+				excelCol = excelCol + val - 64;
+				firstValExcel = false;
+			} else if (chExcelMainCol[i] >= '0' && chExcelMainCol[i] <= '9') {
+				int val = chExcelMainCol[i];
+				if (firstValExcel != true && val == 0) {
+					excelCol = excelCol + 10;
+					firstValExcel = false;
+				} else {
+					excelCol = excelCol + val;
+					firstValExcel = false;
+				}
+			}
+			
+		}
+		
+		// TODO: get the size of the list with needed data (row count)
+		// FIXME: 0 !!!!
+		for (int i = 0; i < 0; i++) {
+			
+			Button excelButton = new Button("ButtonExcel" + i);
+			idfillwindowexcel.getChildren().add(excelButton);
+	    	
+			// TODO: Get value of the cell!
+	    	String idExcel = "";
+	    	
+	    	excelButton.setId(idExcel);
+	    	excelButton.setOnAction((buttonEventExcel) -> {
+	    		
+	    		System.out.println(idExcel);
+	    		
+	    		Parent root;
+	            try {
+	                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
+	                Stage stage = new Stage();
+	                stage.setTitle(idExcel);
+	                stage.setScene(new Scene(root, 600, 800));
+	                stage.show();
+	            }
+	            catch (IOException e) {
+	                e.printStackTrace();
+	            }	
+	    		
+	    	});
+	    	excelButton.setLayoutX(layoutXExcel);
+	    	excelButton.setLayoutY(layoutYExcel);
+	    	excelButton.setPrefWidth(prefWidthExcel);
+	    	excelButton.setPrefHeight(prefHeightExcel);
+	    	excelButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
+	    	excelButton.setText(idExcel);
+	    	excelButton.setTextFill(Color.rgb(54, 54, 54));
+	    	// FIXME:
+	    	excelButton.getFont().font(fontSizeExcel);
+	    	
+	    	layoutYExcel += 32.0;
+			
+		}
+    	
+    }
+    
+    public void CalcRun() {
+    	
+    	calcMainCol = idsetcalccol.getText();
+//		calcMainRow = idsetcalcrow.getText();
+	
+		idsavechangescalc.setVisible(true);
+		idexporttodoccalc.setVisible(true);
+		
+		char[] chCalcMainCol = new char[calcMainCol.length()];
+		
+		for (int i = 0; i < calcMainCol.length(); i++) {
+			chCalcMainCol[i] = calcMainCol.charAt(i);
+		}
+		
+		for (int i = 0; i < calcMainCol.length(); i++) {
+			
+			if (chCalcMainCol[i] >= 'a' && chCalcMainCol[i] <= 'z') {
+				int val = chCalcMainCol[i];
+				calcCol = calcCol + val - 96;
+				firstValCalc = false;
+			} else if (chCalcMainCol[i] >= 'A' && chCalcMainCol[i] <= 'Z') {
+				int val = chCalcMainCol[i];
+				calcCol = calcCol + val - 64;
+				firstValCalc = false;
+			} else if (chCalcMainCol[i] >= '0' && chCalcMainCol[i] <= '9') {
+				int val = chCalcMainCol[i];
+				if (firstValCalc != true && val == 0) {
+					calcCol = calcCol + 10;
+					firstValCalc = false;
+				} else {
+					calcCol = calcCol + val;
+					firstValCalc = false;
+				}
+			}
+			
+		}
+		
+		// TODO: get the size of the list with needed data (row count)
+		// FIXME: 0 !!!!
+		for (int i = 0; i < 0; i++) {
+			
+			Button calcButton = new Button("ButtonCalc" + i);
+			idfillwindowcalc.getChildren().add(calcButton);
+	    	
+			// TODO: Get value of the cell!
+	    	String idCalc = "";
+	    	
+	    	calcButton.setId(idCalc);
+	    	calcButton.setOnAction((buttonEventCalc) -> {
+	    		
+	    		System.out.println(idCalc);
+	    		
+	    		Parent root;
+	            try {
+	                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
+	                Stage stage = new Stage();
+	                stage.setTitle(idCalc);
+	                stage.setScene(new Scene(root, 600, 800));
+	                stage.show();
+	            }
+	            catch (IOException e) {
+	                e.printStackTrace();
+	            }	
+	    		
+	    	});
+	    	calcButton.setLayoutX(layoutXCalc);
+	    	calcButton.setLayoutY(layoutYCalc);
+	    	calcButton.setPrefWidth(prefWidthCalc);
+	    	calcButton.setPrefHeight(prefHeightCalc);
+	    	calcButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
+	    	calcButton.setText(idCalc);
+	    	calcButton.setTextFill(Color.rgb(54, 54, 54));
+	    	// FIXME:
+	    	calcButton.getFont().font(fontSizeCalc);
+	    	
+	    	layoutYCalc += 32.0;
+			
+		}
+    	
+    }
+    
 }
