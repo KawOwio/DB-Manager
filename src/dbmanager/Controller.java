@@ -924,6 +924,42 @@ public class Controller {
     	idtopcalc.setVisible(false);
     }
     
+//    mysql buttons
+    
+    @FXML
+    void savechangesmysql(ActionEvent event) {
+    	
+    }
+    
+    @FXML
+    void exporttodocmysql(ActionEvent event) {
+    	
+    }
+    
+//    excel buttons
+	    
+	  @FXML
+	  void savechangesexcel(ActionEvent event) {
+	  	
+	  }
+	  
+	  @FXML
+	  void exporttodocexcel(ActionEvent event) {
+	  	
+	  }
+	  
+//    calc buttons
+	    
+	  @FXML
+	  void savechangescalc(ActionEvent event) {
+	  	
+	  }
+	  
+	  @FXML
+	  void exporttodoccalc(ActionEvent event) {
+	  	
+	  }  
+    
 //    calculator
     
     @FXML
@@ -942,6 +978,8 @@ public class Controller {
     }
     
     public void MySQLRun() {
+    	
+    	idfillwindowmysql.getChildren().clear();
     	
 		MySQL mysql = new MySQL(idlogininput.getText(), idpasswordinput.getText(), iddbnameinput.getText(), idsettablenamemysql.getText());
 		
@@ -1011,6 +1049,8 @@ public class Controller {
     }
     
     public void ExcelRun() {
+    	
+    	idfillwindowexcel.getChildren().clear();
     	
     	excelCol = 0;
     	
@@ -1109,6 +1149,8 @@ public class Controller {
     }
     
     public void CalcRun() {
+    	
+    	idfillwindowcalc.getChildren().clear();
     	
     	calcCol = 0;
     	

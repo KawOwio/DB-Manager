@@ -324,8 +324,8 @@
                </content>
             </ScrollPane>
             <JFXButton fx:id="idcancelmysql" layoutX="17.0" layoutY="683.0" onAction="#cancelmysql" prefHeight="38.0" prefWidth="94.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Cancel" textFill="#7e9a99" />
-            <JFXButton fx:id="idexporttodocmysql" layoutX="729.0" layoutY="683.0" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="Export to a doc" textFill="#7e9a99" />
-            <JFXButton fx:id="idsavechangesmysql" layoutX="555.0" layoutY="683.0" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="Save Changes" textFill="#7e9a99" />
+            <JFXButton fx:id="idexporttodocmysql" layoutX="729.0" layoutY="683.0" onAction="#exporttodocmysql" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: true;" text="Export to a doc" textFill="#7e9a99" />
+            <JFXButton fx:id="idsavechangesmysql" layoutX="555.0" layoutY="683.0" onAction="#savechangesmysql" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: true;" text="Save Changes" textFill="#7e9a99" />
             <JFXButton fx:id="idapplymysql" layoutX="127.0" layoutY="683.0" onAction="#applymysql" prefHeight="38.0" prefWidth="94.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Apply" textFill="#7e9a99" />
          </children>
       </AnchorPane>
@@ -333,8 +333,8 @@
          <children>
             <JFXButton fx:id="idcancelexcel" layoutX="14.0" layoutY="682.0" onAction="#cancelexcel" prefHeight="38.0" prefWidth="94.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Cancel" textFill="#7e9a99" />
             <JFXButton fx:id="idapplyexcel" layoutX="126.0" layoutY="682.0" onAction="#applyexcel" prefHeight="38.0" prefWidth="94.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Apply" textFill="#7e9a99" />
-            <JFXButton fx:id="idexporttodocexcel" layoutX="728.0" layoutY="682.0" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="Export to a doc" textFill="#7e9a99" />
-            <JFXButton fx:id="idsavechangesexcel" layoutX="557.0" layoutY="682.0" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="Save Changes" textFill="#7e9a99" />
+            <JFXButton fx:id="idexporttodocexcel" layoutX="728.0" layoutY="682.0" onAction="#exporttodocexcel" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: true;" text="Export to a doc" textFill="#7e9a99" />
+            <JFXButton fx:id="idsavechangesexcel" layoutX="557.0" layoutY="682.0" onAction="#savechangesexcel" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: true;" text="Save Changes" textFill="#7e9a99" />
             <AnchorPane layoutX="144.0" layoutY="24.0" prefHeight="38.0" prefWidth="282.0" style="-fx-background-color: #92bbba; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                <children>
                   <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main column:" textAlignment="CENTER" wrappingWidth="154.0" />
@@ -374,8 +374,8 @@
          <children>
             <JFXButton fx:id="idcancelcalc" layoutX="14.0" layoutY="682.0" onAction="#cancelcalc" prefHeight="38.0" prefWidth="94.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Cancel" textFill="#7e9a99" />
             <JFXButton fx:id="idapplycalc" layoutX="126.0" layoutY="682.0" onAction="#applycalc" prefHeight="38.0" prefWidth="94.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="Apply" textFill="#7e9a99" />
-            <JFXButton fx:id="idexporttodoccalc" layoutX="728.0" layoutY="682.0" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="Export to a doc" textFill="#7e9a99" />
-            <JFXButton fx:id="idsavechangescalc" layoutX="557.0" layoutY="682.0" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="Save Changes" textFill="#7e9a99" />
+            <JFXButton fx:id="idexporttodoccalc" layoutX="728.0" layoutY="682.0" onAction="#exporttodoccalc" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: true;" text="Export to a doc" textFill="#7e9a99" />
+            <JFXButton fx:id="idsavechangescalc" layoutX="557.0" layoutY="682.0" onAction="#savechangescalc" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: true;" text="Save Changes" textFill="#7e9a99" />
             <AnchorPane layoutX="144.0" layoutY="24.0" prefHeight="38.0" prefWidth="282.0" style="-fx-background-color: #92bbba; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                <children>
                   <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main column:" textAlignment="CENTER" wrappingWidth="154.0" />
