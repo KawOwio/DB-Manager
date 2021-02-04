@@ -21,6 +21,7 @@ public class Random {
 		frame.setVisible(true);
 		String excelFilePath = excelToJavaImport.openFile(frame, "xlsx");
 		columnValues("Adreses", 3, excelFilePath );
+		rowValues("Adreses", 1, excelFilePath);
 		
 	}
 	
@@ -32,6 +33,14 @@ public class Random {
 		}
 		System.out.println(columnValues);
 		return columnValues;
+	}
+	
+	public static List<Object> rowValues (String excelMainSheet, int rowNr, String filePathExcel) throws IOException{
+	LinkedHashMap<String, List<ArrayList<Object>>> table;
+	List<Object> rowValues = new ArrayList<>();
+	table = excelToJavaImport.excelToJava(filePathExcel);
+	System.out.println("Row" + table.get(excelMainSheet).get(rowNr));
+	return table.get(excelMainSheet).get(rowNr);
 	}
 }
 	
