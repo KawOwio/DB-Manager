@@ -31,14 +31,12 @@ public class Random {
 		for(int i = 1; i < table.get(sheetName).size(); i++) {
 			columnValues.add(table.get(sheetName).get(i).get(colNum - 1));
 		}
-		System.out.println(columnValues);
+		System.out.println("Col" + columnValues);
 		return columnValues;
 	}
 	
 	public static List<Object> rowValues (String excelMainSheet, int rowNr, String filePathExcel) throws IOException{
-	LinkedHashMap<String, List<ArrayList<Object>>> table;
-	List<Object> rowValues = new ArrayList<>();
-	table = excelToJavaImport.excelToJava(filePathExcel);
+	LinkedHashMap<String, List<ArrayList<Object>>> table = excelToJavaImport.excelToJava(filePathExcel);
 	System.out.println("Row" + table.get(excelMainSheet).get(rowNr));
 	return table.get(excelMainSheet).get(rowNr);
 	}
