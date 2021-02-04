@@ -28,9 +28,11 @@ public class WriteToWord {
 
 	public static void main(String[] args) {
 		File excel = new File("/home/student/ODS-1.ods");
-		File doc = new File("/home/student/ODF-1.odt");
+		File doc = new File("/home/zane/Desktop/Word-1.docx");
+		MySQL sql = new MySQL("dbm", "dbmapp", "test", "Company");
 		try {
-			replaceValuesFromSpreadsheet(excel, doc);
+			//replaceValuesFromMySQL(sql, doc);
+			//replaceValuesFromSpreadsheet(excel, doc);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -72,7 +74,6 @@ public class WriteToWord {
 
 		// Getting data out of sheets
 		ArrayList<ArrayList<Object>> excelData = (ArrayList<ArrayList<Object>>) sheets.values().toArray()[0];
-		System.out.print(excelData);
 
 		// Get rows and columns
 		int rows = excelData.size();
@@ -152,11 +153,10 @@ public class WriteToWord {
 					// Go through every column
 					for (int x = 0; x < columns; x++) {
 						String s = "&" + columnNames.get(x) + "&";
-						System.out.println("Search: " + s);
+
 						search = new TextNavigation(s, document);
 						while (search.hasNext()) {
 							TextSelection item = (TextSelection) search.getCurrentItem();
-							System.out.println("Get: " + values.get(x).get(i));
 							item.replaceWith(values.get(x).get(i));
 						}
 

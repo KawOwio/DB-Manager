@@ -287,6 +287,7 @@ public class Controller {
 	File myCalcFile;
 	File myWordFile;
 	
+	
 //	File repeated imports
 	
 	boolean impExcel = true;
@@ -926,6 +927,16 @@ public class Controller {
     
 //    mysql buttons
     
+    public void getDocument() {
+    	FileChooser chooser = new FileChooser();
+        chooser.setTitle("Open File");
+        chooser.getExtensionFilters().addAll(new ExtensionFilter("Word File", "*.docx"), 
+        		new ExtensionFilter("OpenDocument File", "*.odt"));
+        myWordFile = chooser.showOpenDialog(iddbm.getScene().getWindow());
+        
+//        WriteToWord toWord = new WriteToWord();
+    }
+    
     @FXML
     void savechangesmysql(ActionEvent event) {
     	
@@ -933,7 +944,10 @@ public class Controller {
     
     @FXML
     void exporttodocmysql(ActionEvent event) {
-    	
+    	MySQL mysql = new MySQL(idlogininput.getText(), idpasswordinput.getText(), iddbnameinput.getText(), idsettablenamemysql.getText());
+    	getDocument();
+    	WriteToWord writeToWord = new WriteToWord();
+    	writeToWord.replaceValuesFromMySQL(mysql,myWordFile);
     }
     
 //    excel buttons
@@ -945,7 +959,9 @@ public class Controller {
 	  
 	  @FXML
 	  void exporttodocexcel(ActionEvent event) {
-	  	
+		  getDocument();
+	      WriteToWord writeToWord = new WriteToWord();
+	      writeToWord.replaceValuesFromSpreadsheet(myExcelFile, myWordFile);
 	  }
 	  
 //    calc buttons

@@ -85,7 +85,7 @@ public class MySQL {
 
 	public ArrayList<String> getValues(String columnName) {
 		ArrayList<String> rtnList = new ArrayList<>();
-		String sql = "SELECT " + columnName + " FROM " + databaseName + "." + tableName + "";
+		String sql = "SELECT `" + columnName + "` FROM " + databaseName + "." + tableName + "";
 		// System.out.println(sql);
 		PreparedStatement preparedStatement;
 		try {
