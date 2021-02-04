@@ -477,6 +477,106 @@ public class Controller {
 		idfillwindowexcel.getChildren().clear();
 		//		find rows where fields match with searchexcel
 		
+		excelCol = 0;
+    	
+    	excelMainCol = idsetexcelcol.getText();
+		excelMainSheet = idsetexcelsheet.getText();
+		
+		char[] chExcelMainCol = new char[excelMainCol.length()];
+		
+		for (int i = 0; i < excelMainCol.length(); i++) {
+			chExcelMainCol[i] = excelMainCol.charAt(i);
+		}
+		
+		for (int i = 0; i < excelMainCol.length(); i++) {
+			
+			if (chExcelMainCol[i] >= 'a' && chExcelMainCol[i] <= 'z') {
+				int val = chExcelMainCol[i];
+				excelCol = excelCol + val - 96;
+				firstValExcel = false;
+			} else if (chExcelMainCol[i] >= 'A' && chExcelMainCol[i] <= 'Z') {
+				int val = chExcelMainCol[i];
+				excelCol = excelCol + val - 64;
+				firstValExcel = false;
+			} else if (chExcelMainCol[i] >= '0' && chExcelMainCol[i] <= '9') {
+				int val = chExcelMainCol[i];
+				if (firstValExcel != true && val == 0) {
+					excelCol = excelCol + 10;
+					firstValExcel = false;
+				} else {
+					excelCol = excelCol + val;
+					firstValExcel = false;
+				}
+			}
+		}
+		
+		String filePathExcel = myExcelFile.toPath().toString();
+
+		LinkedHashMap<String, List<ArrayList<Object>>> table;
+		List<Object> columnValues = new ArrayList<>();
+		try {
+			table = excelToJavaImport.excelToJava(filePathExcel);
+			for(int i = 1; i < table.get(excelMainSheet).size(); i++) {
+				columnValues.add(table.get(excelMainSheet).get(i).get(excelCol - 1));
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		// TODO: get the size of the list with needed data (row count)
+		// FIXME: 0 !!!!
+		for (int i = 0; i < columnValues.size(); i++) {
+			
+			String idExcel = columnValues.get(i).toString();
+	    	Pattern excelPattern = Pattern.compile(searchExcel, Pattern.CASE_INSENSITIVE);
+	    	Matcher excelMatcher = excelPattern.matcher(idExcel);
+	    	
+	    	if (excelMatcher.find()) {
+			
+				Button excelButton = new Button("ButtonExcel" + i);
+				idfillwindowexcel.getChildren().add(excelButton);
+		    	
+				// TODO: Get value of the cell!
+		    	
+		    	excelButton.setId(idExcel);
+		    	excelButton.setOnAction((buttonEventExcel) -> {
+		    		
+		    		System.out.println(idExcel);
+		    		
+		    		Parent root;
+		            try {
+		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayExcel.fxml"));
+		                root = loader.load();
+		                Stage stage = new Stage();
+		                stage.setTitle(idExcel);
+		                stage.setScene(new Scene(root, 600, 800));
+		                
+		                DisplayExcelController displayExcelController = loader.getController();
+		                displayExcelController.initDataExcel(idExcel, mysqlMainCol);
+		                
+		                stage.show();
+		            }
+		            catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		    		
+		    	});
+		    	excelButton.setLayoutX(layoutXExcel);
+		    	excelButton.setLayoutY(layoutYExcel);
+		    	excelButton.setPrefWidth(prefWidthExcel);
+		    	excelButton.setPrefHeight(prefHeightExcel);
+		    	excelButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
+		    	excelButton.setText(idExcel);
+		    	excelButton.setTextFill(Color.rgb(54, 54, 54));
+		    	// FIXME:
+		    	excelButton.getFont().font(fontSizeExcel);
+		    	
+		    	layoutYExcel += 32.0;
+	    	}
+		}
+		
+		layoutYExcel = 16.0;
 		theSameExcel = false;
 	}
 	
