@@ -1,6 +1,7 @@
 package dbmanager;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,6 +23,9 @@ public class odfToJava {
 		
 		String odfFilePath = excelToJavaImport.openFile(frame, "ods");
 		odfToJavaImport(odfFilePath);
+		columnValues("Adreses", 2, odfFilePath);
+		rowValues("Adreses", 2, odfFilePath);
+		
 	}
 	public static LinkedHashMap<String, List<ArrayList<Object>>> odfToJavaImport(String odfFilePath) throws Exception {
 		SpreadsheetDocument tableDoc  = SpreadsheetDocument.loadDocument(odfFilePath);
@@ -104,6 +108,24 @@ public class odfToJava {
 		return sheets;
 		
 	}
+	
+	
+	public static List<Object> columnValues (String sheetName, int colNum, String odfFilePath) throws Exception{
+		LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
+		List<Object> columnValues = new ArrayList<>();
+		for(int i = 1; i < table.get(sheetName).size(); i++) {
+			columnValues.add(table.get(sheetName).get(i).get(colNum - 1));
+		}
+		System.out.println("Col values" + columnValues);
+		return columnValues;
+	}
+	
+	public static List<Object> rowValues (String sheetName, int rowNr, String odfFilePath) throws Exception{
+	LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
+	System.out.println("Row" + table.get(sheetName).get(rowNr));
+	return table.get(sheetName).get(rowNr);
+	}
+	
 	
 	public static int columnCount(Table sheet) {
 		int column = sheet.getColumnCount();
