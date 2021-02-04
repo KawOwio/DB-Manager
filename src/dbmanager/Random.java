@@ -24,8 +24,6 @@ public class Random {
 		
 	}
 	
-	
-	
 	public static List<Object> columnValues (String sheetName, int colNum, String excelFilePath) throws IOException{
 		LinkedHashMap<String, List<ArrayList<Object>>> table = excelToJavaImport.excelToJava(excelFilePath);
 		List<Object> columnValues = new ArrayList<>();
@@ -34,6 +32,6 @@ public class Random {
 		}
 		System.out.println(columnValues);
 		return columnValues;
-}
+	}
 }
 	

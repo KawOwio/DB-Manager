@@ -35,44 +35,6 @@ public class DisplayController {
 	MySQL mysql;
 	
 //	Functions
-	
-	// String
-	
-		//	 <AnchorPane fx:id="idreplacestringholder" layoutX="34.0" layoutY="9.0" prefHeight="73.0" prefWidth="529.0" style="visibility: true;">
-		//     <children>
-		//        <Text fx:id="idreplacetext" fill="#757575" layoutX="27.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ReplaceMeString" wrappingWidth="470.7294921875">
-		//           <font>
-		//              <Font size="14.0" />
-		//           </font>
-		//        </Text>
-		//        <AnchorPane layoutX="27.0" layoutY="32.0" prefHeight="30.0" prefWidth="471.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
-		//           <children>
-		//              <JFXTextField fx:id="idreplacestring" focusColor="#ffffff00" layoutX="27.0" layoutY="3.0" prefHeight="8.0" prefWidth="417.0" text="sasdasdadasad" unFocusColor="#ffffff00">
-		//                 <font>
-		//                    <Font size="12.0" />
-		//                 </font>
-		//              </JFXTextField>
-		//           </children>
-		//        </AnchorPane>
-		//     </children>
-		//  </AnchorPane>
-	
-	//	CheckBox
-	
-		//	<AnchorPane fx:id="idreplacestringholder1" layoutX="34.0" prefHeight="73.0" prefWidth="529.0" style="visibility: false;">
-		//    <children>
-		//       <Text fx:id="idreplacecheck" fill="#757575" layoutX="27.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ReplaceMeString" wrappingWidth="470.7294921875">
-		//          <font>
-		//             <Font size="14.0" />
-		//          </font>
-		//       </Text>
-		//       <AnchorPane layoutX="27.0" layoutY="29.0" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
-		//          <children>
-		//             <JFXCheckBox fx:id="idcheckbox" checkedColor="#92bbba" layoutY="-1.0" prefHeight="30.0" prefWidth="30.0" text=" " unCheckedColor="#ffffff00" />
-		//          </children>
-		//       </AnchorPane>
-		//    </children>
-		// </AnchorPane>
 
 	// mysql
 	
@@ -256,6 +218,8 @@ public class DisplayController {
     void savebutton(ActionEvent event) {
 
     }
+    
+    // Main
 
 	public void initData(String idMySQL, String mysqlMainCol, MySQL mysql) {
 		// TODO Auto-generated method stub

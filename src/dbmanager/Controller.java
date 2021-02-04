@@ -976,15 +976,20 @@ public class Controller {
 	    		
 	    		Parent root;
 	            try {
-	                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
+	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayExcel.fxml"));
+	                root = loader.load();
 	                Stage stage = new Stage();
 	                stage.setTitle(idExcel);
 	                stage.setScene(new Scene(root, 600, 800));
+	                
+	                DisplayExcelController displayExcelController = loader.getController();
+	                displayExcelController.initDataExcel(idExcel, mysqlMainCol);
+	                
 	                stage.show();
 	            }
 	            catch (IOException e) {
 	                e.printStackTrace();
-	            }	
+	            }
 	    		
 	    	});
 	    	excelButton.setLayoutX(layoutXExcel);
