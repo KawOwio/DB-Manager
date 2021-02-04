@@ -24,12 +24,11 @@ import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.odfdom.incubator.search.TextNavigation;
 import org.odftoolkit.odfdom.incubator.search.TextSelection;
 
-
 public class WriteToWord {
 
 	public static void main(String[] args) {
 		File excel = new File("/home/student/ODS-1.ods");
-		File doc = new File("/home/student/Word-1.docx");
+		File doc = new File("/home/student/ODF-1.odt");
 		try {
 			replaceValuesFromSpreadsheet(excel, doc);
 		} catch (Exception e) {
@@ -56,7 +55,7 @@ public class WriteToWord {
 	public static void replaceValuesFromSpreadsheet(File spreadsheet, File doc) {
 
 		// Getting all sheets from Excel
-		LinkedHashMap<String, Object> sheets = new LinkedHashMap<>();
+		LinkedHashMap<String, List<ArrayList<Object>>> sheets = new LinkedHashMap<>();
 		try {
 			if (spreadsheet.getName().contains("xlsx")) {
 				sheets = excelToJavaImport.excelToJava(spreadsheet.getAbsolutePath());
@@ -100,7 +99,7 @@ public class WriteToWord {
 			}
 			values.add(strings);
 		}
-		
+
 		// 'Rotate' list for consistent passing
 		ArrayList<ArrayList<String>> rotatedValues = new ArrayList<ArrayList<String>>(values.size());
 		for (int y = 0; y < values.get(0).size(); y++) {
@@ -126,7 +125,7 @@ public class WriteToWord {
 				String extension = "";
 
 				// Make path for copied files in a separate folder
-				// Check what file extension it is 
+				// Check what file extension it is
 				if (fileName.contains(".docx")) {
 					copyPath = filePath.replace(fileName,
 							fileName.replace(".docx", "-copies/" + fileName.replace(".docx", "-" + (i + 1) + ".docx")));
@@ -149,7 +148,7 @@ public class WriteToWord {
 				if (extension == "odt") {
 					TextNavigation search;
 					OdfTextDocument document = (OdfTextDocument) OdfTextDocument.loadDocument(doc);
-					
+
 					// Go through every column
 					for (int x = 0; x < columns; x++) {
 						String s = "&" + columnNames.get(x) + "&";
@@ -160,16 +159,16 @@ public class WriteToWord {
 							System.out.println("Get: " + values.get(x).get(i));
 							item.replaceWith(values.get(x).get(i));
 						}
-						
+
 						search = new TextNavigation("&DateToday&", document);
 						while (search.hasNext()) {
 							TextSelection item = (TextSelection) search.getCurrentItem();
 							item.replaceWith(getDate());
 						}
 					}
-					
+
 					document.save(copyPath);
-					
+
 				} else if (extension == "docx") {
 					// Make changes in the new file
 					FileInputStream fis = new FileInputStream(copyPath);
