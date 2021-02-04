@@ -36,9 +36,9 @@ public class Random {
 	}
 	
 	public static List<Object> rowValues (String excelMainSheet, int rowNr, String filePathExcel) throws IOException{
-	LinkedHashMap<String, List<ArrayList<Object>>> table = excelToJavaImport.excelToJava(filePathExcel);
-	System.out.println("Row" + table.get(excelMainSheet).get(rowNr));
-	return table.get(excelMainSheet).get(rowNr);
+		LinkedHashMap<String, List<ArrayList<Object>>> table = excelToJavaImport.excelToJava(filePathExcel);
+		System.out.println("Row" + table.get(excelMainSheet).get(rowNr));
+		return table.get(excelMainSheet).get(rowNr);
 	}
 }
 	

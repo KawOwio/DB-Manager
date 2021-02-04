@@ -271,7 +271,7 @@ public class Controller {
 	private JFXTextField idsetcalccol;
 	
 	@FXML
-	private JFXTextField idsetcalcrow;
+	private JFXTextField idsetcalcsheet;
 	
 	@FXML
 	private JFXTextField idsearchcalc;
@@ -335,6 +335,7 @@ public class Controller {
 	double fontSizeCalc = 16.0d;
 	
 	String calcMainCol;
+	String calcMainSheet;
 	int calcCol = 0;
 	boolean firstValCalc = true;
 	boolean theSameCalc = true;
@@ -386,7 +387,7 @@ public class Controller {
 		idfillwindowcalc.getChildren().clear();
 		
 		idsetcalccol.setText("A");
-		idsetcalcrow.setText("1");
+		idsetcalcsheet.clear();
 		
 		idsavechangescalc.setVisible(false);
 		idexporttodoccalc.setVisible(false);
@@ -539,6 +540,8 @@ public class Controller {
 				idfillwindowexcel.getChildren().add(excelButton);
 		    	
 				// TODO: Get value of the cell!
+				
+				int rowNb = i;
 		    	
 		    	excelButton.setId(idExcel);
 		    	excelButton.setOnAction((buttonEventExcel) -> {
@@ -547,16 +550,16 @@ public class Controller {
 		    		
 		    		Parent root;
 		            try {
-		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayExcel.fxml"));
+		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayEcxel.fxml"));
 		                root = loader.load();
-		                Stage stage = new Stage();
-		                stage.setTitle(idExcel);
-		                stage.setScene(new Scene(root, 600, 800));
+		                Stage stageExcel = new Stage();
+		                stageExcel.setTitle(idExcel);
+		                stageExcel.setScene(new Scene(root, 600, 800));
 		                
 		                DisplayExcelController displayExcelController = loader.getController();
-		                displayExcelController.initDataExcel(idExcel, mysqlMainCol);
+		                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues);
 		                
-		                stage.show();
+		                stageExcel.show();
 		            }
 		            catch (IOException e) {
 		                e.printStackTrace();
@@ -973,7 +976,9 @@ public class Controller {
 	  
 	  @FXML
 	  void exporttodoccalc(ActionEvent event) {
-	  	
+		  getDocument();
+	      WriteToWord writeToWord = new WriteToWord();
+	      writeToWord.replaceValuesFromSpreadsheet(myExcelFile, myWordFile);
 	  }  
     
 //    calculator
@@ -1125,6 +1130,8 @@ public class Controller {
 			// TODO: Get value of the cell!
 	    	String idExcel = columnValues.get(i).toString();
 	    	
+	    	int rowNb = i;
+	    	
 	    	excelButton.setId(idExcel);
 	    	excelButton.setOnAction((buttonEventExcel) -> {
 	    		
@@ -1132,16 +1139,16 @@ public class Controller {
 	    		
 	    		Parent root;
 	            try {
-	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayExcel.fxml"));
+	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayEcxel.fxml"));
 	                root = loader.load();
-	                Stage stage = new Stage();
-	                stage.setTitle(idExcel);
-	                stage.setScene(new Scene(root, 600, 800));
+	                Stage stageExcel = new Stage();
+	                stageExcel.setTitle(idExcel);
+	                stageExcel.setScene(new Scene(root, 600, 800));
 	                
 	                DisplayExcelController displayExcelController = loader.getController();
-	                displayExcelController.initDataExcel(idExcel, mysqlMainCol);
+	                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues);
 	                
-	                stage.show();
+	                stageExcel.show();
 	            }
 	            catch (IOException e) {
 	                e.printStackTrace();
@@ -1166,12 +1173,12 @@ public class Controller {
     
     public void CalcRun() {
     	
-    	idfillwindowcalc.getChildren().clear();
+		idfillwindowcalc.getChildren().clear();
     	
     	calcCol = 0;
     	
     	calcMainCol = idsetcalccol.getText();
-//		calcMainRow = idsetcalcrow.getText();
+    	calcMainSheet = idsetcalcsheet.getText();
 	
 		idsavechangescalc.setVisible(true);
 		idexporttodoccalc.setVisible(true);
@@ -1205,48 +1212,69 @@ public class Controller {
 			
 		}
 		
-		// TODO: get the size of the list with needed data (row count)
-		// FIXME: 0 !!!!
-		for (int i = 0; i < 0; i++) {
+		String filePathCalc = myCalcFile.toPath().toString();
+	
+		odfToJava odftojava = new odfToJava();
+		
+		List<Object> columnValues;
+		LinkedHashMap<String, List<ArrayList<Object>>> table;
+		try {
+			table = odftojava.odfToJavaImport(filePathCalc);
+			columnValues = odftojava.columnValues(calcMainSheet, calcCol, filePathCalc);
+
+			// TODO: get the size of the list with needed data (row count)
+			// FIXME: 0 !!!!
+			for (int i = 0; i < columnValues.size(); i++) {
+				
+				Button calcButton = new Button("ButtonCalc" + i);
+				idfillwindowcalc.getChildren().add(calcButton);
+		    	
+				// TODO: Get value of the cell!
+		    	String idCalc = columnValues.get(i).toString();
+		    	
+		    	int rowNb = i;
+		    	
+		    	calcButton.setId(idCalc);
+		    	calcButton.setOnAction((buttonEventCalc) -> {
+		    		
+		    		System.out.println(idCalc);
+		    		
+		    		Parent root;
+		            try {
+		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayCalc.fxml"));
+		                root = loader.load();
+		                Stage stageCalc = new Stage();
+		                stageCalc.setTitle(idCalc);
+		                stageCalc.setScene(new Scene(root, 600, 800));
+		                
+		                DisplayCalcController displayCalcController = loader.getController();
+		                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues);
+		                
+		                stageCalc.show();
+		            }
+		            catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		    		
+		    	});
+
+		    	calcButton.setLayoutX(layoutXCalc);
+		    	calcButton.setLayoutY(layoutYCalc);
+		    	calcButton.setPrefWidth(prefWidthCalc);
+		    	calcButton.setPrefHeight(prefHeightCalc);
+		    	calcButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
+		    	calcButton.setText(idCalc);
+		    	calcButton.setTextFill(Color.rgb(54, 54, 54));
+		    	// FIXME:
+		    	calcButton.getFont().font(fontSizeCalc);
+		    	
+		    	layoutYCalc += 32.0;
 			
-			Button calcButton = new Button("ButtonCalc" + i);
-			idfillwindowcalc.getChildren().add(calcButton);
-	    	
-			// TODO: Get value of the cell!
-	    	String idCalc = "";
-	    	
-	    	calcButton.setId(idCalc);
-	    	calcButton.setOnAction((buttonEventCalc) -> {
-	    		
-	    		System.out.println(idCalc);
-	    		
-	    		Parent root;
-	            try {
-	                root = FXMLLoader.load(getClass().getResource("/display.fxml"));
-	                Stage stage = new Stage();
-	                stage.setTitle(idCalc);
-	                stage.setScene(new Scene(root, 600, 800));
-	                stage.show();
-	            }
-	            catch (IOException e) {
-	                e.printStackTrace();
-	            }	
-	    		
-	    	});
-	    	calcButton.setLayoutX(layoutXCalc);
-	    	calcButton.setLayoutY(layoutYCalc);
-	    	calcButton.setPrefWidth(prefWidthCalc);
-	    	calcButton.setPrefHeight(prefHeightCalc);
-	    	calcButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
-	    	calcButton.setText(idCalc);
-	    	calcButton.setTextFill(Color.rgb(54, 54, 54));
-	    	// FIXME:
-	    	calcButton.getFont().font(fontSizeCalc);
-	    	
-	    	layoutYCalc += 32.0;
-			
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-    	
     }
     
 }

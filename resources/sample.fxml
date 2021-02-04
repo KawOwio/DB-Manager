@@ -388,17 +388,17 @@
             </AnchorPane>
             <AnchorPane layoutX="475.0" layoutY="24.0" prefHeight="38.0" prefWidth="282.0" style="-fx-background-color: #92bbba; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                <children>
-                  <Text fill="#575757" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify main row:" textAlignment="CENTER" wrappingWidth="154.0" />
-                  <AnchorPane layoutX="177.0" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
+                  <Text fill="#575757" layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specify sheet:" textAlignment="CENTER" wrappingWidth="93.72949218749989" />
+                  <AnchorPane layoutX="115.0" prefHeight="38.0" prefWidth="167.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;">
                      <children>
-                        <JFXTextField fx:id="idsetcalcrow" alignment="CENTER" focusColor="#ffffff00" layoutX="21.0" layoutY="5.0" prefHeight="30.0" prefWidth="66.0" text="1" unFocusColor="#ffffff00" />
+                        <JFXTextField fx:id="idsetcalcsheet" alignment="CENTER" focusColor="#ffffff00" layoutX="13.0" layoutY="5.0" prefHeight="30.0" prefWidth="140.0" unFocusColor="#ffffff00" />
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
             <ScrollPane layoutY="94.0" prefHeight="572.0" prefWidth="900.0" style="-fx-background-color: #ececec; -fx-background: #ececec;">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="123.0" prefWidth="896.0">
+                  <AnchorPane fx:id="idfillwindowcalc" minHeight="0.0" minWidth="0.0" prefHeight="123.0" prefWidth="896.0">
                      <children>
                         <JFXButton fx:id="idfillmecalcsearch" layoutX="315.0" layoutY="22.0" prefHeight="32.0" prefWidth="267.0" style="visibility: false;" text="FillMe" textFill="#545454">
                            <font>

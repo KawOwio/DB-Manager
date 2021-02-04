@@ -1,7 +1,10 @@
 package dbmanager;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 
-public class DisplayController {
+public class DisplayCalcController {
 	
 	@FXML
 	private AnchorPane idfillme;
@@ -30,13 +33,16 @@ public class DisplayController {
 	@FXML
 	private Button idaddcolumn;
 	
-	String idMySQL;
-	String mysqlMainCol;
-	MySQL mysql;
+	String idCalc;
+	String calcMainCol;
+	String calcFilePath;
+	String calcMainSheet;
+	int rowNb;
+	List<Object> columnValues;
 	
 //	Functions
 
-	// mysql
+	// excel
 	
 	double layoutXa1 = 34.0d;
 	double layoutYa1 = 9.0d;
@@ -72,33 +78,31 @@ public class DisplayController {
 	double prefWidthc = 30.0d;
 	double prefHeightc = 30.0d;
 	
+//	public static List<Object> rowValues (String sheetName, int rowNr, String odfFilePath) throws Exception{
+//		LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
+//		System.out.println("Row" + table.get(sheetName).get(rowNr));
+//		return table.get(sheetName).get(rowNr);
+//	}
+	
 	public void displayData() {
 		
-		idsettitle.setText(idMySQL);
-
-		ArrayList<ArrayList<String>> list;
+		System.out.println("Calc I'm working " + idCalc);
+		
+		odfToJava random = new odfToJava();
+		List<Object> values;
+		List<Object> mainValues;
 		try {
-			list = mysql.getRowContent(mysqlMainCol, idMySQL);
 			
-			//		list.get(2).get(i)
+			int mainRow = 0;
 			
-			//		allTheInfo.add(columnNames);
-			//		allTheInfo.add(columnTypes);
-			//		allTheInfo.add(rowContent);
-	
-			// 		System.out.println(allTheInfo.get(0).get(i));
-			// 		System.out.println(allTheInfo.get(1).get(i));
-			// 		System.out.println(allTheInfo.get(2).get(i));
+			int rightRow = rowNb + 1;
 			
-			
-			for (int i = 0; i < mysql.getColumnNames().size(); i++) {
+			values = random.rowValues(calcMainSheet, rightRow, calcFilePath);
+			mainValues = random.rowValues(calcMainSheet, mainRow, calcFilePath);
+		
+			idsettitle.setText(idCalc);
 				
-				Pattern stringPattern = Pattern.compile("VARCHAR", Pattern.CASE_INSENSITIVE);
-				Pattern intPattern = Pattern.compile("INT", Pattern.CASE_INSENSITIVE);
-				Pattern decimalPattern = Pattern.compile("DECIMAL", Pattern.CASE_INSENSITIVE);
-				Matcher stringMatcher = stringPattern.matcher(list.get(0).get(i));
-				Matcher intMatcher = intPattern.matcher(list.get(0).get(i));
-				Matcher decimalMatcher = decimalPattern.matcher(list.get(0).get(i));
+			for (int j = 0; j < columnValues.size(); j++) {
 				
 				// 1st
 				
@@ -123,28 +127,22 @@ public class DisplayController {
 				// FIXME:
 	//			text.setId();
 				// FIXME:
-				text.setText(list.get(0).get(i));
+				text.setText(mainValues.get(j).toString());
 				text.setFill(Color.rgb(75, 75, 75));
-				// FIXME:
 				text.setStrokeType(StrokeType.OUTSIDE);
 				text.setStrokeWidth(strokeWidth);
 				text.setWrappingWidth(wrappingWidth);
 				text.setLayoutX(layoutXt1);
 				text.setLayoutY(layoutYt1);
-				// FIXME:
 				text.getFont().font(fontSizet1);
 				
-//				if (stringMatcher.find() || intMatcher.find() || decimalMatcher.find()) {
-				if (true == true) {
+				if (true) {
 					
 					// 3rd
 					
 					AnchorPane anchorPanea2 = new AnchorPane();
-					// FIXME: have to get the right ID!!!
 					anchorPanea1.getChildren().add(anchorPanea2);
 					
-					// FIXME:
-		//			anchorPanea2.setId();
 					anchorPanea2.setLayoutX(layoutXa2);
 					anchorPanea2.setLayoutY(layoutYa2);
 					anchorPanea2.setPrefWidth(prefWidtha2);
@@ -154,11 +152,8 @@ public class DisplayController {
 					// 4th
 					
 					JFXTextField jfxTextField = new JFXTextField();
-					// FIXME: have to get the right ID!!!
 					anchorPanea2.getChildren().add(jfxTextField);
 					
-					// FIXME:
-	//				jfxTextField.setId();
 					jfxTextField.getFont().font(fontSizet2);
 					jfxTextField.setFocusColor(Color.WHITE);
 					jfxTextField.setLayoutX(layoutXt2);
@@ -166,19 +161,15 @@ public class DisplayController {
 					jfxTextField.setPrefWidth(prefWidtht2);
 					jfxTextField.setPrefHeight(prefHeightt2);
 					jfxTextField.setUnFocusColor(Color.WHITE);
-					// FIXME: insert what you get from the function
-					jfxTextField.setText(list.get(2).get(i));
+					jfxTextField.setText(values.get(j).toString());
 				
 				} else {
 					
 					// 3rd
 					
 					AnchorPane anchorPanea3 = new AnchorPane();
-					// FIXME: have to get the right ID!!!
 					anchorPanea1.getChildren().add(anchorPanea3);
 					
-					// FIXME:
-		//			anchorPanea3.setId();
 					anchorPanea3.setLayoutX(layoutXa3);
 					anchorPanea3.setLayoutY(layoutYa3);
 					anchorPanea3.setPrefWidth(prefWidtha3);
@@ -188,7 +179,6 @@ public class DisplayController {
 					// 4th
 					
 					JFXCheckBox jfxCheckBox = new JFXCheckBox();
-					// FIXME: have to get the right ID!!!
 					anchorPanea3.getChildren().add(jfxCheckBox);
 					
 					// FIXME:
@@ -202,11 +192,8 @@ public class DisplayController {
 					jfxCheckBox.setUnCheckedColor(Color.WHITE);
 					
 				}
-			
-			
 			}
-			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -221,13 +208,15 @@ public class DisplayController {
     
     // Main
 
-	public void initData(String idMySQL, String mysqlMainCol, MySQL mysql) {
-		// TODO Auto-generated method stub
-		this.idMySQL = idMySQL;
-		this.mysqlMainCol = mysqlMainCol;
-		this.mysql = mysql;
+	public void initDataCalc(String idCalc, String calcMainCol, String calcMainSheet, int rowNb, File myCalcFile, List<Object> columnValues) {
+		this.idCalc = idCalc;
+		this.calcMainCol = calcMainCol;
+		this.calcMainSheet = calcMainSheet;
+		this.rowNb = rowNb;
+		this.calcFilePath = myCalcFile.getAbsolutePath();
+		this.columnValues = columnValues;
 		
-		System.out.println("MySQL " + idMySQL);
+		System.out.println("Excel " + idCalc);
 		displayData();
 	}
 	

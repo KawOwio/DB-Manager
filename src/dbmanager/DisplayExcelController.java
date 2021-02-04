@@ -1,7 +1,10 @@
 package dbmanager;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +35,10 @@ public class DisplayExcelController {
 	
 	String idExcel;
 	String excelMainCol;
+	String excelFilePath;
+	String excelMainSheet;
+	int rowNb;
+	List<Object> columnValues;
 	
 //	Functions
 
@@ -71,100 +78,122 @@ public class DisplayExcelController {
 	double prefWidthc = 30.0d;
 	double prefHeightc = 30.0d;
 	
+//	public static List<Object> rowValues (String sheetName, int rowNr, String odfFilePath) throws Exception{
+//		LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
+//		System.out.println("Row" + table.get(sheetName).get(rowNr));
+//		return table.get(sheetName).get(rowNr);
+//	}
+	
 	public void displayData() {
 		
-		idsettitle.setText(idExcel);
+		System.out.println("Excel I'm working " + idExcel);
+		
+		Random random = new Random();
+		List<Object> values;
+		List<Object> mainValues;
+		try {
 			
-		for (int i = 0; i < ; i++) {
+			int mainRow = 0;
 			
-			// 1st
-			
-			AnchorPane anchorPanea1 = new AnchorPane();
-			idfillme.getChildren().add(anchorPanea1);
-			
-			// FIXME:
-//			anchorPanea1.setId(anchorPanea1);
-			anchorPanea1.setLayoutX(layoutXa1);
-			anchorPanea1.setLayoutY(layoutYa1);
-			anchorPanea1.setPrefWidth(prefWidtha1);
-			anchorPanea1.setPrefHeight(prefHeighta1);
-			
-			layoutYa1 += 73.0;
-			
-			// 2nd
-			
-			Text text = new Text();
-			//FIXME: have to get the right ID!!!
-			anchorPanea1.getChildren().add(text);
-			
-			// FIXME:
-//			text.setId();
-			// FIXME:
-			text.setText();
-			text.setFill(Color.rgb(75, 75, 75));
-			text.setStrokeType(StrokeType.OUTSIDE);
-			text.setStrokeWidth(strokeWidth);
-			text.setWrappingWidth(wrappingWidth);
-			text.setLayoutX(layoutXt1);
-			text.setLayoutY(layoutYt1);
-			text.getFont().font(fontSizet1);
-			
-			if () {
+			values = random.rowValues(excelMainSheet, rowNb, excelFilePath);
+			mainValues = random.rowValues(excelMainSheet, mainRow, excelFilePath);
+		
+			idsettitle.setText(idExcel);
 				
-				// 3rd
+			for (int j = 0; j < columnValues.size(); j++) {
 				
-				AnchorPane anchorPanea2 = new AnchorPane();
-				anchorPanea1.getChildren().add(anchorPanea2);
+				// 1st
 				
-				anchorPanea2.setLayoutX(layoutXa2);
-				anchorPanea2.setLayoutY(layoutYa2);
-				anchorPanea2.setPrefWidth(prefWidtha2);
-				anchorPanea2.setPrefHeight(prefHeighta2);
-				anchorPanea2.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
-				
-				// 4th
-				
-				JFXTextField jfxTextField = new JFXTextField();
-				anchorPanea2.getChildren().add(jfxTextField);
-				
-				jfxTextField.getFont().font(fontSizet2);
-				jfxTextField.setFocusColor(Color.WHITE);
-				jfxTextField.setLayoutX(layoutXt2);
-				jfxTextField.setLayoutY(layoutYt2);
-				jfxTextField.setPrefWidth(prefWidtht2);
-				jfxTextField.setPrefHeight(prefHeightt2);
-				jfxTextField.setUnFocusColor(Color.WHITE);
-				jfxTextField.setText();
-			
-			} else {
-				
-				// 3rd
-				
-				AnchorPane anchorPanea3 = new AnchorPane();
-				anchorPanea1.getChildren().add(anchorPanea3);
-				
-				anchorPanea3.setLayoutX(layoutXa3);
-				anchorPanea3.setLayoutY(layoutYa3);
-				anchorPanea3.setPrefWidth(prefWidtha3);
-				anchorPanea3.setPrefHeight(prefHeighta3);
-				anchorPanea3.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
-				
-				// 4th
-				
-				JFXCheckBox jfxCheckBox = new JFXCheckBox();
-				anchorPanea3.getChildren().add(jfxCheckBox);
+				AnchorPane anchorPanea1 = new AnchorPane();
+				idfillme.getChildren().add(anchorPanea1);
 				
 				// FIXME:
-	//			jfxCheckBox.setId();
-				// FIXME: checkedColor="#92bbba"
-//				jfxCheckBox.setCheckedColor(Color.rgb(92, bb, ba));
-				jfxCheckBox.setLayoutX(layoutXc);
-				jfxCheckBox.setLayoutY(layoutYc);
-				jfxCheckBox.setPrefWidth(prefWidthc);
-				jfxCheckBox.setPrefHeight(prefHeightc);
-				jfxCheckBox.setUnCheckedColor(Color.WHITE);
+	//			anchorPanea1.setId(anchorPanea1);
+				anchorPanea1.setLayoutX(layoutXa1);
+				anchorPanea1.setLayoutY(layoutYa1);
+				anchorPanea1.setPrefWidth(prefWidtha1);
+				anchorPanea1.setPrefHeight(prefHeighta1);
 				
+				layoutYa1 += 73.0;
+				
+				// 2nd
+				
+				Text text = new Text();
+				//FIXME: have to get the right ID!!!
+				anchorPanea1.getChildren().add(text);
+				
+				// FIXME:
+	//			text.setId();
+				// FIXME:
+				text.setText(mainValues.get(j).toString());
+				text.setFill(Color.rgb(75, 75, 75));
+				text.setStrokeType(StrokeType.OUTSIDE);
+				text.setStrokeWidth(strokeWidth);
+				text.setWrappingWidth(wrappingWidth);
+				text.setLayoutX(layoutXt1);
+				text.setLayoutY(layoutYt1);
+				text.getFont().font(fontSizet1);
+				
+				if (true) {
+					
+					// 3rd
+					
+					AnchorPane anchorPanea2 = new AnchorPane();
+					anchorPanea1.getChildren().add(anchorPanea2);
+					
+					anchorPanea2.setLayoutX(layoutXa2);
+					anchorPanea2.setLayoutY(layoutYa2);
+					anchorPanea2.setPrefWidth(prefWidtha2);
+					anchorPanea2.setPrefHeight(prefHeighta2);
+					anchorPanea2.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
+					
+					// 4th
+					
+					JFXTextField jfxTextField = new JFXTextField();
+					anchorPanea2.getChildren().add(jfxTextField);
+					
+					jfxTextField.getFont().font(fontSizet2);
+					jfxTextField.setFocusColor(Color.WHITE);
+					jfxTextField.setLayoutX(layoutXt2);
+					jfxTextField.setLayoutY(layoutYt2);
+					jfxTextField.setPrefWidth(prefWidtht2);
+					jfxTextField.setPrefHeight(prefHeightt2);
+					jfxTextField.setUnFocusColor(Color.WHITE);
+					jfxTextField.setText(values.get(j).toString());
+				
+				} else {
+					
+					// 3rd
+					
+					AnchorPane anchorPanea3 = new AnchorPane();
+					anchorPanea1.getChildren().add(anchorPanea3);
+					
+					anchorPanea3.setLayoutX(layoutXa3);
+					anchorPanea3.setLayoutY(layoutYa3);
+					anchorPanea3.setPrefWidth(prefWidtha3);
+					anchorPanea3.setPrefHeight(prefHeighta3);
+					anchorPanea3.setStyle("-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em;");
+					
+					// 4th
+					
+					JFXCheckBox jfxCheckBox = new JFXCheckBox();
+					anchorPanea3.getChildren().add(jfxCheckBox);
+					
+					// FIXME:
+		//			jfxCheckBox.setId();
+					// FIXME: checkedColor="#92bbba"
+	//				jfxCheckBox.setCheckedColor(Color.rgb(92, bb, ba));
+					jfxCheckBox.setLayoutX(layoutXc);
+					jfxCheckBox.setLayoutY(layoutYc);
+					jfxCheckBox.setPrefWidth(prefWidthc);
+					jfxCheckBox.setPrefHeight(prefHeightc);
+					jfxCheckBox.setUnCheckedColor(Color.WHITE);
+					
+				}
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -177,11 +206,15 @@ public class DisplayExcelController {
     
     // Main
 
-	public void initDataExcel(String idExcel, String excelMainCol) {
-		// TODO Auto-generated method stub
+	public void initDataExcel(String idExcel, String excelMainCol, String excelMainSheet, int rowNb, File myExcelFile, List<Object> columnValues) {
 		this.idExcel = idExcel;
 		this.excelMainCol = excelMainCol;
+		this.excelMainSheet = excelMainSheet;
+		this.rowNb = rowNb;
+		this.excelFilePath = myExcelFile.getAbsolutePath();
+		this.columnValues = columnValues;
 		
+		System.out.println("Excel " + idExcel);
 		displayData();
 	}
 	

@@ -121,9 +121,9 @@ public class odfToJava {
 	}
 	
 	public static List<Object> rowValues (String sheetName, int rowNr, String odfFilePath) throws Exception{
-	LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
-	System.out.println("Row" + table.get(sheetName).get(rowNr));
-	return table.get(sheetName).get(rowNr);
+		LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
+		System.out.println("Row" + table.get(sheetName).get(rowNr));
+		return table.get(sheetName).get(rowNr);
 	}
 	
 	
