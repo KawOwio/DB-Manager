@@ -26,6 +26,9 @@ public class DisplayCalcController {
 	
     @FXML
     private Text idsettitle;
+    
+    @FXML
+    private Text idtimetext;
 	
 	@FXML
 	private Button idsave;
@@ -33,12 +36,19 @@ public class DisplayCalcController {
 	@FXML
 	private Button idaddcolumn;
 	
+	@FXML
+	private Button idtimer;
+	
 	String idCalc;
 	String calcMainCol;
 	String calcFilePath;
 	String calcMainSheet;
 	int rowNb;
 	List<Object> columnValues;
+	int startTimeCalc;
+	TimeTracking time;
+	
+	boolean timer = true;
 	
 //	Functions
 
@@ -78,6 +88,8 @@ public class DisplayCalcController {
 	double prefWidthc = 30.0d;
 	double prefHeightc = 30.0d;
 	
+	double widthWindow = 129.0d;
+	
 //	public static List<Object> rowValues (String sheetName, int rowNr, String odfFilePath) throws Exception{
 //		LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
 //		System.out.println("Row" + table.get(sheetName).get(rowNr));
@@ -85,6 +97,11 @@ public class DisplayCalcController {
 //	}
 	
 	public void displayData() {
+		
+		widthWindow = 129.0;
+		idfillme.setPrefHeight(widthWindow);
+		idfillme.setMinHeight(widthWindow);
+		idfillme.maxHeight(widthWindow);
 		
 		System.out.println("Calc I'm working " + idCalc);
 		
@@ -192,11 +209,35 @@ public class DisplayCalcController {
 					jfxCheckBox.setUnCheckedColor(Color.WHITE);
 					
 				}
+				
+				widthWindow += 73.0;
+				
+				idfillme.setPrefHeight(widthWindow);
+				idfillme.setMinHeight(widthWindow);
+				idfillme.maxHeight(widthWindow);
+				
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	// timer
+	
+	@FXML
+    void timer(ActionEvent event) {
+		
+		if (timer == true) {
+			
+			time.elapsedTime(startTimeCalc);
+			String value = time.time;
+			idtimetext.setText(value);
+//			idtimer.setText("Start timer");
+			timer = false;
+			
+		}
+		
 	}
 	
 	// Save button on click
@@ -208,13 +249,15 @@ public class DisplayCalcController {
     
     // Main
 
-	public void initDataCalc(String idCalc, String calcMainCol, String calcMainSheet, int rowNb, File myCalcFile, List<Object> columnValues) {
+	public void initDataCalc(String idCalc, String calcMainCol, String calcMainSheet, int rowNb, File myCalcFile, List<Object> columnValues, int startTimeCalc, TimeTracking time) {
 		this.idCalc = idCalc;
 		this.calcMainCol = calcMainCol;
 		this.calcMainSheet = calcMainSheet;
 		this.rowNb = rowNb;
 		this.calcFilePath = myCalcFile.getAbsolutePath();
 		this.columnValues = columnValues;
+		this.startTimeCalc = startTimeCalc;
+		this.time = time;
 		
 		System.out.println("Excel " + idCalc);
 		displayData();

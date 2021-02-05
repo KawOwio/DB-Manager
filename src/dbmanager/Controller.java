@@ -23,6 +23,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -161,6 +162,9 @@ public class Controller {
 	@FXML
 	private Button idcancelcalc;
 	
+	@FXML
+	private Button idtimer;
+	
 	// make f on click
 	@FXML
 	private Button idsavechangesexcel;
@@ -276,10 +280,17 @@ public class Controller {
 	@FXML
 	private JFXTextField idsearchcalc;
 	
+	@FXML
+	private Text idtimertext;
+	
 //	calculator
 
 	@FXML
 	private Button iddisplaycalculator;
+	
+//	timer
+	
+	boolean timeStart = true;
 	
 //	Files
 	
@@ -327,6 +338,7 @@ public class Controller {
 	boolean theSameExcel = true;
 	
 	List<Object> excelMain;
+	double widthExcelWindow = 100.0d;
 	
 	// Calc
 	
@@ -343,14 +355,40 @@ public class Controller {
 	boolean theSameCalc = true;
 	
 	ArrayList<Object> calcMain;
-	
-//    @FXML
-//    private Button idaddcolumn;
-//    
-//    @FXML
-//    private JFXTextField addcoltext;
+	double widthCalcWindow = 100.0d;
 	
 //	Functions
+	
+	// time tracking
+	
+	int startTime = 0;
+	int startTimeExcel = 0;
+	int startTimeCalc = 0;
+	int startTimeMySQL = 0;
+	
+	@FXML
+	void timer(ActionEvent event) {
+		
+		TimeTracking time = new TimeTracking();
+		
+		if (timeStart == true) {
+			
+			time.startTracking();
+			startTime = time.start;
+			idtimertext.setText("");
+			idtimer.setText("End timer");
+			timeStart = false;
+			
+		} else {
+			
+			time.elapsedTime(startTime);
+			String value = time.time;
+			idtimertext.setText(value);
+			idtimer.setText("Start timer");
+			timeStart = true;
+			
+		}
+	}
 	
 	//	calc
 	
@@ -386,6 +424,11 @@ public class Controller {
 	@FXML
 	void cancelcalc(ActionEvent event) {
 		
+		widthCalcWindow = 100.0;
+    	idfillwindowcalc.setPrefHeight(widthCalcWindow);
+    	idfillwindowcalc.setMinHeight(widthCalcWindow);
+    	idfillwindowcalc.maxHeight(widthCalcWindow);
+		
 		idfillwindowcalc.getChildren().clear();
 		
 		idsetcalccol.setText("A");
@@ -401,6 +444,12 @@ public class Controller {
 	
 	@FXML
 	void calcsearchyes(ActionEvent event) {
+		
+		widthCalcWindow = 100.0;
+    	idfillwindowcalc.setPrefHeight(widthCalcWindow);
+    	idfillwindowcalc.setMinHeight(widthCalcWindow);
+    	idfillwindowcalc.maxHeight(widthCalcWindow);
+		
 		//		display calc col with the inserted values in - idsearchcalc
 		String searchCalc = idsearchcalc.getText();
 		idfillwindowcalc.getChildren().clear();
@@ -475,6 +524,14 @@ public class Controller {
 			    		
 			    		System.out.println(idCalc);
 			    		
+			    		TimeTracking time = new TimeTracking();
+		    			
+		    			time.startTracking();
+		    			startTimeCalc = time.start;
+		    			idtimertext.setText("");
+		    			idtimer.setText("End timer");
+		    			timeStart = false;
+			    		
 			    		Parent root;
 			            try {
 			            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayCalc.fxml"));
@@ -484,7 +541,7 @@ public class Controller {
 			                stageCalc.setScene(new Scene(root, 600, 800));
 			                
 			                DisplayCalcController displayCalcController = loader.getController();
-			                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues);
+			                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues, startTimeCalc, time);
 			                
 			                stageCalc.show();
 			            }
@@ -505,6 +562,11 @@ public class Controller {
 			    	calcButton.getFont().font(fontSizeCalc);
 			    	
 			    	layoutYCalc += 32.0;
+			    	widthCalcWindow += 32.0;
+			    	
+			    	idfillwindowcalc.setPrefHeight(widthCalcWindow);
+			    	idfillwindowcalc.setMinHeight(widthCalcWindow);
+			    	idfillwindowcalc.maxHeight(widthCalcWindow);
 		    	}
 			}
 		} catch (Exception e1) {
@@ -567,6 +629,11 @@ public class Controller {
 	@FXML
 	void cancelexcel(ActionEvent event) {
 		
+		widthExcelWindow = 100.0;
+    	idfillwindowexcel.setPrefHeight(widthExcelWindow);
+    	idfillwindowexcel.setMinHeight(widthExcelWindow);
+    	idfillwindowexcel.maxHeight(widthExcelWindow);
+		
 		idfillwindowexcel.getChildren().clear();
 		
 		idsetexcelcol.setText("A");
@@ -583,6 +650,12 @@ public class Controller {
 	
 	@FXML
 	void excelsearchyes(ActionEvent event) {
+		
+		widthExcelWindow = 100.0;
+    	idfillwindowexcel.setPrefHeight(widthExcelWindow);
+    	idfillwindowexcel.setMinHeight(widthExcelWindow);
+    	idfillwindowexcel.maxHeight(widthExcelWindow);
+		
 		//		display ecxel col with the inserted values in - idsearchexcel
 		String searchExcel = idsearchexcel.getText();
 		idfillwindowexcel.getChildren().clear();
@@ -657,6 +730,14 @@ public class Controller {
 		    		
 		    		System.out.println(idExcel);
 		    		
+		    		TimeTracking time = new TimeTracking();
+	    			
+	    			time.startTracking();
+	    			startTimeExcel = time.start;
+	    			idtimertext.setText("");
+	    			idtimer.setText("End timer");
+	    			timeStart = false;
+		    		
 		    		Parent root;
 		            try {
 		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayEcxel.fxml"));
@@ -666,7 +747,7 @@ public class Controller {
 		                stageExcel.setScene(new Scene(root, 600, 800));
 		                
 		                DisplayExcelController displayExcelController = loader.getController();
-		                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues);
+		                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues, startTimeExcel, time);
 		                
 		                stageExcel.show();
 		            }
@@ -686,6 +767,11 @@ public class Controller {
 		    	excelButton.getFont().font(fontSizeExcel);
 		    	
 		    	layoutYExcel += 32.0;
+		    	widthExcelWindow += 32.0;
+		    	
+		    	idfillwindowexcel.setPrefHeight(widthExcelWindow);
+		    	idfillwindowexcel.setMinHeight(widthExcelWindow);
+		    	idfillwindowexcel.maxHeight(widthExcelWindow);
 	    	}
 		}
 		
@@ -761,6 +847,11 @@ public class Controller {
 	@FXML
 	void mysqlsearchyes(ActionEvent event) {
 		
+		widthMySQLWindow = 100.0;
+    	idfillwindowmysql.setPrefHeight(widthMySQLWindow);
+    	idfillwindowmysql.setMinHeight(widthMySQLWindow);
+    	idfillwindowmysql.maxHeight(widthMySQLWindow);
+		
 		String searchMySQL = idsearchmysql.getText();
 		idfillwindowmysql.getChildren().clear();
 		layoutYMySQL = 16.0;
@@ -795,6 +886,14 @@ public class Controller {
 		    		
 		    		System.out.println(idMySQL);
 		    		
+		    		TimeTracking time = new TimeTracking();
+	    			
+	    			time.startTracking();
+	    			startTimeMySQL = time.start;
+	    			idtimertext.setText("");
+	    			idtimer.setText("End timer");
+	    			timeStart = false;
+		    		
 		    		Parent root;
 		            try {
 		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/display.fxml"));
@@ -804,7 +903,7 @@ public class Controller {
 		                stage.setScene(new Scene(root, 600, 800));
 		                
 		                DisplayController displayController = loader.getController();
-		                displayController.initData(idMySQL, mysqlMainCol, mysql);
+		                displayController.initData(idMySQL, mysqlMainCol, mysql, startTimeMySQL, time);
 		                
 		                stage.show();
 		            }
@@ -826,6 +925,11 @@ public class Controller {
 		    	row++;
 		    	
 		    	layoutYMySQL += 32.0;
+		    	widthMySQLWindow += 32.0;
+		    	
+		    	idfillwindowmysql.setPrefHeight(widthMySQLWindow);
+		    	idfillwindowmysql.setMinHeight(widthMySQLWindow);
+		    	idfillwindowmysql.maxHeight(widthMySQLWindow);
 	    		
 	    	}
 	    } 
@@ -837,6 +941,11 @@ public class Controller {
 	
 	@FXML
 	void mysqlsearchno(ActionEvent event) {
+		
+		widthMySQLWindow = 100.0;
+    	idfillwindowmysql.setPrefHeight(widthMySQLWindow);
+    	idfillwindowmysql.setMinHeight(widthMySQLWindow);
+    	idfillwindowmysql.maxHeight(widthMySQLWindow);
 		
 		idsearchmysql.clear();
 		
@@ -1110,12 +1219,9 @@ public class Controller {
     public void MySQLRun() {
     	
     	widthMySQLWindow = 100.0;
-//    	prefHeight="100.0"
-//    	minHeight="0.0"
     	idfillwindowmysql.setPrefHeight(widthMySQLWindow);
     	idfillwindowmysql.setMinHeight(widthMySQLWindow);
     	idfillwindowmysql.maxHeight(widthMySQLWindow);
-//    	idfillwindowmysql.hei(widthMySQLWindow);
     	
     	idfillwindowmysql.getChildren().clear();
     	
@@ -1144,6 +1250,14 @@ public class Controller {
 	    		
 	    		System.out.println(idMySQL);
 	    		
+	    		TimeTracking time = new TimeTracking();
+	    			
+    			time.startTracking();
+    			startTimeMySQL = time.start;
+    			idtimertext.setText("");
+    			idtimer.setText("End timer");
+    			timeStart = false;
+	    		
 	    		Parent root;
 	            try {
 	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/display.fxml"));
@@ -1153,7 +1267,7 @@ public class Controller {
 	                stage.setScene(new Scene(root, 600, 800));
 	                
 	                DisplayController displayController = loader.getController();
-	                displayController.initData(idMySQL, mysqlMainCol, mysql);
+	                displayController.initData(idMySQL, mysqlMainCol, mysql, startTimeMySQL, time);
 	                
 	                stage.show();
 	            }
@@ -1194,6 +1308,11 @@ public class Controller {
     }
     
     public void ExcelRun() {
+    	
+    	widthExcelWindow = 100.0;
+    	idfillwindowexcel.setPrefHeight(widthExcelWindow);
+    	idfillwindowexcel.setMinHeight(widthExcelWindow);
+    	idfillwindowexcel.maxHeight(widthExcelWindow);
     	
     	idfillwindowexcel.getChildren().clear();
     	
@@ -1261,6 +1380,14 @@ public class Controller {
 	    		
 	    		System.out.println(idExcel);
 	    		
+	    		TimeTracking time = new TimeTracking();
+    			
+    			time.startTracking();
+    			startTimeExcel = time.start;
+    			idtimertext.setText("");
+    			idtimer.setText("End timer");
+    			timeStart = false;
+	    		
 	    		Parent root;
 	            try {
 	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayEcxel.fxml"));
@@ -1270,7 +1397,7 @@ public class Controller {
 	                stageExcel.setScene(new Scene(root, 600, 800));
 	                
 	                DisplayExcelController displayExcelController = loader.getController();
-	                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues);
+	                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues, startTimeExcel, time);
 	                
 	                stageExcel.show();
 	            }
@@ -1290,6 +1417,11 @@ public class Controller {
 	    	excelButton.getFont().font(fontSizeExcel);
 	    	
 	    	layoutYExcel += 32.0;
+	    	widthExcelWindow += 32.0;
+	    	
+	    	idfillwindowexcel.setPrefHeight(widthExcelWindow);
+	    	idfillwindowexcel.setMinHeight(widthExcelWindow);
+	    	idfillwindowexcel.maxHeight(widthExcelWindow);
 			
 		}
 		
@@ -1298,6 +1430,11 @@ public class Controller {
     }
     
     public void CalcRun() {
+    	
+    	widthCalcWindow = 100.0;
+    	idfillwindowcalc.setPrefHeight(widthCalcWindow);
+    	idfillwindowcalc.setMinHeight(widthCalcWindow);
+    	idfillwindowcalc.maxHeight(widthCalcWindow);
     	
 		idfillwindowcalc.getChildren().clear();
     	
@@ -1365,6 +1502,14 @@ public class Controller {
 		    		
 		    		System.out.println(idCalc);
 		    		
+		    		TimeTracking time = new TimeTracking();
+	    			
+	    			time.startTracking();
+	    			startTimeCalc = time.start;
+	    			idtimertext.setText("");
+	    			idtimer.setText("End timer");
+	    			timeStart = false;
+		    		
 		    		Parent root;
 		            try {
 		            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayCalc.fxml"));
@@ -1374,7 +1519,7 @@ public class Controller {
 		                stageCalc.setScene(new Scene(root, 600, 800));
 		                
 		                DisplayCalcController displayCalcController = loader.getController();
-		                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues);
+		                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues, startTimeCalc, time);
 		                
 		                stageCalc.show();
 		            }
@@ -1395,6 +1540,11 @@ public class Controller {
 		    	calcButton.getFont().font(fontSizeCalc);
 		    	
 		    	layoutYCalc += 32.0;
+		    	widthCalcWindow += 32.0;
+		    	
+		    	idfillwindowcalc.setPrefHeight(widthCalcWindow);
+		    	idfillwindowcalc.setMinHeight(widthCalcWindow);
+		    	idfillwindowcalc.maxHeight(widthCalcWindow);
 			
 			}
 		} catch (Exception e1) {

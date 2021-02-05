@@ -24,18 +24,25 @@ public class DisplayController {
 	
     @FXML
     private Text idsettitle;
+    
+    @FXML
+    private Text idtimetext;
 	
 	@FXML
 	private Button idsave;
 	
 	@FXML
-	private Button idaddcolumn;
+	private Button idtimer;
 	
 	String idMySQL;
 	String mysqlMainCol;
 	MySQL mysql;
 	ArrayList<ArrayList<String>> list;
 	ArrayList<String> updateValues;
+	int startTimeMySQL;
+	TimeTracking time;
+	
+	boolean timer = true;
 	
 //	Functions
 
@@ -75,7 +82,14 @@ public class DisplayController {
 	double prefWidthc = 30.0d;
 	double prefHeightc = 30.0d;
 	
+	double widthWindow = 129.0d;
+	
 	public void displayData() {
+		
+		widthWindow = 129.0;
+		idfillme.setPrefHeight(widthWindow);
+		idfillme.setMinHeight(widthWindow);
+		idfillme.maxHeight(widthWindow);
 		
 		idsettitle.setText(idMySQL);
 
@@ -212,6 +226,11 @@ public class DisplayController {
 					
 				}
 			
+				widthWindow += 73.0;
+				
+				idfillme.setPrefHeight(widthWindow);
+				idfillme.setMinHeight(widthWindow);
+				idfillme.maxHeight(widthWindow);
 			
 			}
 			
@@ -219,6 +238,23 @@ public class DisplayController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	// timer
+	
+	@FXML
+    void timer(ActionEvent event) {
+		
+		if (timer == true) {
+			
+			time.elapsedTime(startTimeMySQL);
+			String value = time.time;
+			idtimetext.setText(value);
+//			idtimer.setText("Start timer");
+			timer = false;
+			
+		}
+		
 	}
 	
 	// Save button on click
@@ -237,11 +273,13 @@ public class DisplayController {
     
     // Main
 
-	public void initData(String idMySQL, String mysqlMainCol, MySQL mysql) {
+	public void initData(String idMySQL, String mysqlMainCol, MySQL mysql, int startTimeMySQL, TimeTracking time) {
 		// TODO Auto-generated method stub
 		this.idMySQL = idMySQL;
 		this.mysqlMainCol = mysqlMainCol;
 		this.mysql = mysql;
+		this.startTimeMySQL = startTimeMySQL;
+		this.time = time;
 		
 		System.out.println("MySQL " + idMySQL);
 		displayData();

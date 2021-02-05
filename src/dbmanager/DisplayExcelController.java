@@ -26,12 +26,15 @@ public class DisplayExcelController {
 	
     @FXML
     private Text idsettitle;
+    
+    @FXML
+    private Text idtimetext;
 	
 	@FXML
 	private Button idsave;
 	
 	@FXML
-	private Button idaddcolumn;
+	private Button idtimer;
 	
 	String idExcel;
 	String excelMainCol;
@@ -39,6 +42,10 @@ public class DisplayExcelController {
 	String excelMainSheet;
 	int rowNb;
 	List<Object> columnValues;
+	int startTimeExcel;
+	TimeTracking time;
+	
+	boolean timer = true;
 	
 //	Functions
 
@@ -78,6 +85,8 @@ public class DisplayExcelController {
 	double prefWidthc = 30.0d;
 	double prefHeightc = 30.0d;
 	
+	double widthWindow = 129.0d;
+	
 //	public static List<Object> rowValues (String sheetName, int rowNr, String odfFilePath) throws Exception{
 //		LinkedHashMap<String, List<ArrayList<Object>>> table = odfToJava.odfToJavaImport(odfFilePath);
 //		System.out.println("Row" + table.get(sheetName).get(rowNr));
@@ -85,6 +94,11 @@ public class DisplayExcelController {
 //	}
 	
 	public void displayData() {
+		
+		widthWindow = 129.0;
+		idfillme.setPrefHeight(widthWindow);
+		idfillme.setMinHeight(widthWindow);
+		idfillme.maxHeight(widthWindow);
 		
 		System.out.println("Excel I'm working " + idExcel);
 		
@@ -190,11 +204,35 @@ public class DisplayExcelController {
 					jfxCheckBox.setUnCheckedColor(Color.WHITE);
 					
 				}
+				
+				widthWindow += 73.0;
+				
+				idfillme.setPrefHeight(widthWindow);
+				idfillme.setMinHeight(widthWindow);
+				idfillme.maxHeight(widthWindow);
+				
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	// timer
+	
+	@FXML
+    void timer(ActionEvent event) {
+		
+		if (timer == true) {
+			
+			time.elapsedTime(startTimeExcel);
+			String value = time.time;
+			idtimetext.setText(value);
+//			idtimer.setText("Start timer");
+			timer = false;
+			
+		}
+		
 	}
 	
 	// Save button on click
@@ -206,13 +244,15 @@ public class DisplayExcelController {
     
     // Main
 
-	public void initDataExcel(String idExcel, String excelMainCol, String excelMainSheet, int rowNb, File myExcelFile, List<Object> columnValues) {
+	public void initDataExcel(String idExcel, String excelMainCol, String excelMainSheet, int rowNb, File myExcelFile, List<Object> columnValues, int startTimeMySQL, TimeTracking time) {
 		this.idExcel = idExcel;
 		this.excelMainCol = excelMainCol;
 		this.excelMainSheet = excelMainSheet;
 		this.rowNb = rowNb;
 		this.excelFilePath = myExcelFile.getAbsolutePath();
 		this.columnValues = columnValues;
+		this.startTimeExcel = startTimeExcel;
+		this.time = time;
 		
 		System.out.println("Excel " + idExcel);
 		displayData();
