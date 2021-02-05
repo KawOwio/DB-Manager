@@ -109,7 +109,9 @@ public class DisplayExcelController {
 			
 			int mainRow = 0;
 			
-			values = random.rowValues(excelMainSheet, rowNb, excelFilePath);
+			int rightRow= rowNb + 1;
+			
+			values = random.rowValues(excelMainSheet, rightRow, excelFilePath);
 			mainValues = random.rowValues(excelMainSheet, mainRow, excelFilePath);
 		
 			idsettitle.setText(idExcel);
@@ -244,15 +246,16 @@ public class DisplayExcelController {
     
     // Main
 
-	public void initDataExcel(String idExcel, String excelMainCol, String excelMainSheet, int rowNb, File myExcelFile, List<Object> columnValues, int startTimeMySQL, TimeTracking time) {
+//    public void initDataExcel(String idExcel, String excelMainCol, String excelMainSheet, int rowNb, File myExcelFile, List<Object> columnValues, int startTimeMySQL, TimeTracking time) {
+	public void initDataExcel(String idExcel, String excelMainCol, String excelMainSheet, int rowNb, File myExcelFile, List<Object> columnValues) {
 		this.idExcel = idExcel;
 		this.excelMainCol = excelMainCol;
 		this.excelMainSheet = excelMainSheet;
 		this.rowNb = rowNb;
 		this.excelFilePath = myExcelFile.getAbsolutePath();
 		this.columnValues = columnValues;
-		this.startTimeExcel = startTimeExcel;
-		this.time = time;
+//		this.startTimeExcel = startTimeExcel;
+//		this.time = time;
 		
 		System.out.println("Excel " + idExcel);
 		displayData();

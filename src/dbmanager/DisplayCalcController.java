@@ -34,9 +34,6 @@ public class DisplayCalcController {
 	private Button idsave;
 	
 	@FXML
-	private Button idaddcolumn;
-	
-	@FXML
 	private Button idtimer;
 	
 	String idCalc;
@@ -249,15 +246,16 @@ public class DisplayCalcController {
     
     // Main
 
-	public void initDataCalc(String idCalc, String calcMainCol, String calcMainSheet, int rowNb, File myCalcFile, List<Object> columnValues, int startTimeCalc, TimeTracking time) {
+//    public void initDataCalc(String idCalc, String calcMainCol, String calcMainSheet, int rowNb, File myCalcFile, List<Object> columnValues, int startTimeCalc, TimeTracking time) {
+	public void initDataCalc(String idCalc, String calcMainCol, String calcMainSheet, int rowNb, File myCalcFile, List<Object> columnValues) {
 		this.idCalc = idCalc;
 		this.calcMainCol = calcMainCol;
 		this.calcMainSheet = calcMainSheet;
 		this.rowNb = rowNb;
 		this.calcFilePath = myCalcFile.getAbsolutePath();
 		this.columnValues = columnValues;
-		this.startTimeCalc = startTimeCalc;
-		this.time = time;
+//		this.startTimeCalc = startTimeCalc;
+//		this.time = time;
 		
 		System.out.println("Excel " + idCalc);
 		displayData();

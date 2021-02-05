@@ -59,7 +59,7 @@
         </content>
       </ScrollPane>
       <Button fx:id="idsave" layoutX="490.0" layoutY="748.0" mnemonicParsing="false" onAction="#savebutton" prefHeight="38.0" prefWidth="94.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="Save" textFill="#658382" />
-      <Button fx:id="idtimer" layoutX="14.0" layoutY="748.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba;" text="End timer" textFill="#658382" />
+      <Button fx:id="idtimer" layoutX="14.0" layoutY="748.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" style="-fx-background-color: #fff; -fx-background-radius: 5em; -fx-border-radius: 5em; -fx-border-color: #92bbba; visibility: false;" text="End timer" textFill="#658382" />
       <Text fx:id="idtimetext" fill="#757575" layoutX="160.0" layoutY="771.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="281.0" />
    </children>
 </AnchorPane>

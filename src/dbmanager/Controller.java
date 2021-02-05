@@ -524,13 +524,13 @@ public class Controller {
 			    		
 			    		System.out.println(idCalc);
 			    		
-			    		TimeTracking time = new TimeTracking();
-		    			
-		    			time.startTracking();
-		    			startTimeCalc = time.start;
-		    			idtimertext.setText("");
-		    			idtimer.setText("End timer");
-		    			timeStart = false;
+//			    		TimeTracking time = new TimeTracking();
+//		    			
+//		    			time.startTracking();
+//		    			startTimeCalc = time.start;
+//		    			idtimertext.setText("");
+//		    			idtimer.setText("End timer");
+//		    			timeStart = false;
 			    		
 			    		Parent root;
 			            try {
@@ -541,7 +541,8 @@ public class Controller {
 			                stageCalc.setScene(new Scene(root, 600, 800));
 			                
 			                DisplayCalcController displayCalcController = loader.getController();
-			                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues, startTimeCalc, time);
+			                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues);
+//			                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues, startTimeCalc, time);
 			                
 			                stageCalc.show();
 			            }
@@ -730,13 +731,13 @@ public class Controller {
 		    		
 		    		System.out.println(idExcel);
 		    		
-		    		TimeTracking time = new TimeTracking();
-	    			
-	    			time.startTracking();
-	    			startTimeExcel = time.start;
-	    			idtimertext.setText("");
-	    			idtimer.setText("End timer");
-	    			timeStart = false;
+//		    		TimeTracking time = new TimeTracking();
+//	    			
+//	    			time.startTracking();
+//	    			startTimeExcel = time.start;
+//	    			idtimertext.setText("");
+//	    			idtimer.setText("End timer");
+//	    			timeStart = false;
 		    		
 		    		Parent root;
 		            try {
@@ -747,7 +748,8 @@ public class Controller {
 		                stageExcel.setScene(new Scene(root, 600, 800));
 		                
 		                DisplayExcelController displayExcelController = loader.getController();
-		                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues, startTimeExcel, time);
+		                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues);
+//		                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues, startTimeExcel, time);
 		                
 		                stageExcel.show();
 		            }
@@ -886,13 +888,13 @@ public class Controller {
 		    		
 		    		System.out.println(idMySQL);
 		    		
-		    		TimeTracking time = new TimeTracking();
-	    			
-	    			time.startTracking();
-	    			startTimeMySQL = time.start;
-	    			idtimertext.setText("");
-	    			idtimer.setText("End timer");
-	    			timeStart = false;
+//		    		TimeTracking time = new TimeTracking();
+//	    			
+//	    			time.startTracking();
+//	    			startTimeMySQL = time.start;
+//	    			idtimertext.setText("");
+//	    			idtimer.setText("End timer");
+//	    			timeStart = false;
 		    		
 		    		Parent root;
 		            try {
@@ -903,7 +905,8 @@ public class Controller {
 		                stage.setScene(new Scene(root, 600, 800));
 		                
 		                DisplayController displayController = loader.getController();
-		                displayController.initData(idMySQL, mysqlMainCol, mysql, startTimeMySQL, time);
+		                displayController.initData(idMySQL, mysqlMainCol, mysql);
+//		                displayController.initData(idMySQL, mysqlMainCol, mysql, startTimeMySQL, time);
 		                
 		                stage.show();
 		            }
@@ -1250,13 +1253,13 @@ public class Controller {
 	    		
 	    		System.out.println(idMySQL);
 	    		
-	    		TimeTracking time = new TimeTracking();
-	    			
-    			time.startTracking();
-    			startTimeMySQL = time.start;
-    			idtimertext.setText("");
-    			idtimer.setText("End timer");
-    			timeStart = false;
+//	    		TimeTracking timem = new TimeTracking();
+//	    			
+//    			timem.startTracking();
+//    			startTimeMySQL = timem.start;
+//    			idtimertext.setText("");
+//    			idtimer.setText("End timer");
+//    			timeStart = false;
 	    		
 	    		Parent root;
 	            try {
@@ -1267,7 +1270,8 @@ public class Controller {
 	                stage.setScene(new Scene(root, 600, 800));
 	                
 	                DisplayController displayController = loader.getController();
-	                displayController.initData(idMySQL, mysqlMainCol, mysql, startTimeMySQL, time);
+	                displayController.initData(idMySQL, mysqlMainCol, mysql);
+//	                displayController.initData(idMySQL, mysqlMainCol, mysql, startTimeMySQL, timem);
 	                
 	                stage.show();
 	            }
@@ -1380,13 +1384,13 @@ public class Controller {
 	    		
 	    		System.out.println(idExcel);
 	    		
-	    		TimeTracking time = new TimeTracking();
-    			
-    			time.startTracking();
-    			startTimeExcel = time.start;
-    			idtimertext.setText("");
-    			idtimer.setText("End timer");
-    			timeStart = false;
+//	    		TimeTracking timee = new TimeTracking();
+//    			
+//    			timee.startTracking();
+//    			startTimeExcel = timee.start;
+//    			idtimertext.setText("");
+//    			idtimer.setText("End timer");
+//    			timeStart = false;
 	    		
 	    		Parent root;
 	            try {
@@ -1397,7 +1401,8 @@ public class Controller {
 	                stageExcel.setScene(new Scene(root, 600, 800));
 	                
 	                DisplayExcelController displayExcelController = loader.getController();
-	                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues, startTimeExcel, time);
+	                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues);
+//	                displayExcelController.initDataExcel(idExcel, mysqlMainCol, excelMainSheet, rowNb, myExcelFile, columnValues, startTimeExcel, timee);
 	                
 	                stageExcel.show();
 	            }
@@ -1502,13 +1507,13 @@ public class Controller {
 		    		
 		    		System.out.println(idCalc);
 		    		
-		    		TimeTracking time = new TimeTracking();
-	    			
-	    			time.startTracking();
-	    			startTimeCalc = time.start;
-	    			idtimertext.setText("");
-	    			idtimer.setText("End timer");
-	    			timeStart = false;
+//		    		TimeTracking timec = new TimeTracking();
+//	    			
+//	    			timec.startTracking();
+//	    			startTimeCalc = timec.start;
+//	    			idtimertext.setText("");
+//	    			idtimer.setText("End timer");
+//	    			timeStart = false;
 		    		
 		    		Parent root;
 		            try {
@@ -1519,7 +1524,8 @@ public class Controller {
 		                stageCalc.setScene(new Scene(root, 600, 800));
 		                
 		                DisplayCalcController displayCalcController = loader.getController();
-		                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues, startTimeCalc, time);
+		                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues);
+//		                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues, startTimeCalc, timec);
 		                
 		                stageCalc.show();
 		            }

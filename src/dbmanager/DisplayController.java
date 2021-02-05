@@ -273,13 +273,14 @@ public class DisplayController {
     
     // Main
 
-	public void initData(String idMySQL, String mysqlMainCol, MySQL mysql, int startTimeMySQL, TimeTracking time) {
+	public void initData(String idMySQL, String mysqlMainCol, MySQL mysql) {
+//		public void initData(String idMySQL, String mysqlMainCol, MySQL mysql, int startTimeMySQL, TimeTracking time) {
 		// TODO Auto-generated method stub
 		this.idMySQL = idMySQL;
 		this.mysqlMainCol = mysqlMainCol;
 		this.mysql = mysql;
-		this.startTimeMySQL = startTimeMySQL;
-		this.time = time;
+//		this.startTimeMySQL = startTimeMySQL;
+//		this.time = time;
 		
 		System.out.println("MySQL " + idMySQL);
 		displayData();
