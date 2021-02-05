@@ -2,6 +2,7 @@ package dbmanager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +34,8 @@ public class DisplayController {
 	String idMySQL;
 	String mysqlMainCol;
 	MySQL mysql;
+	ArrayList<ArrayList<String>> list;
+	ArrayList<String> updateValues;
 	
 //	Functions
 
@@ -76,9 +79,10 @@ public class DisplayController {
 		
 		idsettitle.setText(idMySQL);
 
-		ArrayList<ArrayList<String>> list;
 		try {
 			list = mysql.getRowContent(mysqlMainCol, idMySQL);
+			updateValues = new ArrayList<>(list.get(2));
+			Collections.copy(updateValues, list.get(2));
 			
 			//		list.get(2).get(i)
 			
@@ -168,6 +172,11 @@ public class DisplayController {
 					jfxTextField.setUnFocusColor(Color.WHITE);
 					// FIXME: insert what you get from the function
 					jfxTextField.setText(list.get(2).get(i));
+					
+					final int index = i;
+					jfxTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+						updateValues.set(index, newValue);
+					});
 				
 				} else {
 					
@@ -217,6 +226,13 @@ public class DisplayController {
     @FXML
     void savebutton(ActionEvent event) {
 
+    	try {
+			mysql.updateRow(list, updateValues);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
     
     // Main

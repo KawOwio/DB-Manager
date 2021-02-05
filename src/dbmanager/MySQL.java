@@ -179,17 +179,99 @@ public class MySQL {
         conn.commit();
     }
 
- 	public static void main(String[] args) throws SQLException {
- 		MySQL t = new MySQL("dbm", "dbmapp", "Test", "Test");
- 		// t.addColumn("newColumn1", "varchar(50)");
+// 	public static void main(String[] args) throws SQLException {
+// 		MySQL t = new MySQL("dbm", "dbmapp", "Test", "Test");
+// 		// t.addColumn("newColumn1", "varchar(50)");
+// 		
+// 		// t.addColumn("test56", "int");
+// 		// t.addColumn("newblablabla", "decimal(50, 2)");
+// 		
+// 		// t.getRowContent("test1", "2");
+// 		
+// 		t.addRow("idTest", 6);
+// 	}
+ 	
+ 	public void updateRow(ArrayList<ArrayList<String>> list, ArrayList<String> updateValues) throws SQLException {
  		
- 		// t.addColumn("test56", "int");
- 		// t.addColumn("newblablabla", "decimal(50, 2)");
+        Statement st = conn.createStatement();
+        StringBuilder sql = new StringBuilder();
+//        String sql = "INSERT INTO "+ databaseName + "." + tableName + " (" + columnName + ") VALUES ('" + data + "');"; 
+        sql.append("UPDATE " + databaseName + "." + tableName + " SET ");
+        for (int i = 0; i < list.get(0).size(); i++) {
+        	
+        	sql.append("`" + list.get(0).get(i) + "` = '" + updateValues.get(i) + "'");
+        	if (i != list.get(0).size() - 1) {
+        		sql.append(", ");
+        	}
+        	
+        }
+        ArrayList<String> keys = primaryKeys();
+        
+        sql.append(" WHERE ");
+        
+        for (int i = 0; i < keys.size(); i++) {
+        	
+        	sql.append("`" + keys.get(i) + "` = '" + findKeyInRow(list, keys.get(i)) + "'");
+        	if (i != keys.size() - 1) {
+        		sql.append(" AND ");
+        	}
+        	
+        }
+        sql.append(";");
+        System.out.println(sql.toString());
+        st.executeUpdate(sql.toString());
+        System.out.println(sql.toString());
+        conn.commit();
  		
- 		// t.getRowContent("test1", "2");
- 		
- 		t.addRow("idTest", 6);
  	}
+ 	
+ 	private String findKeyInRow(ArrayList<ArrayList<String>> rowList, String keyName) {
+ 		
+ 		for (int i = 0; i < rowList.size(); i++) {
+ 			
+ 			if (keyName.equals(rowList.get(0).get(i))) {
+ 				
+ 				return rowList.get(2).get(i);
+ 				
+ 			}
+ 			
+ 		}
+ 		
+ 		return "";
+ 		
+ 	}
+ 	
+ 	public ArrayList<String> primaryKeys() throws SQLException {
+ 		
+        Statement st = conn.createStatement();
+ 		String sql = "SHOW KEYS FROM " + databaseName + "." + tableName + " WHERE Key_name = 'PRIMARY'"; 
+        System.out.println(sql);
+        ResultSet results = st.executeQuery(sql);
+
+        ArrayList<String> keys = new ArrayList<>();
+		while (results.next()) {
+			
+			keys.add(results.getString(1));
+			
+		}
+		conn.commit();
+		return keys;
+ 		
+ 	}
+ 	
+ 	public static void main(String[] args) {
+ 		
+ 		MySQL mysql = new MySQL("dbm", "dbmapp", "test", "Company");
+ 		try {
+			mysql.primaryKeys();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		
+ 	}
+ 	
+// 	"UPDATE `" test "`.`Company` SET `" Registration number "` = '333dsa' WHERE (`idCompany` = '3');
 
 
 }

@@ -310,6 +310,8 @@ public class Controller {
 	int rowCountMySQL = 0;
 	int colCountMySQL = 0; 
 	
+	double widthMySQLWindow = 100.0d;
+	
 	// Excel
 	
 	double layoutXExcel = 320.0d;
@@ -404,6 +406,113 @@ public class Controller {
 		idfillwindowcalc.getChildren().clear();
 		//		find rows where fields match with searchCalc
 		
+		idfillwindowcalc.getChildren().clear();
+    	
+    	calcCol = 0;
+    	
+    	calcMainCol = idsetcalccol.getText();
+    	calcMainSheet = idsetcalcsheet.getText();
+	
+		idsavechangescalc.setVisible(true);
+		idexporttodoccalc.setVisible(true);
+		
+		char[] chCalcMainCol = new char[calcMainCol.length()];
+		
+		for (int i = 0; i < calcMainCol.length(); i++) {
+			chCalcMainCol[i] = calcMainCol.charAt(i);
+		}
+		
+		for (int i = 0; i < calcMainCol.length(); i++) {
+			
+			if (chCalcMainCol[i] >= 'a' && chCalcMainCol[i] <= 'z') {
+				int val = chCalcMainCol[i];
+				calcCol = calcCol + val - 96;
+				firstValCalc = false;
+			} else if (chCalcMainCol[i] >= 'A' && chCalcMainCol[i] <= 'Z') {
+				int val = chCalcMainCol[i];
+				calcCol = calcCol + val - 64;
+				firstValCalc = false;
+			} else if (chCalcMainCol[i] >= '0' && chCalcMainCol[i] <= '9') {
+				int val = chCalcMainCol[i];
+				if (firstValCalc != true && val == 0) {
+					calcCol = calcCol + 10;
+					firstValCalc = false;
+				} else {
+					calcCol = calcCol + val;
+					firstValCalc = false;
+				}
+			}
+			
+		}
+		
+		String filePathCalc = myCalcFile.toPath().toString();
+	
+		odfToJava odftojava = new odfToJava();
+		
+		List<Object> columnValues;
+		LinkedHashMap<String, List<ArrayList<Object>>> table;
+		try {
+			table = odftojava.odfToJavaImport(filePathCalc);
+			columnValues = odftojava.columnValues(calcMainSheet, calcCol, filePathCalc);
+
+			// TODO: get the size of the list with needed data (row count)
+			// FIXME: 0 !!!!
+			for (int i = 0; i < columnValues.size(); i++) {
+				
+				String idCalc = columnValues.get(i).toString();
+		    	Pattern calcPattern = Pattern.compile(searchCalc, Pattern.CASE_INSENSITIVE);
+		    	Matcher calcMatcher = calcPattern.matcher(idCalc);
+		    	
+		    	if (calcMatcher.find()) {
+				
+					Button calcButton = new Button("ButtonCalc" + i);
+					idfillwindowcalc.getChildren().add(calcButton);
+			    	
+			    	int rowNb = i;
+			    	
+			    	calcButton.setId(idCalc);
+			    	calcButton.setOnAction((buttonEventCalc) -> {
+			    		
+			    		System.out.println(idCalc);
+			    		
+			    		Parent root;
+			            try {
+			            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/displayCalc.fxml"));
+			                root = loader.load();
+			                Stage stageCalc = new Stage();
+			                stageCalc.setTitle(idCalc);
+			                stageCalc.setScene(new Scene(root, 600, 800));
+			                
+			                DisplayCalcController displayCalcController = loader.getController();
+			                displayCalcController.initDataCalc(idCalc, calcMainCol, calcMainSheet, rowNb, myCalcFile, columnValues);
+			                
+			                stageCalc.show();
+			            }
+			            catch (IOException e) {
+			                e.printStackTrace();
+			            }
+			    		
+			    	});
+	
+			    	calcButton.setLayoutX(layoutXCalc);
+			    	calcButton.setLayoutY(layoutYCalc);
+			    	calcButton.setPrefWidth(prefWidthCalc);
+			    	calcButton.setPrefHeight(prefHeightCalc);
+			    	calcButton.setStyle("-fx-background-radius: 5em; -fx-border-radius: 5em; -fx-background-color: #ececec");
+			    	calcButton.setText(idCalc);
+			    	calcButton.setTextFill(Color.rgb(54, 54, 54));
+			    	// FIXME:
+			    	calcButton.getFont().font(fontSizeCalc);
+			    	
+			    	layoutYCalc += 32.0;
+		    	}
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		layoutYCalc = 16.0;
 		theSameCalc = false;
 	}
 	
@@ -1000,6 +1109,14 @@ public class Controller {
     
     public void MySQLRun() {
     	
+    	widthMySQLWindow = 100.0;
+//    	prefHeight="100.0"
+//    	minHeight="0.0"
+    	idfillwindowmysql.setPrefHeight(widthMySQLWindow);
+    	idfillwindowmysql.setMinHeight(widthMySQLWindow);
+    	idfillwindowmysql.maxHeight(widthMySQLWindow);
+//    	idfillwindowmysql.hei(widthMySQLWindow);
+    	
     	idfillwindowmysql.getChildren().clear();
     	
 		MySQL mysql = new MySQL(idlogininput.getText(), idpasswordinput.getText(), iddbnameinput.getText(), idsettablenamemysql.getText());
@@ -1057,7 +1174,12 @@ public class Controller {
 	    	
 	    	row++;
 	    	
+	    	widthMySQLWindow += 32.0;
 	    	layoutYMySQL += 32.0;
+	    	
+	    	idfillwindowmysql.setPrefHeight(widthMySQLWindow);
+	    	idfillwindowmysql.setMinHeight(widthMySQLWindow);
+	    	idfillwindowmysql.maxHeight(widthMySQLWindow);
 	    	
 //	    	idaddcolumn.setOnAction((addColEvent) -> {
 //	        	
@@ -1066,6 +1188,8 @@ public class Controller {
 //	        });
     	
 	    } 
+	    
+	    layoutYMySQL = 16.0;
     	
     }
     
@@ -1168,6 +1292,8 @@ public class Controller {
 	    	layoutYExcel += 32.0;
 			
 		}
+		
+		layoutYExcel = 16.0;
     	
     }
     
@@ -1275,6 +1401,8 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		layoutYCalc = 16.0;
     }
     
 }
