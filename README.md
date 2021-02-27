@@ -10,6 +10,10 @@ Java, Maven, JavaFX, Apache POI, Apache ODFToolkit, MySQL
 - Easy search, editing and adding new data to MySQL database.
 - Quality of life features like in-app calculator and time tracking.
 
+## Calculator and time tracking DEMO:
+
+![Demo](https://media0.giphy.com/media/3eF15kHYARTXNhJ9YU/giphy.gif)
+
 # Future Work
 - Implement a functionality to edit MS Excel and ODF Spreadsheets data and save it. 
 - An option to add rows or columns where user wants in the spreadsheets (currently possible only in the end).
